@@ -9,6 +9,10 @@ target/*
 target
 #classpath
 *.classpath
+*.md
+*.cmd
+mvnw
+.mvn
 
 ### IntelliJ IDEA ###
 .idea
