@@ -63,6 +63,12 @@
 		</dependency>
 
 
+		<!-- ========== Data-JPA ======== -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+
 		<!-- ========== Testing ======== -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -70,11 +76,24 @@
 			<scope>test</scope>
 		</dependency>
 
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+
 		<!-- ========== PayPal ======== -->
 		<dependency>
 			<groupId>com.paypal.sdk</groupId>
 			<artifactId>rest-api-sdk</artifactId>
 			<version>1.14.0</version>
+		</dependency>
+
+		<!-- =================================== Utils ================================= -->
+		<!-- ========== Model Mapper ======== -->
+		<dependency>
+			<groupId>org.modelmapper</groupId>
+			<artifactId>modelmapper</artifactId>
+			<version>2.4.2</version>
 		</dependency>
 
 	</dependencies>
