@@ -7,6 +7,7 @@ import com.store.dto.CustomerOrderDto;
 import com.store.model.domain.User;
 import com.store.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,14 +30,16 @@ public class CustomerController {
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("not plaaaaaa");
-            return new ResponseEntity<List<CustomerDto>>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
     }
+
     @GetMapping("/hi")
     public String test(){
         return "eshta ".repeat(5);
     }
+
     @PostMapping("/")
     public ResponseEntity<String> addCustomer(@RequestBody User user) {
         try {
@@ -96,11 +99,10 @@ public class CustomerController {
         try {
             List<CartItemDto> cartItemDtoList = null;
             return new ResponseEntity<>(cartItemDtoList,HttpStatus.OK);
-        }catch (Exception e){
+        } catch (Exception e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
     }
-
 
 }
