@@ -15,7 +15,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="payment"
-    ,catalog="ecomm"
+    ,catalog="ecommerce"
 )
 public class Payment  implements java.io.Serializable {
 

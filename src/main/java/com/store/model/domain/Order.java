@@ -21,7 +21,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="order"
-    ,catalog="ecomm"
+    ,catalog="ecommerce"
 )
 public class Order  implements java.io.Serializable {
 

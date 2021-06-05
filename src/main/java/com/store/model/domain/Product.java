@@ -19,7 +19,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="product"
-        ,catalog="ecomm"
+        ,catalog="ecommerce"
 )
 public class Product  implements java.io.Serializable {
 

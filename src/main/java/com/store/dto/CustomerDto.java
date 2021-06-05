@@ -10,7 +10,7 @@ import java.util.Set;
 
 public class CustomerDto implements Serializable {
 
-    private Integer customerId;
+    private Integer id;
     private String name;
     private String email;
     private String password;
@@ -41,12 +41,12 @@ public class CustomerDto implements Serializable {
         this.phone = phone;
     }
 
-    public Integer getCustomerId() {
-        return customerId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setCustomerId(Integer customerId) {
-        this.customerId = customerId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -148,7 +148,7 @@ public class CustomerDto implements Serializable {
     @Override
     public String toString() {
         return "CustomerDto{" +
-                "customerId=" + customerId +
+                "customerId=" + id +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
@@ -159,8 +159,6 @@ public class CustomerDto implements Serializable {
                 ", phone='" + phone + '\'' +
                 ", isEmailVerified=" + isEmailVerified +
                 ", isDeleted=" + isDeleted +
-                ", orders=" + orders +
-                ", cartItems=" + cartItems +
                 '}';
     }
 }

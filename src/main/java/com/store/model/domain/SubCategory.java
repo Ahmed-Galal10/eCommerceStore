@@ -21,7 +21,7 @@ import javax.persistence.UniqueConstraint;
  */
 @Entity
 @Table(name="sub_category"
-    ,catalog="ecomm"
+    ,catalog="ecommerce"
     , uniqueConstraints = @UniqueConstraint(columnNames="name") 
 )
 public class SubCategory  implements java.io.Serializable {

@@ -1,5 +1,6 @@
 package com.store.config;
 
+import com.store.repo.CustomerRepo;
 import com.store.service.CustomerService;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;

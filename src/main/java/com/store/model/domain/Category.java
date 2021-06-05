@@ -19,7 +19,7 @@ import javax.persistence.UniqueConstraint;
  */
 @Entity
 @Table(name="category"
-    ,catalog="ecomm"
+    ,catalog="ecommerce"
     , uniqueConstraints = @UniqueConstraint(columnNames="name") 
 )
 public class Category  implements java.io.Serializable {

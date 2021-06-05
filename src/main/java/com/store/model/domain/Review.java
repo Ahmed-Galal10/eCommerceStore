@@ -18,7 +18,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="review"
-    ,catalog="ecomm"
+    ,catalog="ecommerce"
 )
 public class Review  implements java.io.Serializable {
 

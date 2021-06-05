@@ -12,7 +12,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="discount"
-    ,catalog="ecomm"
+    ,catalog="ecommerce"
 )
 public class Discount  implements java.io.Serializable {
 

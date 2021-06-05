@@ -21,7 +21,7 @@ import javax.persistence.UniqueConstraint;
  */
 @Entity
 @Table(name="user"
-        ,catalog="ecomm"
+        ,catalog="ecommerce"
         , uniqueConstraints = {@UniqueConstraint(columnNames="email"), @UniqueConstraint(columnNames="name")}
 )
 public class User  implements java.io.Serializable {
@@ -249,8 +249,23 @@ public class User  implements java.io.Serializable {
     }
 
 
-
-
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", address='" + address + '\'' +
+                ", regDate=" + regDate +
+                ", balance=" + balance +
+                ", image='" + image + '\'' +
+                ", phone='" + phone + '\'' +
+                ", role='" + role + '\'' +
+                ", isEmailVerified=" + isEmailVerified +
+                ", isDeleted=" + isDeleted +
+                '}';
+    }
 }
 
 
