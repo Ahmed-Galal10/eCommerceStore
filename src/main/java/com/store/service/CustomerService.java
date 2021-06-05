@@ -1,8 +1,10 @@
 package com.store.service;
 
-import com.store.dto.CustomerDto;
-import com.store.dto.CustomerOrderDto;
-import com.store.model.domain.User;
+
+
+import com.store.dtos.customer.CustomerDto;
+import com.store.dtos.customer.CustomerOrderDto;
+import com.store.model.User;
 
 import java.util.List;
 

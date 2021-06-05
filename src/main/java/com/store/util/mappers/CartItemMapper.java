@@ -1,9 +1,8 @@
 package com.store.util.mappers;
 
-import com.store.entities.CartItem;
-import com.store.entities.Product;
-import com.store.model.cart.CartItemDto;
-import org.apache.catalina.mapper.Mapper;
+import com.store.model.CartItem;
+import com.store.model.Product;
+import com.store.dtos.cart.CartItemDto;
 
 public class CartItemMapper extends EntityDtoMapper<CartItem, CartItemDto> {
 

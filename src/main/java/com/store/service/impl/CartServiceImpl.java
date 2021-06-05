@@ -1,13 +1,13 @@
 package com.store.service.impl;
 
 
-import com.store.entities.CartItem;
-import com.store.entities.CartItemId;
-import com.store.entities.Product;
-import com.store.entities.User;
-import com.store.model.cart.CartDto;
-import com.store.model.cart.CartItemDto;
-import com.store.model.cart.CartItemRequest;
+import com.store.model.CartItem;
+import com.store.model.CartItemId;
+import com.store.model.Product;
+import com.store.model.User;
+import com.store.dtos.cart.CartDto;
+import com.store.dtos.cart.CartItemDto;
+import com.store.dtos.cart.CartItemRequest;
 import com.store.repository.CartItemRepo;
 import com.store.repository.ProductRepo;
 import com.store.repository.UserRepo;

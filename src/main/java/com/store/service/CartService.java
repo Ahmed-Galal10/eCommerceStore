@@ -1,12 +1,9 @@
 package com.store.service;
 
 
-import com.store.entities.CartItem;
-import com.store.model.cart.CartDto;
-import com.store.model.cart.CartItemDto;
-import com.store.model.cart.CartItemRequest;
-
-import java.util.List;
+import com.store.dtos.cart.CartDto;
+import com.store.dtos.cart.CartItemDto;
+import com.store.dtos.cart.CartItemRequest;
 
 public interface CartService {
 

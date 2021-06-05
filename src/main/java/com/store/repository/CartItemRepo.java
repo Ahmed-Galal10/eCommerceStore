@@ -1,8 +1,8 @@
 package com.store.repository;
 
 
-import com.store.entities.CartItem;
-import com.store.entities.CartItemId;
+import com.store.model.CartItem;
+import com.store.model.CartItemId;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

@@ -1,12 +1,10 @@
 package com.store.service.impl;
 
 
-import com.store.dto.CustomerDto;
-import com.store.dto.CustomerOrderDto;
-import com.store.model.Customers;
-import com.store.model.domain.Order;
-import com.store.model.domain.User;
-import com.store.repo.CustomerRepo;
+import com.store.dtos.customer.*;
+import com.store.model.Order;
+import com.store.model.User;
+import com.store.repository.CustomerRepo;
 import com.store.service.CustomerService;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
