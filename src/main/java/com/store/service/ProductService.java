@@ -1,18 +1,16 @@
 package com.store.service;
 
+import com.store.dto.ProdDetailDto;
 import com.store.model.Product;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface ProductService {
-    List<Product> getAllProducts();
+    List<ProdDetailDto> getAllProducts();
 
-    Optional<Product> getProductById(Integer id);
+    ProdDetailDto getProductById(Integer id);
 
-    Product addProduct(Product product);
-
-    Product updateProduct(Product product);
+    ProdDetailDto addOrUpdateProduct(ProdDetailDto prodDetailDto);
 
     void deleteProduct(Integer id);
 }

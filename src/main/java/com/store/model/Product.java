@@ -17,7 +17,6 @@ import static javax.persistence.GenerationType.IDENTITY;
 )
 public class Product  implements java.io.Serializable {
 
-
      private Integer id;
      private SubCategory subCategory;
      private User user;

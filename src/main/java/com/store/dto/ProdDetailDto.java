@@ -5,11 +5,16 @@ import java.util.List;
 public class ProdDetailDto {
 
     private Integer id;
-    private String prodName;
-    private String prodDescription;
+    private String productName;
+    private String productDescription;
     private Double price;
-    private Integer quantity;
+    private Integer productQuantity;
+    private String productImg;
+    private double productPrice;
     private List<String> prodImages;
+
+    private boolean isOnSale;
+    private int subcategoryId;
 
     public Integer getId() {
         return id;
@@ -19,20 +24,20 @@ public class ProdDetailDto {
         this.id = id;
     }
 
-    public String getProdName() {
-        return prodName;
+    public String getProductName() {
+        return productName;
     }
 
-    public void setProdName(String prodName) {
-        this.prodName = prodName;
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
-    public String getProdDescription() {
-        return prodDescription;
+    public String getProductDescription() {
+        return productDescription;
     }
 
-    public void setProdDescription(String prodDescription) {
-        this.prodDescription = prodDescription;
+    public void setProductDescription(String productDescription) {
+        this.productDescription = productDescription;
     }
 
     public Double getPrice() {
@@ -43,12 +48,28 @@ public class ProdDetailDto {
         this.price = price;
     }
 
-    public Integer getQuantity() {
-        return quantity;
+    public Integer getProductQuantity() {
+        return productQuantity;
     }
 
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
+    public void setProductQuantity(Integer productQuantity) {
+        this.productQuantity = productQuantity;
+    }
+
+    public String getProductImg() {
+        return productImg;
+    }
+
+    public void setProductImg(String productImg) {
+        this.productImg = productImg;
+    }
+
+    public double getProductPrice() {
+        return productPrice;
+    }
+
+    public void setProductPrice(double productPrice) {
+        this.productPrice = productPrice;
     }
 
     public List<String> getProdImages() {
@@ -59,15 +80,35 @@ public class ProdDetailDto {
         this.prodImages = prodImages;
     }
 
+    public boolean isOnSale() {
+        return isOnSale;
+    }
+
+    public void setOnSale(boolean onSale) {
+        isOnSale = onSale;
+    }
+
+    public int getSubcategoryId() {
+        return subcategoryId;
+    }
+
+    public void setSubcategoryId(int subcategoryId) {
+        this.subcategoryId = subcategoryId;
+    }
+
     @Override
     public String toString() {
         return "ProdDetailDto{" +
                 "id=" + id +
-                ", prodName='" + prodName + '\'' +
-                ", prodDescription='" + prodDescription + '\'' +
+                ", productName='" + productName + '\'' +
+                ", productDescription='" + productDescription + '\'' +
                 ", price=" + price +
-                ", quantity=" + quantity +
+                ", productQuantity=" + productQuantity +
+                ", productImg='" + productImg + '\'' +
+                ", productPrice=" + productPrice +
                 ", prodImages=" + prodImages +
+                ", isOnSale=" + isOnSale +
+                ", subcategoryId=" + subcategoryId +
                 '}';
     }
 }

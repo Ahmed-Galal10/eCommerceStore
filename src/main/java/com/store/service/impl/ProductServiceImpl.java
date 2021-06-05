@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -28,26 +27,22 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getAllProducts() {
+    public List<ProdDetailDto> getAllProducts() {
         List<Product> products = productRepo.findAll();
-
-        return modelMapper.map(products, new TypeToken<List<ProdDetailDto>>() {
-        }.getType());
+        return modelMapper.map(products, new TypeToken<List<ProdDetailDto>>() {}.getType());
     }
 
     @Override
-    public Optional<Product> getProductById(Integer id) {
-        return productRepo.findById(id);
+    public ProdDetailDto getProductById(Integer id) {
+        Product product = productRepo.findById(id).orElseThrow(() -> new RuntimeException("Not found"));
+        return modelMapper.map(product, ProdDetailDto.class);
     }
 
     @Override
-    public Product addProduct(Product product) {
-        return productRepo.save(product);
-    }
-
-    @Override
-    public Product updateProduct(Product product) {
-        return productRepo.save(product);
+    public ProdDetailDto addOrUpdateProduct(ProdDetailDto prodDetailDto) {
+        Product product = modelMapper.map(prodDetailDto, Product.class);
+        product = productRepo.save(product);
+        return modelMapper.map(product, ProdDetailDto.class);
     }
 
     @Override
