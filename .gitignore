@@ -14,6 +14,7 @@ target
 mvnw
 .mvn
 .mvn/*
+*.properties
 
 ### IntelliJ IDEA ###
 .idea
