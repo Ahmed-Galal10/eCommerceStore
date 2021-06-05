@@ -1,12 +1,10 @@
 package com.store.controller;
 
 
-import com.store.model.entities.CartItem;
-import com.store.model.entities.CartItemId;
-import com.store.model.entities.SubCategory;
+import com.store.dto.CartItemDto;
+import com.store.dto.CartItemRequest;
 import com.store.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -14,16 +12,19 @@ import org.springframework.web.bind.annotation.*;
 public class CartItemController {
 
     private CartService cartService;
+
     @Autowired
-    public void setup(CartService cartService ){
-        this.cartService = cartService ;
+    public void setup(CartService cartService) {
+        this.cartService = cartService;
 
     }
-    @GetMapping("carts/{cartId}/cart-items")
-    public CartItem getCartItem(@PathVariable("cartId") int cartId){
-        return cartService.getByCartItemId(cartId);
+
+    @PostMapping("carts/{cartId}/cart-items")
+    public CartItemDto addCartItem(@PathVariable("cartId") int cartId, @RequestBody CartItemRequest cartItemRequest) {
+        return cartService.addCartItem(cartId, cartItemRequest);
 
     }
+
 //    @GetMapping("carts/{cartId}/cart-items")
 //    public SubCategory getCartItem(@PathVariable("cartId") int cartId){
 //        return cartService.getSub();
