@@ -1,5 +1,4 @@
-package com.store.model.entities;// default package
-// Generated Jun 5, 2021, 12:33:40 AM by Hibernate Tools 6.0.0.Alpha2
+package com.store.entities;
 
 
 import java.util.HashSet;
@@ -20,55 +19,52 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="product"
-    ,catalog="ecomm"
+    ,catalog="ecommerce"
 )
 public class Product  implements java.io.Serializable {
 
 
      private Integer id;
-     private SubCategory subCategory;
+     private Subcategory subcategory;
      private User user;
      private String name;
      private String description;
      private int quantity;
      private String img;
      private double price;
-     private boolean onSale;
-     private int subcategoryId;
+     private boolean isOnSale;
+     private Set<CartItem> cartItems = new HashSet<CartItem>(0);
      private Set<ProdImages> prodImageses = new HashSet<ProdImages>(0);
      private Set<OrderItem> orderItems = new HashSet<OrderItem>(0);
      private Set<Review> reviews = new HashSet<Review>(0);
-     private Set<CartItem> cartItems = new HashSet<CartItem>(0);
 
     public Product() {
     }
 
 	
-    public Product(SubCategory subCategory, User user, String name, String description, int quantity, String img, double price, boolean onSale, int subcategoryId) {
-        this.subCategory = subCategory;
+    public Product(Subcategory subcategory, User user, String name, String description, int quantity, String img, double price, boolean isOnSale) {
+        this.subcategory = subcategory;
         this.user = user;
         this.name = name;
         this.description = description;
         this.quantity = quantity;
         this.img = img;
         this.price = price;
-        this.onSale = onSale;
-        this.subcategoryId = subcategoryId;
+        this.isOnSale = isOnSale;
     }
-    public Product(SubCategory subCategory, User user, String name, String description, int quantity, String img, double price, boolean onSale, int subcategoryId, Set<ProdImages> prodImageses, Set<OrderItem> orderItems, Set<Review> reviews, Set<CartItem> cartItems) {
-       this.subCategory = subCategory;
+    public Product(Subcategory subcategory, User user, String name, String description, int quantity, String img, double price, boolean isOnSale, Set<CartItem> cartItems, Set<ProdImages> prodImageses, Set<OrderItem> orderItems, Set<Review> reviews) {
+       this.subcategory = subcategory;
        this.user = user;
        this.name = name;
        this.description = description;
        this.quantity = quantity;
        this.img = img;
        this.price = price;
-       this.onSale = onSale;
-       this.subcategoryId = subcategoryId;
+       this.isOnSale = isOnSale;
+       this.cartItems = cartItems;
        this.prodImageses = prodImageses;
        this.orderItems = orderItems;
        this.reviews = reviews;
-       this.cartItems = cartItems;
     }
    
      @Id @GeneratedValue(strategy=IDENTITY)
@@ -84,13 +80,13 @@ public class Product  implements java.io.Serializable {
     }
 
 @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="sub_category_id", nullable=false)
-    public SubCategory getSubCategory() {
-        return this.subCategory;
+    @JoinColumn(name="subcategory_id", nullable=false)
+    public Subcategory getSubcategory() {
+        return this.subcategory;
     }
     
-    public void setSubCategory(SubCategory subCategory) {
-        this.subCategory = subCategory;
+    public void setSubcategory(Subcategory subcategory) {
+        this.subcategory = subcategory;
     }
 
 @ManyToOne(fetch=FetchType.LAZY)
@@ -154,24 +150,22 @@ public class Product  implements java.io.Serializable {
     }
 
     
-    @Column( name="on_sale", nullable=false,columnDefinition = "TINYINT(1)")
+    @Column(name="is_on_sale", nullable=false)
+    public boolean isIsOnSale() {
+        return this.isOnSale;
+    }
+    
+    public void setIsOnSale(boolean isOnSale) {
+        this.isOnSale = isOnSale;
+    }
 
-    public boolean isOnSale() {
-        return this.onSale;
+@OneToMany(fetch=FetchType.LAZY, mappedBy="product")
+    public Set<CartItem> getCartItems() {
+        return this.cartItems;
     }
     
-    public void setOnSale(boolean isOnSale) {
-        this.onSale = isOnSale;
-    }
-
-    
-    @Column(name="subcategory_id", nullable=false)
-    public int getSubcategoryId() {
-        return this.subcategoryId;
-    }
-    
-    public void setSubcategoryId(int subcategoryId) {
-        this.subcategoryId = subcategoryId;
+    public void setCartItems(Set<CartItem> cartItems) {
+        this.cartItems = cartItems;
     }
 
 @OneToMany(fetch=FetchType.LAZY, mappedBy="product")
@@ -199,15 +193,6 @@ public class Product  implements java.io.Serializable {
     
     public void setReviews(Set<Review> reviews) {
         this.reviews = reviews;
-    }
-
-@OneToMany(fetch=FetchType.LAZY, mappedBy="product")
-    public Set<CartItem> getCartItems() {
-        return this.cartItems;
-    }
-    
-    public void setCartItems(Set<CartItem> cartItems) {
-        this.cartItems = cartItems;
     }
 
 

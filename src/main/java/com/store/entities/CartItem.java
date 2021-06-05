@@ -1,8 +1,5 @@
-package com.store.model.entities;// default package
-// Generated Jun 5, 2021, 12:33:40 AM by Hibernate Tools 6.0.0.Alpha2
+package com.store.entities;
 
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
@@ -19,27 +16,29 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="cart_item"
-    ,catalog="ecomm"
+    ,catalog="ecommerce"
 )
 public class CartItem  implements java.io.Serializable {
 
 
      private CartItemId id;
-     private Product product;
      private User user;
+     private Product product;
      private int quantity;
 
     public CartItem() {
     }
 
-    public CartItem(CartItemId id, Product product, User user, int quantity) {
+    public CartItem(CartItemId id, User user, Product product, int quantity) {
        this.id = id;
-       this.product = product;
        this.user = user;
+       this.product = product;
        this.quantity = quantity;
     }
    
-    @EmbeddedId
+     @EmbeddedId
+
+    
     @AttributeOverrides( {
         @AttributeOverride(name="customerId", column=@Column(name="customer_id", nullable=false) ), 
         @AttributeOverride(name="prodId", column=@Column(name="prod_id", nullable=false) ) } )
@@ -50,18 +49,8 @@ public class CartItem  implements java.io.Serializable {
     public void setId(CartItemId id) {
         this.id = id;
     }
-    @JsonIgnore
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="prod_id", nullable=false, insertable=false, updatable=false)
-    public Product getProduct() {
-        return this.product;
-    }
-    
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-    @JsonIgnore
-    @ManyToOne(fetch=FetchType.LAZY)
+
+@ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="customer_id", nullable=false, insertable=false, updatable=false)
     public User getUser() {
         return this.user;
@@ -69,6 +58,16 @@ public class CartItem  implements java.io.Serializable {
     
     public void setUser(User user) {
         this.user = user;
+    }
+
+@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="prod_id", nullable=false, insertable=false, updatable=false)
+    public Product getProduct() {
+        return this.product;
+    }
+    
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     

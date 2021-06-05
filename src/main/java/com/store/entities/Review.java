@@ -1,6 +1,4 @@
-package com.store.model.entities;// default package
-// Generated Jun 5, 2021, 12:33:40 AM by Hibernate Tools 6.0.0.Alpha2
-
+package com.store.entities;
 
 import java.util.Date;
 import javax.persistence.Column;
@@ -18,14 +16,14 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="review"
-    ,catalog="ecomm"
+    ,catalog="ecommerce"
 )
 public class Review  implements java.io.Serializable {
 
 
      private int id;
-     private Product product;
      private User user;
+     private Product product;
      private Date createdAt;
      private int rating;
      private String reviewText;
@@ -34,17 +32,17 @@ public class Review  implements java.io.Serializable {
     }
 
 	
-    public Review(int id, Product product, User user, Date createdAt, int rating) {
+    public Review(int id, User user, Product product, Date createdAt, int rating) {
         this.id = id;
-        this.product = product;
         this.user = user;
+        this.product = product;
         this.createdAt = createdAt;
         this.rating = rating;
     }
-    public Review(int id, Product product, User user, Date createdAt, int rating, String reviewText) {
+    public Review(int id, User user, Product product, Date createdAt, int rating, String reviewText) {
        this.id = id;
-       this.product = product;
        this.user = user;
+       this.product = product;
        this.createdAt = createdAt;
        this.rating = rating;
        this.reviewText = reviewText;
@@ -63,16 +61,6 @@ public class Review  implements java.io.Serializable {
     }
 
 @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="product_id", nullable=false)
-    public Product getProduct() {
-        return this.product;
-    }
-    
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-
-@ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="customer_id", nullable=false)
     public User getUser() {
         return this.user;
@@ -80,6 +68,16 @@ public class Review  implements java.io.Serializable {
     
     public void setUser(User user) {
         this.user = user;
+    }
+
+@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="product_id", nullable=false)
+    public Product getProduct() {
+        return this.product;
+    }
+    
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     @Temporal(TemporalType.TIMESTAMP)

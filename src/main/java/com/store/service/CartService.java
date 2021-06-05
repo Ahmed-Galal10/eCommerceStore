@@ -1,14 +1,28 @@
 package com.store.service;
 
-import com.store.dto.CartItemDto;
-import com.store.dto.CartItemRequest;
-import com.store.model.entities.CartItem;
-import com.store.model.entities.SubCategory;
+
+import com.store.entities.CartItem;
+import com.store.model.cart.CartDto;
+import com.store.model.cart.CartItemDto;
+import com.store.model.cart.CartItemRequest;
+
+import java.util.List;
 
 public interface CartService {
-    CartItemDto addCartItem(int cartId, CartItemRequest cartItemRequest);
 
-    CartItem getByCartItemId(Integer id);
-    SubCategory getSub();
+    CartDto getCartByUserId(Integer userId);
+
+    CartItemDto addCartItem(CartItemRequest cartItemRequest);
+
+    CartItemDto updateCartItem(CartItemRequest cartItemRequest);
+
+    boolean deleteCartItem(CartItemRequest cartItemRequest);
+
+//    CartItemDto addCartItem(int cartId, CartItemRequest cartItemRequest);
+//
+//    CartItem getByCartItemId(Integer id);
+
+
+
 
 }

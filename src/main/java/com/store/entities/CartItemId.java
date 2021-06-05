@@ -1,5 +1,4 @@
-package com.store.model.entities;// default package
-// Generated Jun 5, 2021, 12:33:40 AM by Hibernate Tools 6.0.0.Alpha2
+package com.store.entities;
 
 
 import javax.persistence.Column;
@@ -48,7 +47,7 @@ public class CartItemId  implements java.io.Serializable {
    public boolean equals(Object other) {
          if ( (this == other ) ) return true;
 		 if ( (other == null ) ) return false;
-		 if ( !(other instanceof CartItemId ) ) return false;
+		 if ( !(other instanceof CartItemId) ) return false;
 		 CartItemId castOther = ( CartItemId ) other; 
          
 		 return (this.getCustomerId()==castOther.getCustomerId())

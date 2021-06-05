@@ -1,6 +1,4 @@
-package com.store.model.entities;// default package
-// Generated Jun 5, 2021, 12:33:40 AM by Hibernate Tools 6.0.0.Alpha2
-
+package com.store.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,24 +13,24 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="sold_item"
-    ,catalog="ecomm"
+    ,catalog="ecommerce"
 )
 public class SoldItem  implements java.io.Serializable {
 
 
      private int id;
+     private Order order;
      private OrderItem orderItem;
      private User user;
-     private Order order;
 
     public SoldItem() {
     }
 
-    public SoldItem(int id, OrderItem orderItem, User user, Order order) {
+    public SoldItem(int id, Order order, OrderItem orderItem, User user) {
        this.id = id;
+       this.order = order;
        this.orderItem = orderItem;
        this.user = user;
-       this.order = order;
     }
    
      @Id 
@@ -45,6 +43,16 @@ public class SoldItem  implements java.io.Serializable {
     
     public void setId(int id) {
         this.id = id;
+    }
+
+@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="order_id", nullable=false)
+    public Order getOrder() {
+        return this.order;
+    }
+    
+    public void setOrder(Order order) {
+        this.order = order;
     }
 
 @ManyToOne(fetch=FetchType.LAZY)
@@ -65,16 +73,6 @@ public class SoldItem  implements java.io.Serializable {
     
     public void setUser(User user) {
         this.user = user;
-    }
-
-@ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="order_id", nullable=false)
-    public Order getOrder() {
-        return this.order;
-    }
-    
-    public void setOrder(Order order) {
-        this.order = order;
     }
 
 

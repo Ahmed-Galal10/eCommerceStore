@@ -1,5 +1,4 @@
-package com.store.model.entities;// default package
-// Generated Jun 5, 2021, 12:33:40 AM by Hibernate Tools 6.0.0.Alpha2
+package com.store.entities;
 
 
 import javax.persistence.Column;
@@ -15,7 +14,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="payment"
-    ,catalog="ecomm"
+    ,catalog="ecommerce"
 )
 public class Payment  implements java.io.Serializable {
 

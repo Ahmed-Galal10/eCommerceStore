@@ -1,6 +1,4 @@
-package com.store.model.entities;// default package
-// Generated Jun 5, 2021, 12:33:40 AM by Hibernate Tools 6.0.0.Alpha2
-
+package com.store.entities;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -21,7 +19,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="order"
-    ,catalog="ecomm"
+    ,catalog="ecommerce"
 )
 public class Order  implements java.io.Serializable {
 

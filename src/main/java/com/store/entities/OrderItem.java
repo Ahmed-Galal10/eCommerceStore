@@ -1,5 +1,4 @@
-package com.store.model.entities;// default package
-// Generated Jun 5, 2021, 12:33:40 AM by Hibernate Tools 6.0.0.Alpha2
+package com.store.entities;
 
 
 import java.util.HashSet;
@@ -18,14 +17,14 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="order_item"
-    ,catalog="ecomm"
+    ,catalog="ecommerce"
 )
 public class OrderItem  implements java.io.Serializable {
 
 
      private int id;
-     private Product product;
      private Order order;
+     private Product product;
      private int prodId;
      private int quantity;
      private double unitPrice;
@@ -35,18 +34,18 @@ public class OrderItem  implements java.io.Serializable {
     }
 
 	
-    public OrderItem(int id, Product product, Order order, int prodId, int quantity, double unitPrice) {
+    public OrderItem(int id, Order order, Product product, int prodId, int quantity, double unitPrice) {
         this.id = id;
-        this.product = product;
         this.order = order;
+        this.product = product;
         this.prodId = prodId;
         this.quantity = quantity;
         this.unitPrice = unitPrice;
     }
-    public OrderItem(int id, Product product, Order order, int prodId, int quantity, double unitPrice, Set<SoldItem> soldItems) {
+    public OrderItem(int id, Order order, Product product, int prodId, int quantity, double unitPrice, Set<SoldItem> soldItems) {
        this.id = id;
-       this.product = product;
        this.order = order;
+       this.product = product;
        this.prodId = prodId;
        this.quantity = quantity;
        this.unitPrice = unitPrice;
@@ -66,16 +65,6 @@ public class OrderItem  implements java.io.Serializable {
     }
 
 @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="product_id", nullable=false)
-    public Product getProduct() {
-        return this.product;
-    }
-    
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-
-@ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="order_id", nullable=false)
     public Order getOrder() {
         return this.order;
@@ -83,6 +72,16 @@ public class OrderItem  implements java.io.Serializable {
     
     public void setOrder(Order order) {
         this.order = order;
+    }
+
+@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="product_id", nullable=false)
+    public Product getProduct() {
+        return this.product;
+    }
+    
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     

@@ -1,5 +1,4 @@
-package com.store.model.entities;// default package
-// Generated Jun 5, 2021, 12:33:40 AM by Hibernate Tools 6.0.0.Alpha2
+package com.store.entities;
 
 
 import java.util.HashSet;
@@ -19,7 +18,7 @@ import javax.persistence.UniqueConstraint;
  */
 @Entity
 @Table(name="category"
-    ,catalog="ecomm"
+    ,catalog="ecommerce"
     , uniqueConstraints = @UniqueConstraint(columnNames="name") 
 )
 public class Category  implements java.io.Serializable {
@@ -27,7 +26,7 @@ public class Category  implements java.io.Serializable {
 
      private Integer id;
      private String name;
-     private Set<SubCategory> subCategories = new HashSet<SubCategory>(0);
+     private Set<Subcategory> subcategories = new HashSet<Subcategory>(0);
 
     public Category() {
     }
@@ -36,9 +35,9 @@ public class Category  implements java.io.Serializable {
     public Category(String name) {
         this.name = name;
     }
-    public Category(String name, Set<SubCategory> subCategories) {
+    public Category(String name, Set<Subcategory> subcategories) {
        this.name = name;
-       this.subCategories = subCategories;
+       this.subcategories = subcategories;
     }
    
      @Id @GeneratedValue(strategy=IDENTITY)
@@ -64,12 +63,12 @@ public class Category  implements java.io.Serializable {
     }
 
 @OneToMany(fetch=FetchType.LAZY, mappedBy="category")
-    public Set<SubCategory> getSubCategories() {
-        return this.subCategories;
+    public Set<Subcategory> getSubcategories() {
+        return this.subcategories;
     }
     
-    public void setSubCategories(Set<SubCategory> subCategories) {
-        this.subCategories = subCategories;
+    public void setSubcategories(Set<Subcategory> subcategories) {
+        this.subcategories = subcategories;
     }
 
 
