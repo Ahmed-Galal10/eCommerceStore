@@ -5,8 +5,6 @@ import com.store.dtos.cart.CartDto;
 import com.store.dtos.cart.CartItemDto;
 import com.store.dtos.cart.CartItemRequest;
 import com.store.dtos.customer.*;
-import com.store.model.Customer;
-import com.store.model.User;
 import com.store.service.CartService;
 import com.store.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -108,6 +106,19 @@ public class CustomerController {
         }
     }
 
+    @GetMapping("/{customerId}/reviews")
+    public ResponseEntity<List<CustomerReviewDto>> getCustomerReviews(@PathVariable("customerId") int customerId) {
+        try {
+            List<CustomerReviewDto> customerReviewDtoList = customerService.getCustomerReviews(customerId);
+
+            return new ResponseEntity<>(customerReviewDtoList, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
 
     //=================================== Cart Api ==================================
 
@@ -143,7 +154,5 @@ public class CustomerController {
         boolean isDeleted =  cartService.deleteCartItem(cartItemRequest);
         return ResponseEntity.ok(true);
     }
-
-
 
 }

@@ -2,8 +2,10 @@ package com.store.config;
 
 import com.store.dtos.customer.CustomerDto;
 import com.store.dtos.customer.CustomerOrderDto;
+import com.store.dtos.customer.CustomerReviewDto;
 import com.store.model.Customer;
 import com.store.model.Order;
+import com.store.model.Review;
 import com.store.util.mappers.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -37,6 +39,12 @@ public class AppConfig {
     public EntityDtoMapper<Order, CustomerOrderDto> getCustomerOrderMapper(){
         return new CustomerOrderMapper();
     }
+
+    @Bean
+    public EntityDtoMapper<Review, CustomerReviewDto> getCustomerReviewMapper(){
+        return new CustomerReviewMapper();
+    }
+
     // ============================= Mappers ================================
 
 
