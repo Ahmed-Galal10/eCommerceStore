@@ -19,7 +19,6 @@ public class CustomerDto implements Serializable {
         private Boolean isEmailVerified;
         private Boolean isDeleted;
 
-
         public CustomerDto() {
         }
 

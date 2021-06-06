@@ -1,19 +1,15 @@
 package com.store.config;
 
-import com.store.service.CustomerService;
-import com.store.service.impl.CustomerServiceImpl;
+import com.store.dtos.customer.CustomerDto;
+import com.store.dtos.customer.CustomerOrderDto;
+import com.store.model.Customer;
+import com.store.model.Order;
 import com.store.util.mappers.*;
-import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class AppConfig {
-
-    @Bean
-    public ModelMapper modelMapper() {
-        return new ModelMapper();
-    }
 
 
     // ============================= Mappers ================================
@@ -33,10 +29,14 @@ public class AppConfig {
     }
 
     @Bean
-    public CustomerMapper getCustomerMapper(){
+    public EntityDtoMapper<Customer, CustomerDto> getCustomerMapper(){
         return new CustomerMapper();
     }
 
+    @Bean
+    public EntityDtoMapper<Order, CustomerOrderDto> getCustomerOrderMapper(){
+        return new CustomerOrderMapper();
+    }
     // ============================= Mappers ================================
 
 

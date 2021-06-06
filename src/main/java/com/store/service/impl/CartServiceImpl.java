@@ -14,7 +14,6 @@ import com.store.repository.UserRepo;
 import com.store.service.CartService;
 import com.store.util.mappers.CartItemMapper;
 import com.store.util.mappers.EntityDtoMapper;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,12 +26,10 @@ public class CartServiceImpl implements CartService {
     private CartItemRepo cartItemRepo;
     private UserRepo userRepo;
     private ProductRepo productRepo;
-    private ModelMapper modelMapper;
 
     @Autowired
     public void setup(CartItemRepo cartItemRepo, UserRepo userRepo,
-                      ProductRepo productRepo, ModelMapper modelMapper) {
-      this.modelMapper = modelMapper;
+                      ProductRepo productRepo) {
       this.cartItemRepo = cartItemRepo;
       this.productRepo = productRepo;
       this.userRepo = userRepo;

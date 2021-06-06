@@ -1,7 +1,6 @@
 package com.store.controller;
 
 
-
 import com.store.dtos.cart.CartDto;
 import com.store.dtos.cart.CartItemDto;
 import com.store.dtos.cart.CartItemRequest;
@@ -20,7 +19,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/customers")
 public class CustomerController {
-
 
     private CustomerService customerService;
     private CartService cartService;
@@ -51,11 +49,12 @@ public class CustomerController {
         return "eshta ".repeat(5);
     }
 
-    @PostMapping("/")
-    public ResponseEntity<String> addCustomer(@RequestBody Customer customer) {
+    @PostMapping()
+    public ResponseEntity<String> addCustomer(@RequestBody CustomerDto customerDto) {
         try {
-            customerService.addCustomer(customer);
+            customerService.addCustomer(customerDto);
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.badRequest()
                     .body("Couldn't add customer");
         }
@@ -68,6 +67,7 @@ public class CustomerController {
             CustomerDto customerDto = customerService.getCustomerById(customerId);
             return new ResponseEntity<>(customerDto, HttpStatus.OK);
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<CustomerDto>(HttpStatus.BAD_REQUEST);
         }
     }
@@ -78,18 +78,20 @@ public class CustomerController {
             customerService.deleteCustomer(customerId);
             return new ResponseEntity<String>(HttpStatus.OK);
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
         }
     }
 
-
-    @PutMapping("/{customerId}")
-    public ResponseEntity<String> updateCustomer(@PathVariable("customerId") int customerId) {
+    @PutMapping()
+    public ResponseEntity<String> updateCustomer(@RequestBody CustomerDto customerDto) {
         try {
-            CustomerDto customerDto = customerService.getCustomerById(customerId);
+
             customerService.updateCustomer(customerDto);
+
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
@@ -101,12 +103,13 @@ public class CustomerController {
             List<CustomerOrderDto> customerOrderDtoList = customerService.getCustomerOrders(customerId);
             return new ResponseEntity<>(customerOrderDtoList, HttpStatus.OK);
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
 
-    //===================================================================================
+    //=================================== Cart Api ==================================
 
 
     //TODO ====> Ask About UserId
