@@ -15,11 +15,4 @@ public interface CartService {
 
     boolean deleteCartItem(CartItemRequest cartItemRequest);
 
-//    CartItemDto addCartItem(int cartId, CartItemRequest cartItemRequest);
-//
-//    CartItem getByCartItemId(Integer id);
-
-
-
-
 }
