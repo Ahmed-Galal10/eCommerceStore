@@ -16,7 +16,7 @@ public interface CustomerService {
 
     CustomerDto getCustomerById(Integer customerId);
 
-    CustomerDto addCustomer(Customer myUser);
+    CustomerDto addCustomer(Customer customer);
 
     void deleteCustomer(Integer customerId);
 

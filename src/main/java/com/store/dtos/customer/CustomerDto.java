@@ -1,13 +1,11 @@
 package com.store.dtos.customer;
 
-import com.store.model.Order;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
-public class CustomerDto<CartItem> implements Serializable {
+
+public class CustomerDto implements Serializable {
 
         private Integer id;
         private String name;
