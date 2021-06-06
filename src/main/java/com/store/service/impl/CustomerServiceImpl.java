@@ -2,6 +2,7 @@ package com.store.service.impl;
 
 
 import com.store.dtos.customer.*;
+import com.store.model.Customer;
 import com.store.model.Order;
 import com.store.model.User;
 import com.store.repository.CustomerRepo;
@@ -30,7 +31,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public List<CustomerDto> getAllCustomers() {
 
-        List<User> userList = customerRepo.findAll();
+        List<Customer> userList = customerRepo.findAll();
         System.out.println(userList);
         System.out.println("before");
         List<CustomerDto> customerDtoList
@@ -45,7 +46,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public CustomerDto getCustomerById(Integer customerId) {
 
-        Optional<User> user = customerRepo.findById(customerId);
+        Optional<Customer> user = customerRepo.findById(customerId);
         System.out.println(user.get());
         CustomerDto customerDto = modelMapper.map(user, CustomerDto.class);
         System.out.println(customerDto);
@@ -53,9 +54,9 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public CustomerDto addCustomer(User myUser) {
+    public CustomerDto addCustomer(Customer myUser) {
 
-        User user = customerRepo.save(myUser);
+        Customer user = customerRepo.save(myUser);
         CustomerDto customerDto = modelMapper.map(user, CustomerDto.class);
 
         return customerDto;
@@ -71,7 +72,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public void updateCustomer(CustomerDto customerDto) {
 
-        User user = modelMapper.map(customerDto, User.class);
+        Customer user = modelMapper.map(customerDto, Customer.class);
 
         customerRepo.save(user);
     }
@@ -79,7 +80,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public List<CustomerOrderDto> getCustomerOrders(Integer customerId) {
 
-        Optional<User> customer = customerRepo.findById(customerId);
+        Optional<Customer> customer = customerRepo.findById(customerId);
 
         List<Order> orderList = customer.get().getOrders().stream().collect(Collectors.toList());
 

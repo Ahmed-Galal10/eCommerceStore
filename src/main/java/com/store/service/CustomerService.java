@@ -4,6 +4,7 @@ package com.store.service;
 
 import com.store.dtos.customer.CustomerDto;
 import com.store.dtos.customer.CustomerOrderDto;
+import com.store.model.Customer;
 import com.store.model.User;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public interface CustomerService {
 
     CustomerDto getCustomerById(Integer customerId);
 
-    CustomerDto addCustomer(User myUser);
+    CustomerDto addCustomer(Customer myUser);
 
     void deleteCustomer(Integer customerId);
 

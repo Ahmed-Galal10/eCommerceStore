@@ -6,6 +6,7 @@ import com.store.dtos.cart.CartDto;
 import com.store.dtos.cart.CartItemDto;
 import com.store.dtos.cart.CartItemRequest;
 import com.store.dtos.customer.*;
+import com.store.model.Customer;
 import com.store.model.User;
 import com.store.service.CartService;
 import com.store.service.CustomerService;
@@ -51,9 +52,9 @@ public class CustomerController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<String> addCustomer(@RequestBody User user) {
+    public ResponseEntity<String> addCustomer(@RequestBody Customer customer) {
         try {
-            customerService.addCustomer(user);
+            customerService.addCustomer(customer);
         } catch (Exception e) {
             return ResponseEntity.badRequest()
                     .body("Couldn't add customer");
