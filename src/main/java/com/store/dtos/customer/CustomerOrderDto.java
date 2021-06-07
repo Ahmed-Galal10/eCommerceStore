@@ -1,16 +1,14 @@
 package com.store.dtos.customer;
 
 import com.store.model.OrderItem;
-import com.store.model.Payment;
 
 
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-public class CustomerOrderDto<User> {
+public class CustomerOrderDto {
     private int id;
-    private User user;
     private Date date;
     private Set<OrderItem> orderItems = new HashSet<>(0);
 
@@ -18,8 +16,7 @@ public class CustomerOrderDto<User> {
 
     }
 
-    public CustomerOrderDto(User user, Date date, Set<OrderItem> orderItems) {
-        this.user = user;
+    public CustomerOrderDto(Date date, Set<OrderItem> orderItems) {
         this.date = date;
         this.orderItems = orderItems;
     }
@@ -32,14 +29,6 @@ public class CustomerOrderDto<User> {
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     public Date getDate() {
         return date;
     }
@@ -47,8 +36,6 @@ public class CustomerOrderDto<User> {
     public void setDate(Date date) {
         this.date = date;
     }
-
-
 
     public Set<OrderItem> getOrderItems() {
         return orderItems;
@@ -62,7 +49,6 @@ public class CustomerOrderDto<User> {
     public String toString() {
         return "CustomerOrderDto{" +
                 "id=" + id +
-                ", user=" + user +
                 ", date=" + date +
                 '}';
     }

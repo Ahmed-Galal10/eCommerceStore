@@ -1,8 +1,7 @@
 package com.store.util;
 
-import com.store.dto.product.ProdDetailDto;
+import com.store.dtos.product.ProdDetailDto;
 import com.store.model.*;
-import com.store.util.mappers.EntityDtoMapper;
 
 public class ProductMapper  {
 

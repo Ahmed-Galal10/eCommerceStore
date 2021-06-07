@@ -1,13 +1,10 @@
 package com.store.controller;
 
 
-
 import com.store.dtos.cart.CartDto;
 import com.store.dtos.cart.CartItemDto;
 import com.store.dtos.cart.CartItemRequest;
 import com.store.dtos.customer.*;
-import com.store.model.Customer;
-import com.store.model.User;
 import com.store.service.CartService;
 import com.store.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +17,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/customers")
 public class CustomerController {
-
 
     private CustomerService customerService;
     private CartService cartService;
@@ -51,11 +47,12 @@ public class CustomerController {
         return "eshta ".repeat(5);
     }
 
-    @PostMapping("/")
-    public ResponseEntity<String> addCustomer(@RequestBody Customer customer) {
+    @PostMapping()
+    public ResponseEntity<String> addCustomer(@RequestBody CustomerDto customerDto) {
         try {
-            customerService.addCustomer(customer);
+            customerService.addCustomer(customerDto);
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.badRequest()
                     .body("Couldn't add customer");
         }
@@ -68,6 +65,7 @@ public class CustomerController {
             CustomerDto customerDto = customerService.getCustomerById(customerId);
             return new ResponseEntity<>(customerDto, HttpStatus.OK);
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<CustomerDto>(HttpStatus.BAD_REQUEST);
         }
     }
@@ -78,18 +76,20 @@ public class CustomerController {
             customerService.deleteCustomer(customerId);
             return new ResponseEntity<String>(HttpStatus.OK);
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
         }
     }
 
-
-    @PutMapping("/{customerId}")
-    public ResponseEntity<String> updateCustomer(@PathVariable("customerId") int customerId) {
+    @PutMapping()
+    public ResponseEntity<String> updateCustomer(@RequestBody CustomerDto customerDto) {
         try {
-            CustomerDto customerDto = customerService.getCustomerById(customerId);
+
             customerService.updateCustomer(customerDto);
+
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
@@ -101,12 +101,26 @@ public class CustomerController {
             List<CustomerOrderDto> customerOrderDtoList = customerService.getCustomerOrders(customerId);
             return new ResponseEntity<>(customerOrderDtoList, HttpStatus.OK);
         } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/{customerId}/reviews")
+    public ResponseEntity<List<CustomerReviewDto>> getCustomerReviews(@PathVariable("customerId") int customerId) {
+        try {
+            List<CustomerReviewDto> customerReviewDtoList = customerService.getCustomerReviews(customerId);
+
+            return new ResponseEntity<>(customerReviewDtoList, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
 
-    //===================================================================================
+    //=================================== Cart Api ==================================
 
 
     //TODO ====> Ask About UserId
@@ -140,7 +154,5 @@ public class CustomerController {
         boolean isDeleted =  cartService.deleteCartItem(cartItemRequest);
         return ResponseEntity.ok(true);
     }
-
-
 
 }

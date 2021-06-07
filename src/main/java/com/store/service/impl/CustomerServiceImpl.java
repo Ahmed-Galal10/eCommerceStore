@@ -4,11 +4,10 @@ package com.store.service.impl;
 import com.store.dtos.customer.*;
 import com.store.model.Customer;
 import com.store.model.Order;
-import com.store.model.User;
+import com.store.model.Review;
 import com.store.repository.CustomerRepo;
 import com.store.service.CustomerService;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
+import com.store.util.mappers.EntityDtoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +22,13 @@ public class CustomerServiceImpl implements CustomerService {
     private CustomerRepo customerRepo;
 
     @Autowired
-    private ModelMapper modelMapper;
+    private EntityDtoMapper<Customer, CustomerDto> customerMapper;
+
+    @Autowired
+    private EntityDtoMapper<Order, CustomerOrderDto> customerOrderMapper;
+
+    @Autowired
+    private EntityDtoMapper<Review, CustomerReviewDto> customerReviewMapper;
 
     public CustomerServiceImpl() {
     }
@@ -34,33 +39,34 @@ public class CustomerServiceImpl implements CustomerService {
         List<Customer> userList = customerRepo.findAll();
         System.out.println(userList);
         System.out.println("before");
-        List<CustomerDto> customerDtoList
-                = modelMapper.map(userList, new TypeToken<List<CustomerDto>>() {
-        }.getType());
+
+        List<CustomerDto> customerDtoList = customerMapper.entityListToDtoList(userList);
+
         System.out.println("after");
         System.out.println(customerDtoList);
+
         return customerDtoList;
     }
-
 
     @Override
     public CustomerDto getCustomerById(Integer customerId) {
 
-        Optional<Customer> user = customerRepo.findById(customerId);
-        System.out.println(user.get());
-        CustomerDto customerDto = modelMapper.map(user, CustomerDto.class);
+        Optional<Customer> customer = customerRepo.findById(customerId);
+        System.out.println(customer.get());
+
+        CustomerDto customerDto = customerMapper.toDto(customer.get());
         System.out.println(customerDto);
+
         return customerDto;
     }
 
     @Override
-    public CustomerDto addCustomer(Customer myUser) {
+    public CustomerDto addCustomer(CustomerDto customerDto) {
 
-        Customer user = customerRepo.save(myUser);
-        CustomerDto customerDto = modelMapper.map(user, CustomerDto.class);
+        Customer customer = customerMapper.toEntity(customerDto);
+        Customer savedCustomer = customerRepo.save(customer);
 
-        return customerDto;
-
+        return customerMapper.toDto(savedCustomer);
     }
 
     @Override
@@ -68,13 +74,11 @@ public class CustomerServiceImpl implements CustomerService {
         customerRepo.deleteById(customerId);
     }
 
-
     @Override
     public void updateCustomer(CustomerDto customerDto) {
 
-        Customer user = modelMapper.map(customerDto, Customer.class);
-
-        customerRepo.save(user);
+        Customer customer = customerMapper.toEntity(customerDto);
+        customerRepo.save(customer);
     }
 
     @Override
@@ -84,13 +88,21 @@ public class CustomerServiceImpl implements CustomerService {
 
         List<Order> orderList = customer.get().getOrders().stream().collect(Collectors.toList());
 
-        List<CustomerOrderDto> customerOrderDtoList
-                = modelMapper.map(orderList, new TypeToken<List<CustomerOrderDto>>() {
-        }.getType());
+        List<CustomerOrderDto> customerOrderDtoList = customerOrderMapper.entityListToDtoList(orderList);
 
         return customerOrderDtoList;
-
     }
 
+    @Override
+    public List<CustomerReviewDto> getCustomerReviews(Integer customerId) {
+
+        Optional<Customer> customer = customerRepo.findById(customerId);
+
+        List<Review> reviewList = customer.get().getReviews().stream().collect(Collectors.toList());
+
+        List<CustomerReviewDto> customerReviewDtoList = customerReviewMapper.entityListToDtoList(reviewList);
+
+        return customerReviewDtoList;
+    }
 
 }

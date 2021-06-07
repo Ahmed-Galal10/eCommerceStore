@@ -1,6 +1,6 @@
 package com.store.controller;
 
-import com.store.dto.product.ProdDetailDto;
+import com.store.dtos.product.ProdDetailDto;
 import com.store.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

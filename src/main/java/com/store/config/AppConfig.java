@@ -1,7 +1,12 @@
 package com.store.config;
 
-
-import org.modelmapper.ModelMapper;
+import com.store.dtos.customer.CustomerDto;
+import com.store.dtos.customer.CustomerOrderDto;
+import com.store.dtos.customer.CustomerReviewDto;
+import com.store.model.Customer;
+import com.store.model.Order;
+import com.store.model.Review;
+import com.store.util.mappers.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.PathSelectors;
@@ -16,10 +21,10 @@ import java.util.Collections;
 @Configuration
 public class AppConfig {
 
-    @Bean
-    public ModelMapper modelMapper() {
-        return new ModelMapper();
-    }
+
+
+
+    // ============================= Mappers ================================
 
 
     @Bean

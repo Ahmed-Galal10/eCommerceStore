@@ -9,11 +9,21 @@ import java.util.Set;
 public class Customer extends  User {
 
     private double balance;
+    private Wishlist wishlist ;
 
     private Set<Review> reviews = new HashSet<Review>(0);
     private Set<CartItem> cartItems = new HashSet<CartItem>(0);
     private Set<Order> orders = new HashSet<Order>(0);
 
+
+    @OneToOne(mappedBy = "customer")
+    public Wishlist getWishlist() {
+        return wishlist;
+    }
+
+    public void setWishlist(Wishlist wishlist) {
+        this.wishlist = wishlist;
+    }
 
     @OneToMany(fetch= FetchType.LAZY, mappedBy="user")
     public Set<Review> getReviews() {

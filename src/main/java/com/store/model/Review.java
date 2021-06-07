@@ -1,5 +1,6 @@
 package com.store.model;
 
+
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;

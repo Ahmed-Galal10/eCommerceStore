@@ -1,6 +1,6 @@
 package com.store.service.impl;
 
-import com.store.dto.product.ProdDetailDto;
+import com.store.dtos.product.ProdDetailDto;
 import com.store.model.Product;
 import com.store.repo.ProductImagesRepository;
 import com.store.repo.ProductRepository;
@@ -10,8 +10,6 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 
 import com.store.dtos.seller.ProductDto;
-import com.store.repository.ProductRepo;
-import com.store.service.ProductService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
