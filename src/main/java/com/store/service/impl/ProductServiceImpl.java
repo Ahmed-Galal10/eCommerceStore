@@ -1,10 +1,11 @@
 package com.store.service.impl;
 
-import com.store.dto.ProdDetailDto;
+import com.store.dto.product.ProdDetailDto;
 import com.store.model.Product;
 import com.store.repo.ProductImagesRepository;
 import com.store.repo.ProductRepository;
 import com.store.service.ProductService;
+import com.store.util.ProductMapper;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,18 +30,19 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProdDetailDto> getAllProducts() {
         List<Product> products = productRepo.findAll();
-        return modelMapper.map(products, new TypeToken<List<ProdDetailDto>>() {}.getType());
+        return modelMapper.map(products, new TypeToken<List<ProdDetailDto>>() {
+        }.getType());
     }
 
     @Override
     public ProdDetailDto getProductById(Integer id) {
         Product product = productRepo.findById(id).orElseThrow(() -> new RuntimeException("Not found"));
-        return modelMapper.map(product, ProdDetailDto.class);
+        return ProductMapper.ProductEntityToProductDto(product);
     }
 
     @Override
     public ProdDetailDto addOrUpdateProduct(ProdDetailDto prodDetailDto) {
-        Product product = modelMapper.map(prodDetailDto, Product.class);
+        Product product = ProductMapper.productDtoToProductEntity(prodDetailDto);
         product = productRepo.save(product);
         return modelMapper.map(product, ProdDetailDto.class);
     }

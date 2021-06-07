@@ -1,11 +1,10 @@
-package com.store.model;// default package
-// Generated Jun 5, 2021, 12:33:40 AM by Hibernate Tools 6.0.0.Alpha2
+package com.store.model;
 
 
-import javax.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.*;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -17,8 +16,9 @@ import static javax.persistence.GenerationType.IDENTITY;
     ,catalog="ecommerce"
     , uniqueConstraints = {@UniqueConstraint(columnNames="email"), @UniqueConstraint(columnNames="name")} 
 )
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "role", discriminatorType = DiscriminatorType.STRING)
 public class User  implements java.io.Serializable {
-
 
      private Integer id;
      private String name;
@@ -26,54 +26,20 @@ public class User  implements java.io.Serializable {
      private String password;
      private String address;
      private Date regDate;
-     private double balance;
      private String image;
      private String phone;
      private String role;
      private Boolean isEmailVerified;
      private Boolean isDeleted;
-     private Set<Product> products = new HashSet<Product>(0);
-     private Set<SoldItem> soldItems = new HashSet<SoldItem>(0);
-     private Set<Order> orders = new HashSet<Order>(0);
-     private Set<Review> reviews = new HashSet<Review>(0);
-     private Set<CartItem> cartItems = new HashSet<CartItem>(0);
+
+
 
     public User() {
 
-
     }
 
-	
-    public User(String name, String email, String password, String address, Date regDate, double balance, String image, String phone, String role) {
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.address = address;
-        this.regDate = regDate;
-        this.balance = balance;
-        this.image = image;
-        this.phone = phone;
-        this.role = role;
-    }
-    public User(String name, String email, String password, String address, Date regDate, double balance, String image, String phone, String role, Boolean isEmailVerified, Boolean isDeleted, Set<Product> products, Set<SoldItem> soldItems, Set<Order> orders, Set<Review> reviews, Set<CartItem> cartItems) {
-       this.name = name;
-       this.email = email;
-       this.password = password;
-       this.address = address;
-       this.regDate = regDate;
-       this.balance = balance;
-       this.image = image;
-       this.phone = phone;
-       this.role = role;
-       this.isEmailVerified = isEmailVerified;
-       this.isDeleted = isDeleted;
-       this.products = products;
-       this.soldItems = soldItems;
-       this.orders = orders;
-       this.reviews = reviews;
-       this.cartItems = cartItems;
-    }
-   
+
+
      @Id @GeneratedValue(strategy=IDENTITY)
 
     
@@ -136,17 +102,8 @@ public class User  implements java.io.Serializable {
         this.regDate = regDate;
     }
 
-    
-    @Column(name="balance", nullable=false, precision=22, scale=0)
-    public double getBalance() {
-        return this.balance;
-    }
-    
-    public void setBalance(double balance) {
-        this.balance = balance;
-    }
 
-    
+
     @Column(name="image", nullable=false, length=250)
     public String getImage() {
         return this.image;
@@ -166,18 +123,18 @@ public class User  implements java.io.Serializable {
         this.phone = phone;
     }
 
-    
-    @Column(name="role", nullable=false, length=45)
+
+    @Column(name="role", nullable=false, length=45, insertable = false, updatable = false)
     public String getRole() {
         return this.role;
     }
-    
+
     public void setRole(String role) {
         this.role = role;
     }
 
-    
-    @Column(name="isEmailVerified")
+
+    @Column(name="is_email_verified")
     public Boolean getIsEmailVerified() {
         return this.isEmailVerified;
     }
@@ -186,8 +143,8 @@ public class User  implements java.io.Serializable {
         this.isEmailVerified = isEmailVerified;
     }
 
-    
-    @Column(name="isDeleted")
+
+    @Column(name="is_deleted")
     public Boolean getIsDeleted() {
         return this.isDeleted;
     }
@@ -195,53 +152,6 @@ public class User  implements java.io.Serializable {
     public void setIsDeleted(Boolean isDeleted) {
         this.isDeleted = isDeleted;
     }
-
-@OneToMany(fetch=FetchType.LAZY, mappedBy="user")
-    public Set<Product> getProducts() {
-        return this.products;
-    }
-    
-    public void setProducts(Set<Product> products) {
-        this.products = products;
-    }
-
-@OneToMany(fetch=FetchType.LAZY, mappedBy="user")
-    public Set<SoldItem> getSoldItems() {
-        return this.soldItems;
-    }
-    
-    public void setSoldItems(Set<SoldItem> soldItems) {
-        this.soldItems = soldItems;
-    }
-
-@OneToMany(fetch=FetchType.LAZY, mappedBy="user")
-    public Set<Order> getOrders() {
-        return this.orders;
-    }
-    
-    public void setOrders(Set<Order> orders) {
-        this.orders = orders;
-    }
-
-@OneToMany(fetch=FetchType.LAZY, mappedBy="user")
-    public Set<Review> getReviews() {
-        return this.reviews;
-    }
-    
-    public void setReviews(Set<Review> reviews) {
-        this.reviews = reviews;
-    }
-
-@OneToMany(fetch=FetchType.LAZY, mappedBy="user")
-    public Set<CartItem> getCartItems() {
-        return this.cartItems;
-    }
-    
-    public void setCartItems(Set<CartItem> cartItems) {
-        this.cartItems = cartItems;
-    }
-
-
 
 
 }

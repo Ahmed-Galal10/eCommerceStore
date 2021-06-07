@@ -1,7 +1,6 @@
 package com.store.controller;
 
-import com.store.dto.ProdDetailDto;
-import com.store.model.Product;
+import com.store.dto.product.ProdDetailDto;
 import com.store.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,9 +30,12 @@ public class ProductController {
 
     @RequestMapping(method = RequestMethod.GET, path = "/{id}")
     public ResponseEntity<ProdDetailDto> findProductById(@PathVariable Integer id) {
-        ProdDetailDto prodDetailDto = productService.getProductById(id);
-
-        return ResponseEntity.ok(prodDetailDto);
+        try {
+            ProdDetailDto prodDetailDto = productService.getProductById(id);
+            return ResponseEntity.ok(prodDetailDto);
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @RequestMapping(method = RequestMethod.POST)

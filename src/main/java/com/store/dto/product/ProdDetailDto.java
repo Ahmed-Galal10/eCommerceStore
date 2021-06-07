@@ -1,4 +1,4 @@
-package com.store.dto;
+package com.store.dto.product;
 
 import java.util.List;
 
@@ -7,14 +7,13 @@ public class ProdDetailDto {
     private Integer id;
     private String productName;
     private String productDescription;
-    private Double price;
+    private int userId;
+    private int subcategoryId;
     private Integer productQuantity;
     private String productImg;
     private double productPrice;
     private List<String> prodImages;
-
     private boolean isOnSale;
-    private int subcategoryId;
 
     public Integer getId() {
         return id;
@@ -38,14 +37,6 @@ public class ProdDetailDto {
 
     public void setProductDescription(String productDescription) {
         this.productDescription = productDescription;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
     }
 
     public Integer getProductQuantity() {
@@ -102,7 +93,6 @@ public class ProdDetailDto {
                 "id=" + id +
                 ", productName='" + productName + '\'' +
                 ", productDescription='" + productDescription + '\'' +
-                ", price=" + price +
                 ", productQuantity=" + productQuantity +
                 ", productImg='" + productImg + '\'' +
                 ", productPrice=" + productPrice +
@@ -110,5 +100,13 @@ public class ProdDetailDto {
                 ", isOnSale=" + isOnSale +
                 ", subcategoryId=" + subcategoryId +
                 '}';
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 }

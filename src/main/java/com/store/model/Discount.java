@@ -1,5 +1,4 @@
-package com.store.model;// default package
-// Generated Jun 5, 2021, 12:33:40 AM by Hibernate Tools 6.0.0.Alpha2
+package com.store.model;
 
 
 import javax.persistence.Column;
