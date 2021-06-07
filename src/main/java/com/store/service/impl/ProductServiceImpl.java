@@ -8,6 +8,11 @@ import com.store.service.ProductService;
 import com.store.util.ProductMapper;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
+
+import com.store.dtos.seller.ProductDto;
+import com.store.repository.ProductRepo;
+import com.store.service.ProductService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,9 +21,12 @@ import java.util.List;
 @Service
 public class ProductServiceImpl implements ProductService {
 
+
     private ProductRepository productRepo;
     private ProductImagesRepository productImagRepo;
     private ModelMapper modelMapper;
+
+    private ProductMapper mapper;
 
     @Autowired
     public ProductServiceImpl(ProductRepository productRepo, ProductImagesRepository productImagRepo, ModelMapper modelMapper) {
@@ -50,5 +58,15 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void deleteProduct(Integer id) {
         productRepo.deleteById(id);
+
     }
+
+    @Override
+    public List<ProductDto> getProductsByUserId(int sellerId) {
+
+//        return mapper.entityListToDtoList(productRepo.findByUser_Id(sellerId));
+        return  null;
+    }
+
+
 }

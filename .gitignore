@@ -3,7 +3,6 @@
 #context.xml
 src/main/webapp/META-INF/context.xml
 #res
-/src/main/resources/*
 #target
 target/*
 target
@@ -14,6 +13,7 @@ target
 mvnw
 .mvn
 .mvn/*
+*.properties
 
 ### IntelliJ IDEA ###
 .idea

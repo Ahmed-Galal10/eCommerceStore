@@ -2,8 +2,9 @@ package com.store.util;
 
 import com.store.dto.product.ProdDetailDto;
 import com.store.model.*;
+import com.store.util.mappers.EntityDtoMapper;
 
-public class ProductMapper {
+public class ProductMapper  {
 
     public static Product productDtoToProductEntity(ProdDetailDto prodDetailDto) {
         Product product = new Product();
