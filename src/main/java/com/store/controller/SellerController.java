@@ -1,51 +1,61 @@
 package com.store.controller;
 
-import com.store.model.Seller;
+import com.store.dtos.seller.ProductDto;
+import com.store.dtos.seller.SellerDto;
+import com.store.dtos.seller.SellerRequest;
+import com.store.service.ProductService;
 import com.store.service.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/seller")
 public class SellerController {
 
 
-    private  SellerService sellerService;
+    private final SellerService sellerService;
+    private final ProductService productService;
 
     @Autowired
-    public SellerController(SellerService sellerService){
+    public SellerController(SellerService sellerService, ProductService productService) {
         this.sellerService = sellerService;
+        this.productService = productService;
     }
 
     @GetMapping
-    public void getAllSellers(){
-
+    public ResponseEntity<List<SellerDto>> getAllSellers() {
+        return ResponseEntity.ok(sellerService.getAll());
     }
 
     @PostMapping
-    public void addSeller(){
-
+    public ResponseEntity<SellerDto> addSeller(@RequestBody SellerRequest sellerRequest) {
+        return ResponseEntity.ok(sellerService.addSeller(sellerRequest));
     }
 
     @GetMapping("/{sellerId}")
-    public  void getSeller(@PathVariable("sellerId") int sellerId){
-
+    public ResponseEntity<SellerDto> getSeller(@PathVariable("sellerId") int sellerId) {
+        return ResponseEntity.ok(sellerService.getBySellerId(sellerId));
     }
 
     @PutMapping("/{sellerId}")
-    public  void updateSeller(@PathVariable("sellerId") int sellerId){
+    public ResponseEntity<SellerDto> updateSeller(@PathVariable("sellerId") int sellerId, @RequestBody SellerRequest sellerRequest) {
+        return ResponseEntity.ok(sellerService.updateSeller(sellerId, sellerRequest));
 
     }
 
     @DeleteMapping("/{sellerId}")
-    public  void deleteSeller(@PathVariable("sellerId") int sellerId){
+    public ResponseEntity<SellerDto> deleteSeller(@PathVariable("sellerId") int sellerId) {
 
+        return ResponseEntity.ok(sellerService.deleteById(sellerId));
     }
 
 
     @GetMapping("/{sellerId}/products")
-    public void getSellerProducts(@PathVariable("sellerId") int sellerId){
-
+    public ResponseEntity<List<ProductDto>> getSellerProducts(@PathVariable("sellerId") int sellerId) {
+        return ResponseEntity.ok(productService.getProductsByUserId(sellerId));
     }
 
     @GetMapping("/{sellerId}/sold-items")
