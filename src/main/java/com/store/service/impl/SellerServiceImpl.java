@@ -9,6 +9,7 @@ import com.store.repository.SellerRepo;
 import com.store.repository.SoldItemRepo;
 import com.store.service.SellerService;
 import com.store.util.mappers.SellerMapper;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -59,7 +60,7 @@ public class SellerServiceImpl implements SellerService {
         seller.setRegDate(sellerRequest.getRegDate());
         seller.setRole("ROLE_SELLER");
         seller.setIsEmailVerified(verified);
-        seller.setIsDeleted(sellerRequest.getIsDeleted());
+        seller.setIsDeleted(deleted);
         Seller result = sellerRepo.save(seller);
 
         if (result == null) {
@@ -87,9 +88,10 @@ public class SellerServiceImpl implements SellerService {
         Optional<Seller> sellerOptional = sellerRepo.findById(sellerId);
         Seller result = null;
         if (sellerOptional.isPresent()) {
-
+            LoggerFactory.getLogger(this.getClass().getName()).info("id of updated seller " + sellerRequest.getId());
             Seller seller = sellerOptional.get();
-            seller.setId(sellerRequest.getId());
+            LoggerFactory.getLogger(this.getClass().getName()).info("id of updated seller " + seller);
+            seller.setId(sellerId);
             seller.setBalance(sellerRequest.getBalance());
             seller.setAddress(sellerRequest.getAddress());
             seller.setName(sellerRequest.getName());
