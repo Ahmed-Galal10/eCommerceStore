@@ -35,7 +35,7 @@ public class CategoryController {
     }
 
 
-    @GetMapping("/{categoryId}/sub-categories")
+    @GetMapping("/{categoryId}")
     public  ResponseEntity<List<SubCategoryDto>> getSubCategory(@PathVariable("categoryId") int categoryId ){
 
         List<SubCategoryDto> subCategoryDtos = categoryService.getSubCategoriesByCategoryId(categoryId);
