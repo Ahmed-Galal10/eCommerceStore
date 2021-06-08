@@ -1,11 +1,7 @@
 package com.store.config;
 
-import com.store.dtos.customer.CustomerDto;
-import com.store.dtos.customer.CustomerOrderDto;
-import com.store.dtos.customer.CustomerReviewDto;
-import com.store.model.Customer;
-import com.store.model.Order;
-import com.store.model.Review;
+import com.store.dtos.customer.*;
+import com.store.model.*;
 import com.store.util.mappers.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
@@ -19,7 +15,7 @@ public class MappingConfigs {
         return  new ModelMapper();
     }
 
-    // ============================= Mappers ================================
+    // ============================= Custom Mappers ================================
     @Bean
     public CartItemMapper getCartItemMapper(){
         return new CartItemMapper();
@@ -48,6 +44,16 @@ public class MappingConfigs {
     @Bean
     public EntityDtoMapper<Review, CustomerReviewDto> getCustomerReviewMapper(){
         return new CustomerReviewMapper();
+    }
+
+    @Bean
+    public EntityDtoMapper<Wishlist, CustomerWishListDto> getCustomerWishlistMapper(){
+        return new CustomerWishListMapper();
+    }
+
+    @Bean
+    public EntityDtoMapper<Product, ProductWishListDto> getProductWishlistMapper(){
+        return new ProductWishListMapper();
     }
 
 }

@@ -66,7 +66,7 @@ public class CustomerController {
             return new ResponseEntity<>(customerDto, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<CustomerDto>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -74,10 +74,10 @@ public class CustomerController {
     public ResponseEntity<String> deleteCustomer(@PathVariable("customerId") int customerId) {
         try {
             customerService.deleteCustomer(customerId);
-            return new ResponseEntity<String>(HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -119,6 +119,17 @@ public class CustomerController {
         }
     }
 
+    @GetMapping("/{customerId}/wishlist")
+    public ResponseEntity<CustomerWishListDto> getCustomerWishList(@PathVariable("customerId") int customerId) {
+        try {
+            CustomerWishListDto customerWishListDto = customerService.getCustomerWishList(customerId);
+
+            return new ResponseEntity<>(customerWishListDto, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 
     //=================================== Cart Api ==================================
 
