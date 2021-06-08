@@ -1,43 +1,35 @@
 package com.store.dtos.seller;
 
-import com.store.model.ProdImages;
-import com.store.model.Review;
 import com.store.model.User;
 
-import java.util.HashSet;
-import java.util.Set;
-
-public class ProductDto {
+public class SellerProductDto {
     private Integer id;
     private Integer subcategoryId;
-    private User user;
+    private String subcategoryName;
     private String name;
     private String description;
     private int quantity;
     private String img;
     private double price;
     private boolean isOnSale;
-    private Set<ProdImages> prodImageses = new HashSet<ProdImages>(0);
-    private Set<Review> reviews = new HashSet<Review>(0);
 
 
-    public ProductDto(Integer id, Integer subcategoryId, User user, String name,
-                      String description, int quantity, String img, double price,
-                      boolean isOnSale, Set<ProdImages> prodImageses, Set<Review> reviews) {
+    public SellerProductDto(Integer id, Integer subcategoryId, User user, String name,
+                            String description, int quantity, String img, double price,
+                            boolean isOnSale, String subcategoryName) {
         this.id = id;
         this.subcategoryId = subcategoryId;
-        this.user = user;
+        this.subcategoryName = subcategoryName;
         this.name = name;
         this.description = description;
         this.quantity = quantity;
         this.img = img;
         this.price = price;
         this.isOnSale = isOnSale;
-        this.prodImageses = prodImageses;
-        this.reviews = reviews;
+
     }
 
-    public ProductDto() {
+    public SellerProductDto() {
     }
 
     public Integer getId() {
@@ -46,15 +38,6 @@ public class ProductDto {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public String getName() {
@@ -105,22 +88,6 @@ public class ProductDto {
         isOnSale = onSale;
     }
 
-    public Set<ProdImages> getProdImageses() {
-        return prodImageses;
-    }
-
-    public void setProdImageses(Set<ProdImages> prodImageses) {
-        this.prodImageses = prodImageses;
-    }
-
-    public Set<Review> getReviews() {
-        return reviews;
-    }
-
-    public void setReviews(Set<Review> reviews) {
-        this.reviews = reviews;
-    }
-
     public Integer getSubcategoryId() {
         return subcategoryId;
     }
@@ -128,4 +95,13 @@ public class ProductDto {
     public void setSubcategoryId(Integer subcategoryId) {
         this.subcategoryId = subcategoryId;
     }
+
+    public String getSubcategoryName() {
+        return subcategoryName;
+    }
+
+    public void setSubcategoryName(String subcategoryName) {
+        this.subcategoryName = subcategoryName;
+    }
+
 }

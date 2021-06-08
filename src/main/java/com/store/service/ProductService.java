@@ -1,7 +1,7 @@
 package com.store.service;
 
 import com.store.dtos.product.ProdDetailDto;
-import com.store.dtos.seller.ProductDto;
+import com.store.dtos.seller.SellerProductDto;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ public interface ProductService {
 
     ProdDetailDto addOrUpdateProduct(ProdDetailDto prodDetailDto);
 
-    List<ProductDto> getProductsByUserId(int sellerId);
+    List<SellerProductDto> getProductsByUserId(int sellerId);
 
     void deleteProduct(Integer id);
 }

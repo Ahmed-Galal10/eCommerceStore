@@ -50,4 +50,5 @@ public class MappingConfigs {
         return new CustomerReviewMapper();
     }
 
+
 }

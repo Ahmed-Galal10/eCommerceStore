@@ -1,16 +1,15 @@
 package com.store.service.impl;
 
 import com.store.dtos.product.ProdDetailDto;
+import com.store.dtos.seller.SellerProductDto;
 import com.store.model.Product;
 import com.store.repo.ProductImagesRepository;
 import com.store.repo.ProductRepository;
 import com.store.service.ProductService;
 import com.store.util.ProductMapper;
+import com.store.util.mappers.SellerProductMapper;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
-
-import com.store.dtos.seller.ProductDto;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,17 +19,18 @@ import java.util.List;
 public class ProductServiceImpl implements ProductService {
 
 
-    private ProductRepository productRepo;
-    private ProductImagesRepository productImagRepo;
-    private ModelMapper modelMapper;
+    private final ProductRepository productRepo;
+    private final ProductImagesRepository productImagRepo;
+    private final ModelMapper modelMapper;
 
-    private ProductMapper mapper;
+    private final SellerProductMapper mapper;
 
     @Autowired
-    public ProductServiceImpl(ProductRepository productRepo, ProductImagesRepository productImagRepo, ModelMapper modelMapper) {
+    public ProductServiceImpl(ProductRepository productRepo, ProductImagesRepository productImagRepo, ModelMapper modelMapper, SellerProductMapper mapper) {
         this.productRepo = productRepo;
         this.productImagRepo = productImagRepo;
         this.modelMapper = modelMapper;
+        this.mapper = mapper;
     }
 
     @Override
@@ -55,15 +55,18 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void deleteProduct(Integer id) {
+
         productRepo.deleteById(id);
 
     }
 
     @Override
-    public List<ProductDto> getProductsByUserId(int sellerId) {
+    public List<SellerProductDto> getProductsByUserId(int sellerId) {
 
-//        return mapper.entityListToDtoList(productRepo.findByUser_Id(sellerId));
-        return  null;
+        List<SellerProductDto> dtos = mapper.entityListToDtoList(productRepo.findByUser_Id(sellerId));
+
+        return dtos;
+
     }
 
 

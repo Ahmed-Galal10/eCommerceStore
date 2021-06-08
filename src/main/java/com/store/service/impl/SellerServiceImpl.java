@@ -10,8 +10,10 @@ import com.store.repository.SoldItemRepo;
 import com.store.service.SellerService;
 import com.store.util.mappers.SellerMapper;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -25,6 +27,7 @@ public class SellerServiceImpl implements SellerService {
     private final OrderRepo orderRepo;
     private final SoldItemRepo soldItemRepo;
 
+    @Autowired
     public SellerServiceImpl(SellerRepo sellerRepo, ProductRepo productRepo,
                              OrderRepo orderRepo, SoldItemRepo soldItemRepo,
                              SellerMapper mapper) {
@@ -46,10 +49,12 @@ public class SellerServiceImpl implements SellerService {
 
     @Override
     public SellerDto addSeller(SellerRequest sellerRequest) {
-        Boolean verified = sellerRequest.getIsEmailVerified() != null && sellerRequest.getIsEmailVerified();
-        Boolean deleted = sellerRequest.getIsDeleted() != null && sellerRequest.getIsDeleted();
+
+        Boolean verified = (sellerRequest.getIsEmailVerified() != null) ? sellerRequest.getIsEmailVerified() : false;
+        Boolean deleted = (sellerRequest.getIsDeleted() != null) ? sellerRequest.getIsDeleted() : false;
 
         Seller seller = new Seller();
+
         seller.setBalance(sellerRequest.getBalance());
         seller.setAddress(sellerRequest.getAddress());
         seller.setName(sellerRequest.getName());
@@ -57,67 +62,98 @@ public class SellerServiceImpl implements SellerService {
         seller.setImage(sellerRequest.getImage());
         seller.setPhone(sellerRequest.getPhone());
         seller.setPassword(sellerRequest.getPassword());
-        seller.setRegDate(sellerRequest.getRegDate());
-        seller.setRole("ROLE_SELLER");
         seller.setIsEmailVerified(verified);
         seller.setIsDeleted(deleted);
+        seller.setRegDate(new Date());
         Seller result = sellerRepo.save(seller);
 
         if (result == null) {
+
             //todo throw custom exception
         }
+
         SellerDto sellerDto = mapper.toDto(result);
+
         return sellerDto;
 
     }
 
     @Override
     public SellerDto getBySellerId(int sellerId) {
+
         Seller seller = null;
         Optional<Seller> sellerOptional = sellerRepo.findById(sellerId);
+
         if (sellerOptional.isPresent()) {
+
             seller = sellerOptional.get();
+
         } else {
+
             //todo throw custom exception
         }
-        return mapper.toDto(seller);
+
+        SellerDto dto = mapper.toDto(seller);
+
+        return dto;
     }
 
     @Override
     public SellerDto updateSeller(int sellerId, SellerRequest sellerRequest) {
+
         Optional<Seller> sellerOptional = sellerRepo.findById(sellerId);
         Seller result = null;
+
         if (sellerOptional.isPresent()) {
+
             LoggerFactory.getLogger(this.getClass().getName()).info("id of updated seller " + sellerRequest.getId());
+
             Seller seller = sellerOptional.get();
-            LoggerFactory.getLogger(this.getClass().getName()).info("id of updated seller " + seller);
+
             seller.setId(sellerId);
             seller.setBalance(sellerRequest.getBalance());
             seller.setAddress(sellerRequest.getAddress());
             seller.setName(sellerRequest.getName());
-            seller.setEmail(sellerRequest.getEmail());
             seller.setImage(sellerRequest.getImage());
             seller.setPhone(sellerRequest.getPhone());
-            if (sellerRequest.getPassword() != null)
-                seller.setPassword(sellerRequest.getPassword());
-            seller.setRegDate(sellerRequest.getRegDate());
-            seller.setRole("ROLE_SELLER");
             seller.setIsEmailVerified(sellerRequest.getIsEmailVerified());
             seller.setIsDeleted(sellerRequest.getIsDeleted());
+
+            if (sellerRequest.getPassword() != null) {
+                seller.setPassword(sellerRequest.getPassword());
+            }
+
+            if (!sellerRequest.getEmail().equals(seller.getEmail())) {
+                seller.setEmail(sellerRequest.getEmail());
+            }
+
             result = sellerRepo.save(seller);
+
         } else {
+
             //todo throw custom exception
         }
-        return mapper.toDto(result);
+
+        SellerDto dto = mapper.toDto(result);
+
+        return dto;
     }
 
     @Override
     public SellerDto deleteById(int sellerId) {
+
         Optional<Seller> sellerOptional = sellerRepo.findById(sellerId);
+
         Seller seller = sellerOptional.orElseThrow(RuntimeException::new
                 //todo throw custom exception here
         );
-        sellerRepo.deleteById(sellerId);
-        return mapper.toDto(seller);
+
+        seller.setIsDeleted(true);
+        sellerRepo.save(seller);
+
+        SellerDto dto = mapper.toDto(seller);
+
+        return dto;
     }
+
 }

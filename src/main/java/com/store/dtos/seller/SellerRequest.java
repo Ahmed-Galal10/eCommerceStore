@@ -1,6 +1,6 @@
 package com.store.dtos.seller;
 
-import java.util.Date;
+
 
 public class SellerRequest {
     private Integer id;
@@ -8,10 +8,8 @@ public class SellerRequest {
     private String email;
     private String password;
     private String address;
-    private Date regDate;
     private String image;
     private String phone;
-
     private Boolean isEmailVerified;
     private Boolean isDeleted;
     private double balance;
@@ -19,7 +17,7 @@ public class SellerRequest {
     public SellerRequest() {
     }
 
-    public SellerRequest(Integer id, String name, String email, String password, String address, Date regDate,
+    public SellerRequest(Integer id, String name, String email, String password, String address,
                          String image, String phone, Boolean isEmailVerified,
                          Boolean isDeleted, double balance) {
         this.id = id;
@@ -27,7 +25,6 @@ public class SellerRequest {
         this.email = email;
         this.password = password;
         this.address = address;
-        this.regDate = regDate;
         this.image = image;
         this.phone = phone;
 
@@ -41,6 +38,7 @@ public class SellerRequest {
     }
 
     public void setIsEmailVerified(Boolean isEmailVerified) {
+
         this.isEmailVerified = isEmailVerified;
     }
 
@@ -52,13 +50,12 @@ public class SellerRequest {
         this.isDeleted = isDeleted;
     }
 
-    public SellerRequest(String name, String email, String password, String address, Date regDate,
+    public SellerRequest(String name, String email, String password, String address,
                          String image, String phone, double balance, Boolean isDeleted, Boolean isEmailVerified) {
         this.name = name;
         this.email = email;
         this.password = password;
         this.address = address;
-        this.regDate = regDate;
         this.image = image;
         this.phone = phone;
         this.balance = balance;
@@ -105,14 +102,6 @@ public class SellerRequest {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public Date getRegDate() {
-        return regDate;
-    }
-
-    public void setRegDate(Date regDate) {
-        this.regDate = regDate;
     }
 
     public String getImage() {
