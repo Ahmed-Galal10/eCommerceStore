@@ -9,8 +9,6 @@ public class CustomerReviewDto {
 
     private int id;
 
-    // TODO map productReview
-    @JsonIgnore
     private ProductReviewDto product;
     private Date createdAt;
     private int rating;

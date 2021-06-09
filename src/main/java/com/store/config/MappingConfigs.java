@@ -3,8 +3,10 @@ package com.store.config;
 import com.store.dtos.customer.CustomerDto;
 import com.store.dtos.customer.CustomerOrderDto;
 import com.store.dtos.customer.CustomerReviewDto;
+import com.store.dtos.customer.ProductReviewDto;
 import com.store.model.Customer;
 import com.store.model.Order;
+import com.store.model.Product;
 import com.store.model.Review;
 import com.store.util.mappers.*;
 import org.modelmapper.ModelMapper;
@@ -48,6 +50,11 @@ public class MappingConfigs {
     @Bean
     public EntityDtoMapper<Review, CustomerReviewDto> getCustomerReviewMapper(){
         return new CustomerReviewMapper();
+    }
+
+    @Bean
+    public EntityDtoMapper<Product, ProductReviewDto> getProductReviewMapper(){
+        return new ProductReviewMapper();
     }
 
 }

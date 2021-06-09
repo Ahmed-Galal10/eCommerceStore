@@ -20,7 +20,6 @@ import javax.persistence.Table;
 )
 public class CartItem  implements java.io.Serializable {
 
-
      private CartItemId id;
      private User user;
      private Product product;
