@@ -6,6 +6,7 @@ import com.store.model.Customer;
 import com.store.model.Order;
 import com.store.model.Review;
 import com.store.repository.CustomerRepo;
+import com.store.repository.ReviewRepo;
 import com.store.service.CustomerService;
 import com.store.util.mappers.EntityDtoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,9 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Autowired
     private CustomerRepo customerRepo;
+
+    @Autowired
+    private ReviewRepo reviewRepo;
 
     @Autowired
     private EntityDtoMapper<Customer, CustomerDto> customerMapper;
@@ -103,6 +107,15 @@ public class CustomerServiceImpl implements CustomerService {
         List<CustomerReviewDto> customerReviewDtoList = customerReviewMapper.entityListToDtoList(reviewList);
 
         return customerReviewDtoList;
+    }
+
+    @Override
+    public CustomerReviewDto addReview(CustomerReviewDto customerReviewDto) {
+
+        Review review = customerReviewMapper.toEntity(customerReviewDto);
+        Review savedReview = reviewRepo.save(review);
+
+        return customerReviewMapper.toDto(savedReview);
     }
 
 }

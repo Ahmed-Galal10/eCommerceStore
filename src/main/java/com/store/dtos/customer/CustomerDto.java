@@ -1,8 +1,12 @@
 package com.store.dtos.customer;
 
 
+import com.store.model.Review;
+
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 
 public class CustomerDto implements Serializable {
@@ -18,8 +22,10 @@ public class CustomerDto implements Serializable {
         private String phone;
         private Boolean isEmailVerified;
         private Boolean isDeleted;
+        private Set<CustomerReviewDto> reviews;
 
-        public CustomerDto() {
+
+    public CustomerDto() {
         }
 
         public CustomerDto(String email, String password) {
@@ -124,7 +130,19 @@ public class CustomerDto implements Serializable {
             isDeleted = deleted;
         }
 
-        @Override
+        public Set<CustomerReviewDto> getReviews() {
+            return reviews;
+        }
+
+        public void setReviews(Set<CustomerReviewDto> reviews){
+            this.reviews = reviews;
+        }
+
+        public void addReview(CustomerReviewDto review) {
+            this.reviews.add(review);
+        }
+
+    @Override
         public String toString() {
             return "CustomerDto{" +
                     "customerId=" + id +

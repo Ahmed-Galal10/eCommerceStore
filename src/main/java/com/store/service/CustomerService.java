@@ -26,4 +26,6 @@ public interface CustomerService {
     List<CustomerOrderDto> getCustomerOrders(Integer customerId);
 
     List<CustomerReviewDto> getCustomerReviews(Integer customerId);
+
+    CustomerReviewDto addReview(CustomerReviewDto customerReviewDto);
 }

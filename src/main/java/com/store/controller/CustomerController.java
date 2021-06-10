@@ -42,11 +42,6 @@ public class CustomerController {
 
     }
 
-    @GetMapping("/hi")
-    public String test(){
-        return "eshta ".repeat(5);
-    }
-
     @PostMapping()
     public ResponseEntity<String> addCustomer(@RequestBody CustomerDto customerDto) {
         try {
@@ -120,7 +115,14 @@ public class CustomerController {
     }
 
 
+    @PostMapping(path = "/{customerId}/reviews")
+    public ResponseEntity<CustomerReviewDto> addReview(@PathVariable("customerId") Integer customerId,
+                                                   @RequestBody CustomerReviewDto customerReviewDto) {
+        CustomerDto customerDto = customerService.getCustomerById(customerId);
+        customerDto.addReview(customerService.addReview(customerReviewDto));
 
+        return ResponseEntity.status(HttpStatus.CREATED).body(customerReviewDto) ;
+    }
 
 
     //=================================== Cart Api ==================================
