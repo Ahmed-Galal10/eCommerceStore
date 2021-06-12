@@ -3,9 +3,12 @@ package com.store.config;
 import com.store.dtos.customer.CustomerDto;
 import com.store.dtos.customer.CustomerOrderDto;
 import com.store.dtos.customer.CustomerReviewDto;
+import com.store.dtos.product.ProdDetailDto;
 import com.store.model.Customer;
 import com.store.model.Order;
+import com.store.model.Product;
 import com.store.model.Review;
+import com.store.util.ProductMapperAPI;
 import com.store.util.mappers.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
@@ -50,4 +53,8 @@ public class MappingConfigs {
         return new CustomerReviewMapper();
     }
 
+    @Bean
+    public EntityDtoMapper<Product, ProdDetailDto> getProductMapper() {
+        return new ProductMapperAPI();
+    }
 }

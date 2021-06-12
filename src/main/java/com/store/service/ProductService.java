@@ -1,8 +1,8 @@
 package com.store.service;
 
 import com.store.dtos.product.ProdDetailDto;
+import com.store.dtos.review.ReviewDto;
 import com.store.dtos.seller.ProductDto;
-import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -18,6 +18,8 @@ public interface ProductService {
     ProdDetailDto getProductById(Integer id);
 
     ProdDetailDto addOrUpdateProduct(ProdDetailDto prodDetailDto);
+
+    List<ReviewDto> getProductReviews(Integer id, Integer pageNumber);
 
     List<ProductDto> getProductsByUserId(int sellerId);
 

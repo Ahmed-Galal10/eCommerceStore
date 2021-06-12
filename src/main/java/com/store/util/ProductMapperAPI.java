@@ -2,10 +2,28 @@ package com.store.util;
 
 import com.store.dtos.product.ProdDetailDto;
 import com.store.model.*;
+import com.store.util.mappers.EntityDtoMapper;
 
-public class ProductMapper  {
+public class ProductMapperAPI extends EntityDtoMapper<Product, ProdDetailDto> {
 
-    public static Product productDtoToProductEntity(ProdDetailDto prodDetailDto) {
+    @Override
+    public ProdDetailDto toDto(Product product) {
+        ProdDetailDto prodDetailDto = new ProdDetailDto();
+
+        prodDetailDto.setUserId(product.getId());
+        prodDetailDto.setProductName(product.getName());
+        prodDetailDto.setUserId(product.getUser().getId());
+        prodDetailDto.setProductPrice(product.getPrice());
+        prodDetailDto.setProductImg(product.getImg());
+        prodDetailDto.setProductQuantity(product.getQuantity());
+        prodDetailDto.setOnSale(product.isIsOnSale());
+        prodDetailDto.setSubcategoryId(product.getSubcategory().getId());
+
+        return prodDetailDto;
+    }
+
+    @Override
+    public Product toEntity(ProdDetailDto prodDetailDto) {
         Product product = new Product();
 
         product.setId(prodDetailDto.getId());
@@ -23,20 +41,5 @@ public class ProductMapper  {
         product.setSubcategory(subcategory);
 
         return product;
-    }
-
-    public static ProdDetailDto ProductEntityToProductDto(Product product) {
-        ProdDetailDto prodDetailDto = new ProdDetailDto();
-
-        prodDetailDto.setUserId(product.getId());
-        prodDetailDto.setProductName(product.getName());
-        prodDetailDto.setUserId(product.getUser().getId());
-        prodDetailDto.setProductPrice(product.getPrice());
-        prodDetailDto.setProductImg(product.getImg());
-        prodDetailDto.setProductQuantity(product.getQuantity());
-        prodDetailDto.setOnSale(product.isIsOnSale());
-        prodDetailDto.setSubcategoryId(product.getSubcategory().getId());
-
-        return prodDetailDto;
     }
 }

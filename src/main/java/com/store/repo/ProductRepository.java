@@ -11,5 +11,4 @@ import java.util.Collection;
 public interface ProductRepository extends JpaRepository<Product, Integer> {
     Page<Product> findBySubcategoryInAndPriceBetweenAndNameLikeIgnoreCase(Collection<Subcategory> subcategory, Double price, Double price2, String name, Pageable pageable);
 
-    Page<Product> findByNameLike(String name, Pageable pageable);
 }

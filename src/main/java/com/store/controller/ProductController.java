@@ -1,6 +1,7 @@
 package com.store.controller;
 
 import com.store.dtos.product.ProdDetailDto;
+import com.store.dtos.review.ReviewDto;
 import com.store.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -79,5 +80,19 @@ public class ProductController {
                 productService.getAllProductsByFilters(pageNumber, priceMin, priceMax, subCategoriesIds, name);
 
         return ResponseEntity.ok(products);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, path = "/{id}/reviews")
+    public ResponseEntity<List<ReviewDto>> getProductReviews(
+            @PathVariable("id") Integer id,
+            @RequestParam(value = "page", required = false, defaultValue = "0") Integer pageNumber) {
+
+        try {
+            List<ReviewDto> productReviews = productService.getProductReviews(id, pageNumber);
+
+            return ResponseEntity.ok(productReviews);
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
