@@ -1,9 +1,13 @@
 package com.store.dtos.category;
 
+import java.util.List;
+
 public class CategoryDto {
 
     private int id;
     private String name;
+
+    List<SubCategoryDto> subCategories;
 
     public int getId() {
         return id;
@@ -19,6 +23,14 @@ public class CategoryDto {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<SubCategoryDto> getSubCategories() {
+        return subCategories;
+    }
+
+    public void setSubCategories(List<SubCategoryDto> subCategories) {
+        this.subCategories = subCategories;
     }
 
     @Override

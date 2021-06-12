@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -124,31 +125,31 @@ public class CustomerController {
 
 
     //TODO ====> Ask About UserId
-    @GetMapping(path = "/{userId}/carts")
-    public  ResponseEntity<CartDto> getCart(@PathVariable("userId") Integer userId){
+    @GetMapping(path = "/{cusomterId}/carts")
+    public  ResponseEntity<CartDto> getCart(@PathVariable("cusomterId") Integer userId){
 
         CartDto cartDto =  cartService.getCartByUserId(userId);
         return ResponseEntity.ok(cartDto);
     }
 
-    @PostMapping(path = "/{userId}/carts")
-    public ResponseEntity<CartItemDto> addCartItem(@PathVariable("userId") Integer userId,
+    @PostMapping(path = "/{cusomterId}/carts")
+    public ResponseEntity<CartItemDto> addCartItem(@PathVariable("cusomterId") Integer userId,
                                                    @RequestBody CartItemRequest cartItemRequest) {
         cartItemRequest.setCustomerId(userId);
         CartItemDto cartItemDto =  cartService.addCartItem(cartItemRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(cartItemDto) ;
     }
 
-    @PutMapping(path = "/{userId}/carts")
-    public ResponseEntity<CartItemDto> updateCartItem(@PathVariable("userId") Integer userId,
+    @PutMapping(path = "/{cusomterId}/carts")
+    public ResponseEntity<CartItemDto> updateCartItem(@PathVariable("cusomterId") Integer userId,
                                                       @RequestBody CartItemRequest cartItemRequest) {
         cartItemRequest.setCustomerId(userId);
         CartItemDto cartItemDto =  cartService.updateCartItem(cartItemRequest);
         return ResponseEntity.ok(cartItemDto);
     }
 
-    @DeleteMapping(path = "/{userId}/carts")
-    public ResponseEntity<Boolean> deleteCartItem(@PathVariable("userId") Integer userId,
+    @DeleteMapping(path = "/{cusomterId}/carts")
+    public ResponseEntity<Boolean> deleteCartItem(@PathVariable("cusomterId") Integer userId,
                                                   @RequestBody CartItemRequest cartItemRequest) {
         cartItemRequest.setCustomerId(userId);
         boolean isDeleted =  cartService.deleteCartItem(cartItemRequest);
