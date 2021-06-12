@@ -23,7 +23,6 @@ public class CustomerMapper extends EntityDtoMapper<Customer, CustomerDto>{
         customerDto.setRegDate(entity.getRegDate());
         customerDto.setImage(entity.getImage());
         customerDto.setPassword(entity.getPassword());
-
         return customerDto;
     }
 

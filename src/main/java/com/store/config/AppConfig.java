@@ -20,12 +20,7 @@ import java.util.Collections;
 
 @Configuration
 public class AppConfig {
-
-
-
-
     // ============================= Mappers ================================
-
 
     @Bean
     public Docket swaggerApi() {

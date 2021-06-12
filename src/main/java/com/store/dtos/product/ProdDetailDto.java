@@ -1,5 +1,8 @@
 package com.store.dtos.product;
 
+import com.store.dtos.category.CategoryDto;
+import com.store.dtos.category.SubCategoryDto;
+
 import java.util.List;
 
 public class ProdDetailDto {
@@ -14,6 +17,24 @@ public class ProdDetailDto {
     private double productPrice;
     private List<String> prodImages;
     private boolean isOnSale;
+    private CategoryDto categoryDTO;
+    private SubCategoryDto subcategoryDto;
+
+    public CategoryDto getCategoryDTO() {
+        return categoryDTO;
+    }
+
+    public void setCategoryDTO(CategoryDto categoryDTO) {
+        this.categoryDTO = categoryDTO;
+    }
+
+    public SubCategoryDto getSubcategoryDto() {
+        return subcategoryDto;
+    }
+
+    public void setSubcategoryDto(SubCategoryDto subcategoryDto) {
+        this.subcategoryDto = subcategoryDto;
+    }
 
     public Integer getId() {
         return id;

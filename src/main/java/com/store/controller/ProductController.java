@@ -40,16 +40,16 @@ public class ProductController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<ProdDetailDto> createProduct(@RequestBody ProdDetailDto prodDetailDto) {
-        prodDetailDto = productService.addOrUpdateProduct(prodDetailDto);
+        prodDetailDto = productService.addProduct(prodDetailDto);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(prodDetailDto);
     }
 
-    @RequestMapping(method = RequestMethod.PUT)
-    public ResponseEntity<ProdDetailDto> updateProduct(ProdDetailDto prodDetailDto) {
-        prodDetailDto = productService.addOrUpdateProduct(prodDetailDto);
+    @RequestMapping(method = RequestMethod.PUT,path="/{id}")
+    public ResponseEntity<ProdDetailDto> updateProduct(ProdDetailDto prodDetailDto,@PathVariable Integer id) {
+        prodDetailDto = productService.updateProduct(id,prodDetailDto);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(prodDetailDto);
+        return ResponseEntity.status(HttpStatus.OK).body(prodDetailDto);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, path = "/{id}")

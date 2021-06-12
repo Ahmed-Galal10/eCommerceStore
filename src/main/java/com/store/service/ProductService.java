@@ -10,7 +10,9 @@ public interface ProductService {
 
     ProdDetailDto getProductById(Integer id);
 
-    ProdDetailDto addOrUpdateProduct(ProdDetailDto prodDetailDto);
+    ProdDetailDto addProduct(ProdDetailDto prodDetailDto);
+
+    ProdDetailDto updateProduct(Integer id,ProdDetailDto prodDetailDto);
 
     List<ProductDto> getProductsByUserId(int sellerId);
 

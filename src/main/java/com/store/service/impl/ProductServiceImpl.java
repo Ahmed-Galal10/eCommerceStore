@@ -5,9 +5,7 @@ import com.store.model.Product;
 import com.store.repo.ProductImagesRepository;
 import com.store.repo.ProductRepository;
 import com.store.service.ProductService;
-import com.store.util.ProductMapper;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
+import com.store.util.mappers.ProductDetailsMapper;
 
 import com.store.dtos.seller.ProductDto;
 
@@ -22,35 +20,41 @@ public class ProductServiceImpl implements ProductService {
 
     private ProductRepository productRepo;
     private ProductImagesRepository productImagRepo;
-    private ModelMapper modelMapper;
+    private ProductDetailsMapper productMapper;
 
-    private ProductMapper mapper;
 
     @Autowired
-    public ProductServiceImpl(ProductRepository productRepo, ProductImagesRepository productImagRepo, ModelMapper modelMapper) {
+    public ProductServiceImpl(ProductRepository productRepo, ProductImagesRepository productImagRepo, ProductDetailsMapper mapper) {
         this.productRepo = productRepo;
         this.productImagRepo = productImagRepo;
-        this.modelMapper = modelMapper;
+        this.productMapper = mapper;
     }
 
     @Override
     public List<ProdDetailDto> getAllProducts() {
         List<Product> products = productRepo.findAll();
-        return modelMapper.map(products, new TypeToken<List<ProdDetailDto>>() {
-        }.getType());
+        return productMapper.entityListToDtoList(products);
     }
 
     @Override
     public ProdDetailDto getProductById(Integer id) {
         Product product = productRepo.findById(id).orElseThrow(() -> new RuntimeException("Not found"));
-        return ProductMapper.ProductEntityToProductDto(product);
+        return productMapper.toDto(product);
     }
 
     @Override
-    public ProdDetailDto addOrUpdateProduct(ProdDetailDto prodDetailDto) {
-        Product product = ProductMapper.productDtoToProductEntity(prodDetailDto);
+    public ProdDetailDto addProduct(ProdDetailDto prodDetailDto) {
+        Product product = productMapper.toEntity(prodDetailDto);
         product = productRepo.save(product);
-        return modelMapper.map(product, ProdDetailDto.class);
+        return productMapper.toDto(product);
+    }
+
+    @Override
+    public ProdDetailDto updateProduct(Integer id,ProdDetailDto prodDetailDto) {
+        prodDetailDto.setId(id);
+        Product product = productMapper.toEntity(prodDetailDto);
+        product = productRepo.save(product);
+        return productMapper.toDto(product);
     }
 
     @Override
