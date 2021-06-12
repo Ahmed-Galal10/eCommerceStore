@@ -4,10 +4,8 @@ import com.store.dtos.customer.CustomerDto;
 import com.store.dtos.customer.CustomerOrderDto;
 import com.store.dtos.customer.CustomerReviewDto;
 import com.store.dtos.product.ProdDetailDto;
-import com.store.model.Customer;
-import com.store.model.Order;
-import com.store.model.Product;
-import com.store.model.Review;
+import com.store.dtos.product.ProductImagesDto;
+import com.store.model.*;
 import com.store.util.ProductMapperAPI;
 import com.store.util.mappers.*;
 import org.modelmapper.ModelMapper;
@@ -56,5 +54,10 @@ public class MappingConfigs {
     @Bean
     public EntityDtoMapper<Product, ProdDetailDto> getProductMapper() {
         return new ProductMapperAPI();
+    }
+
+    @Bean
+    public EntityDtoMapper<ProdImages, ProductImagesDto> getProductImagesMapper() {
+        return new ProductImagesMapper();
     }
 }

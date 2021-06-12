@@ -1,7 +1,9 @@
 package com.store.controller;
 
 import com.store.dtos.product.ProdDetailDto;
+import com.store.dtos.product.ProductImagesDto;
 import com.store.dtos.review.ReviewDto;
+import com.store.model.Product;
 import com.store.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -94,5 +96,20 @@ public class ProductController {
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @RequestMapping(method = RequestMethod.POST, path = "/{id}/images")
+    public ResponseEntity<ProductImagesDto> addProductImageToProduct(
+            @RequestBody ProductImagesDto productImagesDto,
+            @PathVariable("id") Integer productId) {
+
+        try {
+            productImagesDto = productService.addImageToProduct(productImagesDto, productId);
+
+            return ResponseEntity.ok(productImagesDto);
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+
     }
 }

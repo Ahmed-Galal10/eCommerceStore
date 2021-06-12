@@ -18,6 +18,7 @@ public class ProductMapperAPI extends EntityDtoMapper<Product, ProdDetailDto> {
         prodDetailDto.setProductQuantity(product.getQuantity());
         prodDetailDto.setOnSale(product.isIsOnSale());
         prodDetailDto.setSubcategoryId(product.getSubcategory().getId());
+        prodDetailDto.setProductDescription(product.getDescription());
 
         return prodDetailDto;
     }
