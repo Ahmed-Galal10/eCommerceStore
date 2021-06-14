@@ -7,8 +7,7 @@ import com.store.dtos.customer.CustomerOrderDto;
 import com.store.dtos.customer.CustomerReviewDto;
 import com.store.dtos.product.ProdDetailDto;
 import com.store.dtos.product.ProductImagesDto;
-import com.store.model.*;
-import com.store.util.ProductMapperAPI;
+import com.store.util.mappers.ProductDetailMapper;
 import com.store.util.mappers.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
@@ -65,7 +64,7 @@ public class MappingConfigs {
 
     @Bean
     public EntityDtoMapper<Product, ProdDetailDto> getProductMapper() {
-        return new ProductMapperAPI();
+        return new ProductDetailMapper();
     }
 
     @Bean
