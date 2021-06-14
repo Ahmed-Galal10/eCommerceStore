@@ -72,4 +72,5 @@ public class MappingConfigs {
     public EntityDtoMapper<ProdImages, ProductImagesDto> getProductImagesMapper() {
         return new ProductImagesMapper();
     }
+
 }

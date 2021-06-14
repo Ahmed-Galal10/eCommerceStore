@@ -1,14 +1,16 @@
 package com.store.util.mappers;
 
-import com.store.dtos.seller.ProductDto;
+import com.store.dtos.seller.SellerProductDto;
 import com.store.model.Product;
 import org.springframework.stereotype.Service;
 
-@Service
-public class ProductMapper extends EntityDtoMapper<Product, ProductDto> {
+@Service("productMapper")
+public class SellerProductMapper extends EntityDtoMapper<Product, SellerProductDto> {
     @Override
-    public ProductDto toDto(Product entity) {
-        ProductDto dto = new ProductDto();
+    public SellerProductDto toDto(Product entity) {
+
+        SellerProductDto dto = new SellerProductDto();
+
         dto.setName(entity.getName());
         dto.setDescription(entity.getDescription());
         dto.setId(entity.getId());
@@ -17,13 +19,13 @@ public class ProductMapper extends EntityDtoMapper<Product, ProductDto> {
         dto.setOnSale(entity.isIsOnSale());
         dto.setQuantity(entity.getQuantity());
         dto.setSubcategoryId(entity.getSubcategory().getId());
-
+        dto.setSubcategoryName(entity.getSubcategory().getName());
 
         return dto;
     }
 
     @Override
-    public Product toEntity(ProductDto dto) {
+    public Product toEntity(SellerProductDto dto) {
         return null;
     }
 }
