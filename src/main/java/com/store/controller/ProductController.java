@@ -1,6 +1,9 @@
 package com.store.controller;
 
 import com.store.dtos.product.ProdDetailDto;
+import com.store.dtos.product.ProductImagesDto;
+import com.store.dtos.review.ReviewDto;
+import com.store.model.Product;
 import com.store.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,14 +23,6 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<ProdDetailDto>> findAllProducts() {
-
-        List<ProdDetailDto> allProducts = productService.getAllProducts();
-
-        return ResponseEntity.ok(allProducts);
-    }
-
     @RequestMapping(method = RequestMethod.GET, path = "/{id}")
     public ResponseEntity<ProdDetailDto> findProductById(@PathVariable Integer id) {
         try {
@@ -45,17 +40,76 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.CREATED).body(prodDetailDto);
     }
 
-    @RequestMapping(method = RequestMethod.PUT)
-    public ResponseEntity<ProdDetailDto> updateProduct(ProdDetailDto prodDetailDto) {
-        prodDetailDto = productService.addOrUpdateProduct(prodDetailDto);
+    @RequestMapping(method = RequestMethod.PUT, path = "/{id}")
+    public ResponseEntity<ProdDetailDto> updateProduct(@RequestBody ProdDetailDto prodDetailDto, @PathVariable("id") Integer id) {
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(prodDetailDto);
+        try {
+            productService.getProductById(id);
+
+            prodDetailDto.setId(id);
+
+            productService.addOrUpdateProduct(prodDetailDto);
+
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @RequestMapping(method = RequestMethod.DELETE, path = "/{id}")
     public ResponseEntity deleteProduct(@PathVariable("id") Integer id) {
-        productService.deleteProduct(id);
+        try {
+            productService.getProductById(id);
 
-        return ResponseEntity.status(HttpStatus.OK).build();
+            productService.deleteProduct(id);
+
+            return ResponseEntity.status(HttpStatus.OK).build();
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<List<ProdDetailDto>> findAllProducts(
+            @RequestParam(value = "page", required = false, defaultValue = "0") Integer pageNumber,
+            @RequestParam(value = "priceMin", required = false, defaultValue = "0.0") Double priceMin,
+            @RequestParam(value = "priceMax", required = false, defaultValue = "1000000.0") Double priceMax,
+            @RequestParam(value = "cat", required = false) List<Integer> subCategoriesIds,
+            @RequestParam(value = "name", required = false, defaultValue = "%") String name
+    ) {
+
+        List<ProdDetailDto> products =
+                productService.getAllProductsByFilters(pageNumber, priceMin, priceMax, subCategoriesIds, name);
+
+        return ResponseEntity.ok(products);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, path = "/{id}/reviews")
+    public ResponseEntity<List<ReviewDto>> getProductReviews(
+            @PathVariable("id") Integer id,
+            @RequestParam(value = "page", required = false, defaultValue = "0") Integer pageNumber) {
+
+        try {
+            List<ReviewDto> productReviews = productService.getProductReviews(id, pageNumber);
+
+            return ResponseEntity.ok(productReviews);
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @RequestMapping(method = RequestMethod.POST, path = "/{id}/images")
+    public ResponseEntity<ProductImagesDto> addProductImageToProduct(
+            @RequestBody ProductImagesDto productImagesDto,
+            @PathVariable("id") Integer productId) {
+
+        try {
+            productImagesDto = productService.addImageToProduct(productImagesDto, productId);
+
+            return ResponseEntity.ok(productImagesDto);
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+
     }
 }
