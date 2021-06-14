@@ -1,31 +1,39 @@
 package com.store.controller;
 
 
+import com.store.dtos.GenericResponse;
 import com.store.dtos.cart.CartDto;
 import com.store.dtos.cart.CartItemDto;
 import com.store.dtos.cart.CartItemRequest;
 import com.store.dtos.customer.*;
+import com.store.dtos.order.OrderDto;
+import com.store.dtos.order.OrderRequest;
 import com.store.service.CartService;
 import com.store.service.CustomerService;
+import com.store.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("/customers")
+@CrossOrigin
 public class CustomerController {
 
     private CustomerService customerService;
     private CartService cartService;
-
+    private OrderService orderService;
     @Autowired
     public  CustomerController(CustomerService customerService,
-                               CartService cartService){
+                               CartService cartService,
+                               OrderService orderService){
         this.cartService = cartService;
         this.customerService = customerService;
+        this.orderService = orderService;
     }
 
     @GetMapping("")
@@ -66,7 +74,7 @@ public class CustomerController {
             return new ResponseEntity<>(customerDto, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<CustomerDto>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -74,10 +82,10 @@ public class CustomerController {
     public ResponseEntity<String> deleteCustomer(@PathVariable("customerId") int customerId) {
         try {
             customerService.deleteCustomer(customerId);
-            return new ResponseEntity<String>(HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -96,14 +104,27 @@ public class CustomerController {
     }
 
     @GetMapping("/{customerId}/orders")
-    public ResponseEntity<List<CustomerOrderDto>> getCustomerOrders(@PathVariable("customerId") int customerId) {
+    public ResponseEntity<GenericResponse< List<CustomerOrderDto> >> getCustomerOrders(@PathVariable("customerId") int customerId) {
         try {
+
             List<CustomerOrderDto> customerOrderDtoList = customerService.getCustomerOrders(customerId);
-            return new ResponseEntity<>(customerOrderDtoList, HttpStatus.OK);
+            GenericResponse< List<CustomerOrderDto> > resp =
+                    new GenericResponse<>(customerOrderDtoList, HttpStatus.OK, "Request Success");
+            return new ResponseEntity(resp, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @PostMapping("/{customerId}/orders")
+    public  ResponseEntity<GenericResponse> createOrder( @PathVariable("customerId") int customerId,
+                                                         @RequestBody OrderRequest orderRequest){
+        orderRequest.setCustomerId( customerId );
+        OrderDto orderDto = orderService.createOrder(orderRequest);
+        GenericResponse<OrderDto> response =
+                new GenericResponse<>(orderDto, HttpStatus.CREATED, "ORDER CREATED");
+        return  ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping("/{customerId}/reviews")
@@ -119,36 +140,46 @@ public class CustomerController {
         }
     }
 
+    @GetMapping("/{customerId}/wishlist")
+    public ResponseEntity<CustomerWishListDto> getCustomerWishList(@PathVariable("customerId") int customerId) {
+        try {
+            CustomerWishListDto customerWishListDto = customerService.getCustomerWishList(customerId);
+
+            return new ResponseEntity<>(customerWishListDto, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 
     //=================================== Cart Api ==================================
 
-
     //TODO ====> Ask About UserId
-    @GetMapping(path = "/{userId}/carts")
-    public  ResponseEntity<CartDto> getCart(@PathVariable("userId") Integer userId){
+    @GetMapping(path = "/{cusomterId}/carts")
+    public  ResponseEntity<CartDto> getCart(@PathVariable("cusomterId") Integer userId){
 
         CartDto cartDto =  cartService.getCartByUserId(userId);
         return ResponseEntity.ok(cartDto);
     }
 
-    @PostMapping(path = "/{userId}/carts")
-    public ResponseEntity<CartItemDto> addCartItem(@PathVariable("userId") Integer userId,
+    @PostMapping(path = "/{cusomterId}/carts")
+    public ResponseEntity<CartItemDto> addCartItem(@PathVariable("cusomterId") Integer userId,
                                                    @RequestBody CartItemRequest cartItemRequest) {
         cartItemRequest.setCustomerId(userId);
         CartItemDto cartItemDto =  cartService.addCartItem(cartItemRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(cartItemDto) ;
     }
 
-    @PutMapping(path = "/{userId}/carts")
-    public ResponseEntity<CartItemDto> updateCartItem(@PathVariable("userId") Integer userId,
+    @PutMapping(path = "/{cusomterId}/carts")
+    public ResponseEntity<CartItemDto> updateCartItem(@PathVariable("cusomterId") Integer userId,
                                                       @RequestBody CartItemRequest cartItemRequest) {
         cartItemRequest.setCustomerId(userId);
         CartItemDto cartItemDto =  cartService.updateCartItem(cartItemRequest);
         return ResponseEntity.ok(cartItemDto);
     }
 
-    @DeleteMapping(path = "/{userId}/carts")
-    public ResponseEntity<Boolean> deleteCartItem(@PathVariable("userId") Integer userId,
+    @DeleteMapping(path = "/{cusomterId}/carts")
+    public ResponseEntity<Boolean> deleteCartItem(@PathVariable("cusomterId") Integer userId,
                                                   @RequestBody CartItemRequest cartItemRequest) {
         cartItemRequest.setCustomerId(userId);
         boolean isDeleted =  cartService.deleteCartItem(cartItemRequest);

@@ -1,21 +1,22 @@
 package com.store.controller;
 
+import com.store.dtos.GenericResponse;
 import com.store.dtos.category.CategoryDto;
 import com.store.dtos.category.SubCategoryDto;
 import com.store.service.CategoryService;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/categories")
+@CrossOrigin
 public class CategoryController {
 
     private CategoryService categoryService;
@@ -27,20 +28,25 @@ public class CategoryController {
 
 
     @GetMapping
-    public ResponseEntity<List<CategoryDto>> getAllCategories(){
+    public ResponseEntity< GenericResponse< List<CategoryDto> > > getAllCategories(){
 
         List<CategoryDto> categoryDtos = categoryService.getAllCategories();
 
-        return ResponseEntity.ok(categoryDtos);
+        GenericResponse<List<CategoryDto>> response =
+                new GenericResponse<>( categoryDtos, HttpStatus.ACCEPTED, "Request Success" );
+
+        return ResponseEntity.ok(response);
     }
 
-
-    @GetMapping("/{categoryId}/sub-categories")
-    public  ResponseEntity<List<SubCategoryDto>> getSubCategory(@PathVariable("categoryId") int categoryId ){
+    @GetMapping("/{categoryId}")
+    public  ResponseEntity< GenericResponse< List< SubCategoryDto > > > getSubCategory(@PathVariable("categoryId") int categoryId ){
 
         List<SubCategoryDto> subCategoryDtos = categoryService.getSubCategoriesByCategoryId(categoryId);
 
-        return ResponseEntity.ok(subCategoryDtos);
+        GenericResponse<List<SubCategoryDto>> response =
+                new GenericResponse<>( subCategoryDtos, HttpStatus.ACCEPTED, "Request Success" );
+
+        return ResponseEntity.ok(response);
     }
 
 

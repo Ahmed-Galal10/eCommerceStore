@@ -2,9 +2,7 @@ package com.store.service.impl;
 
 
 import com.store.dtos.customer.*;
-import com.store.model.Customer;
-import com.store.model.Order;
-import com.store.model.Review;
+import com.store.model.*;
 import com.store.repository.CustomerRepo;
 import com.store.service.CustomerService;
 import com.store.util.mappers.EntityDtoMapper;
@@ -29,6 +27,12 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Autowired
     private EntityDtoMapper<Review, CustomerReviewDto> customerReviewMapper;
+
+    @Autowired
+    private EntityDtoMapper<Wishlist, CustomerWishListDto> customerWishListMapper;
+
+    @Autowired
+    private EntityDtoMapper<Product, ProductWishListDto> productWishListMapper;
 
     public CustomerServiceImpl() {
     }
@@ -103,6 +107,16 @@ public class CustomerServiceImpl implements CustomerService {
         List<CustomerReviewDto> customerReviewDtoList = customerReviewMapper.entityListToDtoList(reviewList);
 
         return customerReviewDtoList;
+    }
+
+    @Override
+    public CustomerWishListDto getCustomerWishList(int customerId) {
+        Optional<Customer> customer = customerRepo.findById(customerId);
+
+        Wishlist wishlist = customer.get().getWishlist();
+        CustomerWishListDto customerWishListDto = customerWishListMapper.toDto(wishlist);
+
+        return customerWishListDto;
     }
 
 }
