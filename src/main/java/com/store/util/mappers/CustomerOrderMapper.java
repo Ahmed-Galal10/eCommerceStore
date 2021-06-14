@@ -1,9 +1,12 @@
 package com.store.util.mappers;
 
 import com.store.dtos.customer.CustomerOrderDto;
-import com.store.model.Customer;
 import com.store.model.Order;
 import com.store.model.OrderItem;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 public class CustomerOrderMapper extends EntityDtoMapper<Order, CustomerOrderDto>{
 
@@ -14,7 +17,10 @@ public class CustomerOrderMapper extends EntityDtoMapper<Order, CustomerOrderDto
 
         customerOrderDto.setId(entity.getId());
         customerOrderDto.setDate(entity.getDate());
-        customerOrderDto.setOrderItems(entity.getOrderItems());
+
+        Set<OrderItem> orderItemList =  entity.getOrderItems();
+
+        customerOrderDto.setOrderItems(new ArrayList<>(orderItemList));
 
         return customerOrderDto;
     }
@@ -22,12 +28,12 @@ public class CustomerOrderMapper extends EntityDtoMapper<Order, CustomerOrderDto
     @Override
     public Order toEntity(CustomerOrderDto dto) {
 
-        Order order = new Order();
+//        Order order = new Order();
+//
+//        order.setId(dto.getId());
+//        order.setDate(dto.getDate());
+//        order.setOrderItems(dto.getOrderItems());
 
-        order.setId(dto.getId());
-        order.setDate(dto.getDate());
-        order.setOrderItems(dto.getOrderItems());
-
-        return order;
+        return null;
     }
 }

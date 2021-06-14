@@ -1,12 +1,16 @@
 package com.store.controller;
 
 
+import com.store.dtos.GenericResponse;
 import com.store.dtos.cart.CartDto;
 import com.store.dtos.cart.CartItemDto;
 import com.store.dtos.cart.CartItemRequest;
 import com.store.dtos.customer.*;
+import com.store.dtos.order.OrderDto;
+import com.store.dtos.order.OrderRequest;
 import com.store.service.CartService;
 import com.store.service.CustomerService;
+import com.store.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,16 +21,19 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/customers")
+@CrossOrigin
 public class CustomerController {
 
     private CustomerService customerService;
     private CartService cartService;
-
+    private OrderService orderService;
     @Autowired
     public  CustomerController(CustomerService customerService,
-                               CartService cartService){
+                               CartService cartService,
+                               OrderService orderService){
         this.cartService = cartService;
         this.customerService = customerService;
+        this.orderService = orderService;
     }
 
     @GetMapping("")
@@ -97,14 +104,27 @@ public class CustomerController {
     }
 
     @GetMapping("/{customerId}/orders")
-    public ResponseEntity<List<CustomerOrderDto>> getCustomerOrders(@PathVariable("customerId") int customerId) {
+    public ResponseEntity<GenericResponse< List<CustomerOrderDto> >> getCustomerOrders(@PathVariable("customerId") int customerId) {
         try {
+
             List<CustomerOrderDto> customerOrderDtoList = customerService.getCustomerOrders(customerId);
-            return new ResponseEntity<>(customerOrderDtoList, HttpStatus.OK);
+            GenericResponse< List<CustomerOrderDto> > resp =
+                    new GenericResponse<>(customerOrderDtoList, HttpStatus.OK, "Request Success");
+            return new ResponseEntity(resp, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @PostMapping("/{customerId}/orders")
+    public  ResponseEntity<GenericResponse> createOrder( @PathVariable("customerId") int customerId,
+                                                         @RequestBody OrderRequest orderRequest){
+        orderRequest.setCustomerId( customerId );
+        OrderDto orderDto = orderService.createOrder(orderRequest);
+        GenericResponse<OrderDto> response =
+                new GenericResponse<>(orderDto, HttpStatus.CREATED, "ORDER CREATED");
+        return  ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping("/{customerId}/reviews")
@@ -133,7 +153,6 @@ public class CustomerController {
     }
 
     //=================================== Cart Api ==================================
-
 
     //TODO ====> Ask About UserId
     @GetMapping(path = "/{cusomterId}/carts")
