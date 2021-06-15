@@ -1,10 +1,10 @@
-package com.store.util;
+package com.store.util.mappers;
 
 import com.store.dtos.product.ProdDetailDto;
 import com.store.model.*;
 import com.store.util.mappers.EntityDtoMapper;
 
-public class ProductMapperAPI extends EntityDtoMapper<Product, ProdDetailDto> {
+public class ProductDetailMapper extends EntityDtoMapper<Product, ProdDetailDto> {
 
     @Override
     public ProdDetailDto toDto(Product product) {

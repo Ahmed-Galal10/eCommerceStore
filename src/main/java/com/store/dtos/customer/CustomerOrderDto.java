@@ -3,20 +3,18 @@ package com.store.dtos.customer;
 import com.store.model.OrderItem;
 
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class CustomerOrderDto {
     private int id;
     private Date date;
-    private Set<OrderItem> orderItems = new HashSet<>(0);
+    private List<OrderItem> orderItems = new ArrayList<>(0);
 
     public CustomerOrderDto() {
 
     }
 
-    public CustomerOrderDto(Date date, Set<OrderItem> orderItems) {
+    public CustomerOrderDto(Date date, List<OrderItem> orderItems) {
         this.date = date;
         this.orderItems = orderItems;
     }
@@ -37,11 +35,11 @@ public class CustomerOrderDto {
         this.date = date;
     }
 
-    public Set<OrderItem> getOrderItems() {
+    public List<OrderItem> getOrderItems() {
         return orderItems;
     }
 
-    public void setOrderItems(Set<OrderItem> orderItems) {
+    public void setOrderItems(List<OrderItem> orderItems) {
         this.orderItems = orderItems;
     }
 

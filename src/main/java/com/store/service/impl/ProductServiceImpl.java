@@ -4,20 +4,17 @@ import com.store.dtos.product.ProdDetailDto;
 import com.store.dtos.product.ProductImagesDto;
 import com.store.dtos.review.ReviewDto;
 import com.store.model.ProdImages;
+import com.store.dtos.seller.SellerProductDto;
 import com.store.model.Product;
 import com.store.model.Review;
 import com.store.model.Subcategory;
-import com.store.repo.ProductImagesRepository;
-import com.store.repo.ProductRepository;
+import com.store.repository.ProductRepo;
 import com.store.repository.ProductImagesRepo;
 import com.store.repository.ReviewRepo;
 import com.store.repository.SubCategoryRepo;
 import com.store.service.ProductService;
 import com.store.util.mappers.EntityDtoMapper;
 import com.store.util.mappers.ReviewMapper;
-
-import com.store.dtos.seller.ProductDto;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -33,27 +30,31 @@ import java.util.stream.Collectors;
 @SessionScope
 public class ProductServiceImpl implements ProductService {
 
-    private ProductRepository productRepo;
+    private ProductRepo productRepo;
     private SubCategoryRepo subCategoryRepo;
     private ReviewRepo reviewRepo;
     private ProductImagesRepo productImagesRepo;
 
     private EntityDtoMapper<Product, ProdDetailDto> productMapperAPI;
     private EntityDtoMapper<ProdImages, ProductImagesDto> productImagesMapper;
+    private EntityDtoMapper<Product, SellerProductDto> mapper;
 
     @Autowired
-    public ProductServiceImpl(ProductRepository productRepo,
+    public ProductServiceImpl(ProductRepo productRepo,
                               SubCategoryRepo subCategoryRepo,
                               ReviewRepo reviewRepo,
                               EntityDtoMapper<Product, ProdDetailDto> productMapperAPI,
                               EntityDtoMapper<ProdImages, ProductImagesDto> productImagesMapper,
-                              ProductImagesRepo productImagesRepo) {
+                              ProductImagesRepo productImagesRepo,
+                              EntityDtoMapper<Product, SellerProductDto> sellerProductMapper) {
         this.productRepo = productRepo;
         this.subCategoryRepo = subCategoryRepo;
         this.reviewRepo = reviewRepo;
         this.productMapperAPI = productMapperAPI;
         this.productImagesMapper = productImagesMapper;
         this.productImagesRepo = productImagesRepo;
+        this.mapper = sellerProductMapper;
+
     }
 
     @Override
@@ -122,6 +123,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void deleteProduct(Integer id) {
+
         productRepo.deleteById(id);
     }
 
@@ -147,10 +149,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductDto> getProductsByUserId(int sellerId) {
+    public List<SellerProductDto> getProductsByUserId(int sellerId) {
 
-//        return mapper.entityListToDtoList(productRepo.findByUser_Id(sellerId));
-        return null;
+        List<SellerProductDto> dtos = mapper.entityListToDtoList(productRepo.findByUser_Id(sellerId));
+
+        return dtos;
     }
 
     @Override
