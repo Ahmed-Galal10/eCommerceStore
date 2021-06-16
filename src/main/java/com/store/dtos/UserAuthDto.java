@@ -2,6 +2,7 @@ package com.store.dtos;
 
 public class UserAuthDto {
 
+    private Integer id;
     private String email;
     private String password;
     private String role;
@@ -9,7 +10,8 @@ public class UserAuthDto {
     public UserAuthDto() {
     }
 
-    public UserAuthDto(String email, String password, String role) {
+    public UserAuthDto(Integer id, String email, String password, String role) {
+        this.id = id;
         this.email = email;
         this.password = password;
         this.role = role;
@@ -37,5 +39,13 @@ public class UserAuthDto {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

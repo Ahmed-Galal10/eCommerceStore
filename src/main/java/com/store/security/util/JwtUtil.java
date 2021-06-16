@@ -1,6 +1,7 @@
 package com.store.security.util;
 
 import com.store.security.UserDetailsServiceImpl;
+import com.store.security.model.UserAuth;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -43,10 +44,10 @@ public class JwtUtil {
 
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
-        if(userDetails instanceof User){
+        if(userDetails instanceof UserAuth){
             List<GrantedAuthority> authorities=userDetails.getAuthorities().stream().collect(Collectors.toList());
-            System.out.println("Authority: "+authorities.get(0).getAuthority());
-            claims.put("Role",authorities.get(0).getAuthority());
+            claims.put("id",((UserAuth) userDetails).getId());
+            claims.put("role",authorities.get(0).getAuthority());
         }
         return createToken(claims, userDetails.getUsername());
     }

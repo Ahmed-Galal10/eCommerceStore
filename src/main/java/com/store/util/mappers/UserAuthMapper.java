@@ -9,6 +9,7 @@ public class UserAuthMapper extends EntityDtoMapper<User, UserAuthDto>{
     @Override
     public UserAuthDto toDto(User entity) {
         UserAuthDto userAuthDto = new UserAuthDto();
+        userAuthDto.setId(entity.getId());
         userAuthDto.setEmail(entity.getEmail());
         userAuthDto.setPassword(entity.getPassword());
         userAuthDto.setRole(entity.getRole());

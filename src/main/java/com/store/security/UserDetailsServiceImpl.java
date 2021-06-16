@@ -3,6 +3,7 @@ package com.store.security;
 
 
 import com.store.dtos.UserAuthDto;
+import com.store.security.model.UserAuth;
 import com.store.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -25,6 +26,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         UserAuthDto userAuthDto = userService.getUserByEmail(s);
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(userAuthDto.getRole()));
-        return new User(userAuthDto.getEmail(),userAuthDto.getPassword(),authorities);
+        return new UserAuth(userAuthDto.getEmail(), userAuthDto.getId(), userAuthDto.getPassword(),authorities);
     }
 }
