@@ -1,15 +1,20 @@
 package com.store.security.util;
 
+import com.store.security.UserDetailsServiceImpl;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 public class JwtUtil {
@@ -38,6 +43,11 @@ public class JwtUtil {
 
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
+        if(userDetails instanceof User){
+            List<GrantedAuthority> authorities=userDetails.getAuthorities().stream().collect(Collectors.toList());
+            System.out.println("Authority: "+authorities.get(0).getAuthority());
+            claims.put("Role",authorities.get(0).getAuthority());
+        }
         return createToken(claims, userDetails.getUsername());
     }
 
