@@ -16,7 +16,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -50,21 +49,14 @@ public class CustomerController {
 
     }
 
-    @GetMapping("/hi")
-    public String test(){
-        return "eshta ".repeat(5);
-    }
-
     @PostMapping()
-    public ResponseEntity<String> addCustomer(@RequestBody CustomerDto customerDto) {
-        try {
-            customerService.addCustomer(customerDto);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.badRequest()
-                    .body("Couldn't add customer");
-        }
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    public ResponseEntity<GenericResponse> addCustomer(@RequestBody CustomerRequestDto customerDto) {
+
+        CustomerRequestDto customerRequestDto = customerService.addCustomer(customerDto);
+        GenericResponse<CustomerRequestDto> response =
+                new GenericResponse<>(customerRequestDto, HttpStatus.CREATED, "CUSTOMER CREATED");
+
+        return  ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping("/{customerId}")

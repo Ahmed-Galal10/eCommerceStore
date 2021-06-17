@@ -43,6 +43,11 @@ public class MappingConfigs {
     }
 
     @Bean
+    public EntityDtoMapper<Customer, CustomerRequestDto> getCustomerRequestMapper(){
+        return new CustomerRequestMapper();
+    }
+
+    @Bean
     public EntityDtoMapper<Order, CustomerOrderDto> getCustomerOrderMapper(){
         return new CustomerOrderMapper();
     }

@@ -2,10 +2,7 @@ package com.store.service;
 
 
 
-import com.store.dtos.customer.CustomerDto;
-import com.store.dtos.customer.CustomerOrderDto;
-import com.store.dtos.customer.CustomerReviewDto;
-import com.store.dtos.customer.CustomerWishListDto;
+import com.store.dtos.customer.*;
 import com.store.model.Customer;
 import com.store.model.User;
 
@@ -18,7 +15,7 @@ public interface CustomerService {
 
     CustomerDto getCustomerById(Integer customerId);
 
-    CustomerDto addCustomer(CustomerDto customerDto);
+    CustomerRequestDto addCustomer(CustomerRequestDto customerDto);
 
     void deleteCustomer(Integer customerId);
 
