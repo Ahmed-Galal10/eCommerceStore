@@ -56,7 +56,7 @@ public class CustomerController {
         GenericResponse<CustomerRequestDto> response =
                 new GenericResponse<>(customerRequestDto, HttpStatus.CREATED, "CUSTOMER CREATED");
 
-        return  ResponseEntity.status(HttpStatus.CREATED).body(response);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping("/{customerId}")

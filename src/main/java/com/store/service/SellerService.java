@@ -2,6 +2,7 @@ package com.store.service;
 
 import com.store.dtos.seller.SellerDto;
 import com.store.dtos.seller.SellerRequest;
+import com.store.dtos.seller.SellerRequestDto;
 
 import java.util.List;
 
@@ -9,7 +10,7 @@ public interface SellerService {
 
     List<SellerDto> getAll();
 
-    SellerDto addSeller(SellerRequest sellerRequest);
+    SellerRequestDto addSeller(SellerRequestDto sellerRequestDto);
 
     SellerDto getBySellerId(int sellerId);
 
