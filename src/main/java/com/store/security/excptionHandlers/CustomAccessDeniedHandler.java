@@ -12,14 +12,16 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+
 @Component
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
     @Autowired
     private Gson gson;
+
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException e) throws IOException, ServletException {
         response.setContentType("application/json");
-        GenericResponse genericResponse = new GenericResponse(null,HttpStatus.UNAUTHORIZED,"Unauthorized request");
+        GenericResponse genericResponse = new GenericResponse(null, HttpStatus.UNAUTHORIZED, "Unauthorized request");
         response.getWriter().println(gson.toJson(genericResponse));
     }
 }
