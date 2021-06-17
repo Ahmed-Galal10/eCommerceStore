@@ -4,6 +4,7 @@ import com.store.security.excptionHandlers.CustomAccessDeniedHandler;
 import com.store.security.filters.JwtRequestFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -44,17 +45,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        /*
+        * /Customer POST - GET - PUT -DELETE
+        * CUSTOMER/ID  PUT
+        * */
+
         http
                 .csrf().disable().cors().and()
                 .authorizeRequests()
-                .antMatchers("/login/**","/shop/**").permitAll()
-                .antMatchers("/customers/**").hasAuthority("ROLE_CUSTOMER")
+                .antMatchers("/login","/shop/**").permitAll()
+                .antMatchers(HttpMethod.GET,"/customers").hasAuthority("ROLE_ADMIN")
+                .antMatchers(HttpMethod.GET,"/customers/*").hasAnyAuthority("ROLE_CUSTOMER", "ROLE_ADMIN")
+                .antMatchers(HttpMethod.POST,"/customers/").permitAll()
+                .antMatchers(HttpMethod.POST,"/customers/**").hasAnyAuthority("ROLE_CUSTOMER")
+                .antMatchers(HttpMethod.PUT,"/customers/**").hasAnyAuthority("ROLE_CUSTOMER", "ROLE_ADMIN")
+                .antMatchers(HttpMethod.DELETE,"/customers/**").hasAuthority( "ROLE_ADMIN")
                 .anyRequest().authenticated()
                 .and().exceptionHandling().accessDeniedHandler(accessDeniedHandler)
                 .and().addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
     }
 
     @Override

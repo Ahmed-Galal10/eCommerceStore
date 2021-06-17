@@ -18,8 +18,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
+
 @RestController
 @CrossOrigin
+@RequestMapping("/login")
 public class LoginController {
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -30,7 +32,8 @@ public class LoginController {
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+//    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @PostMapping
     public ResponseEntity<GenericResponse<?>> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest)
             throws Exception {
         try {
