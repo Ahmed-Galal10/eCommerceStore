@@ -2,13 +2,11 @@ package com.store.security;
 
 
 
-import com.store.dtos.UserAuthDto;
+import com.store.security.dtos.UserAuthDto;
 import com.store.security.model.UserAuth;
 import com.store.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

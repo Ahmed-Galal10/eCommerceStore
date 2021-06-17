@@ -1,6 +1,6 @@
 package com.store.service;
 
-import com.store.dtos.UserAuthDto;
+import com.store.security.dtos.UserAuthDto;
 
 public interface UserService {
 

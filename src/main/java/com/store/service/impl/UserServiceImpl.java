@@ -1,6 +1,6 @@
 package com.store.service.impl;
 
-import com.store.dtos.UserAuthDto;
+import com.store.security.dtos.UserAuthDto;
 import com.store.model.User;
 import com.store.repository.UserRepo;
 import com.store.service.UserService;

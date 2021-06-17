@@ -1,6 +1,6 @@
 package com.store.util.mappers;
 
-import com.store.dtos.UserAuthDto;
+import com.store.security.dtos.UserAuthDto;
 import com.store.model.User;
 import org.springframework.stereotype.Component;
 

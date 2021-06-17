@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.nio.file.AccessDeniedException;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
@@ -41,7 +40,9 @@ public class LoginController {
                     new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword())
             );
         } catch (BadCredentialsException e) {
-            return ResponseEntity.ok(new GenericResponse<>(null,HttpStatus.BAD_REQUEST,e.getMessage()));
+            return ResponseEntity.ok(new GenericResponse<>(null, HttpStatus.FORBIDDEN, e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.ok(new GenericResponse<>(null, HttpStatus.FORBIDDEN, "Bad credentials"));
         }
 
 
@@ -52,7 +53,7 @@ public class LoginController {
         System.out.println(userDetails.getAuthorities().stream().collect(Collectors.toList()));
         GenericResponse<?> response =
                 new GenericResponse<>(new AuthenticationResponse(jwt, userDetails.getAuthorities()),
-                        HttpStatus.OK,"REQUEST_SUCCEEDED");
+                        HttpStatus.OK, "REQUEST_SUCCEEDED");
         return ResponseEntity.ok(response);
     }
 }

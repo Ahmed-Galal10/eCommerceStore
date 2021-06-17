@@ -1,4 +1,4 @@
-package com.store.dtos;
+package com.store.security.dtos;
 
 public class UserAuthDto {
 
