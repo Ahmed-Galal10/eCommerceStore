@@ -7,13 +7,21 @@ public class ProdDetailDto {
     private Integer id;
     private String productName;
     private String productDescription;
-    private int userId;
+    private int sellerId;
     private int subcategoryId;
     private Integer productQuantity;
     private String productImg;
     private double productPrice;
     private List<String> prodImages;
     private boolean isOnSale;
+
+    public int getSellerId() {
+        return sellerId;
+    }
+
+    public void setSellerId(int sellerId) {
+        this.sellerId = sellerId;
+    }
 
     public Integer getId() {
         return id;
@@ -93,20 +101,13 @@ public class ProdDetailDto {
                 "id=" + id +
                 ", productName='" + productName + '\'' +
                 ", productDescription='" + productDescription + '\'' +
+                ", sellerId=" + sellerId +
+                ", subcategoryId=" + subcategoryId +
                 ", productQuantity=" + productQuantity +
                 ", productImg='" + productImg + '\'' +
                 ", productPrice=" + productPrice +
                 ", prodImages=" + prodImages +
                 ", isOnSale=" + isOnSale +
-                ", subcategoryId=" + subcategoryId +
                 '}';
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
     }
 }

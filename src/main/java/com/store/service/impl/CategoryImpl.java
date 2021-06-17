@@ -58,4 +58,16 @@ public class CategoryImpl implements CategoryService {
 
         return  subCategoryDtos;
     }
+
+    @Override
+    public CategoryDto createCategory(CategoryDto categoryDto) {
+        Category categoryEntity = new Category();
+        categoryEntity.setName( categoryDto.getName() );
+
+        Category c = categoryRepo.save(categoryEntity);
+
+        EntityDtoMapper<Category, CategoryDto> mapper = new CategoryMapper();
+        CategoryDto category = mapper.toDto( categoryEntity );
+        return  category;
+    }
 }

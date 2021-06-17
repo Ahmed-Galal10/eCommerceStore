@@ -1,5 +1,6 @@
 package com.store.controller;
 
+import com.store.dtos.GenericResponse;
 import com.store.dtos.product.ProdDetailDto;
 import com.store.dtos.product.ProductImagesDto;
 import com.store.dtos.review.ReviewDto;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/products")
+@CrossOrigin
 public class ProductController {
 
     ProductService productService;
@@ -34,10 +36,15 @@ public class ProductController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<ProdDetailDto> createProduct(@RequestBody ProdDetailDto prodDetailDto) {
+    public ResponseEntity<GenericResponse> createProduct(@RequestBody ProdDetailDto prodDetailDto) {
+
+        System.out.println(prodDetailDto);
         prodDetailDto = productService.addOrUpdateProduct(prodDetailDto);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(prodDetailDto);
+        GenericResponse<ProdDetailDto> response =
+                new GenericResponse<>(prodDetailDto, HttpStatus.CREATED, "PRODUCT CREATED");
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @RequestMapping(method = RequestMethod.PUT, path = "/{id}")

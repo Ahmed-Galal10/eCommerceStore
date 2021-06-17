@@ -49,5 +49,19 @@ public class CategoryController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping
+    public ResponseEntity< GenericResponse >  createCategory(@RequestBody CategoryDto category){
+
+        CategoryDto categoryDto = categoryService.createCategory(category);
+
+        GenericResponse<CategoryDto> response =
+                new GenericResponse<>(categoryDto, HttpStatus.CREATED, "CATTEGORY CREATED");
+
+        return  ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    //WHERE TO POST SUBCATEGORY
+
+
 
 }
