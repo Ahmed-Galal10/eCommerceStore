@@ -45,10 +45,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()
+                .csrf().disable().cors().and()
                 .authorizeRequests()
-                .antMatchers("/login/**").permitAll()
-                .antMatchers("/customers/**").hasAuthority("ROLE_SELLER")
+                .antMatchers("/login/**","/shop/**").permitAll()
+                .antMatchers("/customers/**").hasAuthority("ROLE_CUSTOMER")
                 .anyRequest().authenticated()
                 .and().exceptionHandling().accessDeniedHandler(accessDeniedHandler)
                 .and().addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
@@ -67,4 +67,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/swagger-ui/**",
                 "/webjars/**");
     }
+
+
+
 }
