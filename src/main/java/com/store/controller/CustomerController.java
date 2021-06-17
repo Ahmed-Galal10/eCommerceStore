@@ -81,16 +81,20 @@ public class CustomerController {
         }
     }
 
-    @PutMapping()
-    public ResponseEntity<String> updateCustomer(@RequestBody CustomerDto customerDto) {
+    @PutMapping("/{customerId}")
+    public ResponseEntity<GenericResponse> updateCustomer(@PathVariable("customerId") int customerId,
+                                                          @RequestBody CustomerDto customerDto) {
         try {
-
+            customerDto.setId(customerId);
             customerService.updateCustomer(customerDto);
 
-            return new ResponseEntity<>(HttpStatus.OK);
+            GenericResponse<CustomerDto> response =
+                    new GenericResponse<>(customerDto, HttpStatus.NO_CONTENT, "CUSTOMER CREATED");
+
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+
         } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return ResponseEntity.ok(new GenericResponse<>(null, HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()));
         }
 
     }
