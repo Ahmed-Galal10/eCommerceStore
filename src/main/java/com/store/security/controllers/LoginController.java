@@ -12,14 +12,14 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.stream.Collectors;
 
+
 @RestController
+@CrossOrigin
+@RequestMapping("/login")
 public class LoginController {
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -30,7 +30,8 @@ public class LoginController {
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+//    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @PostMapping
     public ResponseEntity<GenericResponse<?>> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest)
             throws Exception {
         try {
@@ -38,9 +39,9 @@ public class LoginController {
                     new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(), authenticationRequest.getPassword())
             );
         } catch (BadCredentialsException e) {
-            return ResponseEntity.ok(new GenericResponse<>(null, HttpStatus.FORBIDDEN, e.getMessage()));
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new GenericResponse<>(null, HttpStatus.FORBIDDEN, e.getMessage()));
         } catch (Exception e) {
-            return ResponseEntity.ok(new GenericResponse<>(null, HttpStatus.FORBIDDEN, "Bad credentials"));
+            return ResponseEntity.status(HttpStatus.FORBIDDEN ).body(new GenericResponse<>(null, HttpStatus.FORBIDDEN, "Bad credentials"));
         }
 
 

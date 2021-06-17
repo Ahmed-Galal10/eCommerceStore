@@ -13,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/seller")
+@CrossOrigin
 public class SellerController {
 
 
