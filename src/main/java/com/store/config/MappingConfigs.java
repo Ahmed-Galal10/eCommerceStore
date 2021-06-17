@@ -1,6 +1,7 @@
 package com.store.config;
 
 import com.store.dtos.customer.*;
+import com.store.dtos.seller.SellerRequestDto;
 import com.store.model.*;
 import com.store.dtos.customer.CustomerDto;
 import com.store.dtos.customer.CustomerOrderDto;
@@ -9,6 +10,7 @@ import com.store.dtos.product.ProdDetailDto;
 import com.store.dtos.product.ProductImagesDto;
 import com.store.util.mappers.ProductDetailMapper;
 import com.store.util.mappers.*;
+import com.store.util.mappers.order.SellerRequestMapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -43,6 +45,11 @@ public class MappingConfigs {
     }
 
     @Bean
+    public EntityDtoMapper<Customer, CustomerRequestDto> getCustomerRequestMapper(){
+        return new CustomerRequestMapper();
+    }
+
+    @Bean
     public EntityDtoMapper<Order, CustomerOrderDto> getCustomerOrderMapper(){
         return new CustomerOrderMapper();
     }
@@ -72,4 +79,8 @@ public class MappingConfigs {
         return new ProductImagesMapper();
     }
 
+    @Bean
+    public  EntityDtoMapper<Seller, SellerRequestDto> getSellerRequestMapper(){
+        return new SellerRequestMapper();
+    }
 }

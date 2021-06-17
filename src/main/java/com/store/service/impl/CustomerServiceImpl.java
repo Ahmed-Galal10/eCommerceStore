@@ -23,6 +23,9 @@ public class CustomerServiceImpl implements CustomerService {
     private EntityDtoMapper<Customer, CustomerDto> customerMapper;
 
     @Autowired
+    private EntityDtoMapper<Customer, CustomerRequestDto> customerRequestMapper;
+
+    @Autowired
     private EntityDtoMapper<Order, CustomerOrderDto> customerOrderMapper;
 
     @Autowired
@@ -65,12 +68,12 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public CustomerDto addCustomer(CustomerDto customerDto) {
+    public CustomerRequestDto addCustomer(CustomerRequestDto customerDto) {
 
-        Customer customer = customerMapper.toEntity(customerDto);
+        Customer customer = customerRequestMapper.toEntity(customerDto);
         Customer savedCustomer = customerRepo.save(customer);
 
-        return customerMapper.toDto(savedCustomer);
+        return customerRequestMapper.toDto(savedCustomer);
     }
 
     @Override
