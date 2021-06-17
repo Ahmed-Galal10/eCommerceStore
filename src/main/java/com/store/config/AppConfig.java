@@ -1,5 +1,7 @@
 package com.store.config;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.store.dtos.customer.CustomerDto;
 import com.store.dtos.customer.CustomerOrderDto;
 import com.store.dtos.customer.CustomerReviewDto;
@@ -47,4 +49,10 @@ public class AppConfig {
                 "License of API", "API license URL", Collections.emptyList());
     }
 
+    @Bean
+    public Gson gsonInstance(){
+        return new GsonBuilder()
+                .serializeNulls()
+                .create();
+    }
 }
