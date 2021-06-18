@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/seller")
-@CrossOrigin(origins = "http://localhost:2323")
+@CrossOrigin()
 public class SellerController {
 
 
@@ -94,17 +94,12 @@ public class SellerController {
         return response;
     }
 
-    @CrossOrigin(origins = "http://localhost:2323")
-    @GetMapping(value = "/{sellerId}/products", params = {"page", "size"})
+    @GetMapping(value = "/{sellerId}/products")
     public GenericResponse<List<SellerProductDto>>
-    getSellerProducts(@PathVariable("sellerId") int sellerId,
-                      @RequestParam(value = "page", defaultValue = "0") int page,
-                      @RequestParam(value = "size", defaultValue = "1") int size) {
+    getSellerProducts(@PathVariable("sellerId") int sellerId) {
 
 
-        Pageable pageable = PageRequest.of(page, size);
-        System.out.println(page + size);
-        List<SellerProductDto> dtos = productService.getProductsByUserId(sellerId, pageable);
+        List<SellerProductDto> dtos = productService.getProductsByUserId(sellerId);
         System.out.println(dtos);
         GenericResponse<List<SellerProductDto>> response =
                 new GenericResponse<>(dtos, HttpStatus.OK, "REQUEST SUCCESSFUL");

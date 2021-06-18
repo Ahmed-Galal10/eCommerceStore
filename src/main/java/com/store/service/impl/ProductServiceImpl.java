@@ -149,9 +149,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<SellerProductDto> getProductsByUserId(int sellerId, Pageable pageable) {
+    public List<SellerProductDto> getProductsByUserId(int sellerId) {
 
-        List<Product> products = productRepo.findByUser_Id(sellerId, pageable);
+        List<Product> products = productRepo.findByUser_Id(sellerId);
 
         List<SellerProductDto> dtos = mapper.entityListToDtoList(products);
 

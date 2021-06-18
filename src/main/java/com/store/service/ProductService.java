@@ -23,7 +23,7 @@ public interface ProductService {
 
     List<ReviewDto> getProductReviews(Integer id, Integer pageNumber);
 
-    List<SellerProductDto> getProductsByUserId(int sellerId, Pageable pageable);
+    List<SellerProductDto> getProductsByUserId(int sellerId);
 
     void deleteProduct(Integer id);
 
