@@ -26,8 +26,6 @@ public class UploadController {
         this.s3UploadManager = s3UploadManager;
     }
 
-
-
     @PostMapping(params = "multiple")
     public ResponseEntity<GenericResponse> uploadMultipleFiles(@RequestParam("files")MultipartFile[] files){
 
