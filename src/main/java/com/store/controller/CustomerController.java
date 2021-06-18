@@ -50,11 +50,6 @@ public class CustomerController {
 
     }
 
-    @GetMapping("/hi")
-    public String test(){
-        return "eshta ".repeat(5);
-    }
-
     @PostMapping()
     public ResponseEntity<String> addCustomer(@RequestBody CustomerDto customerDto) {
         try {

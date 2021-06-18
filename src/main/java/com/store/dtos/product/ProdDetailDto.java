@@ -14,6 +14,8 @@ public class ProdDetailDto {
     private double productPrice;
     private List<String> prodImages;
     private boolean isOnSale;
+    private String subCategoryName;
+
 
     public Integer getId() {
         return id;
@@ -87,19 +89,12 @@ public class ProdDetailDto {
         this.subcategoryId = subcategoryId;
     }
 
-    @Override
-    public String toString() {
-        return "ProdDetailDto{" +
-                "id=" + id +
-                ", productName='" + productName + '\'' +
-                ", productDescription='" + productDescription + '\'' +
-                ", productQuantity=" + productQuantity +
-                ", productImg='" + productImg + '\'' +
-                ", productPrice=" + productPrice +
-                ", prodImages=" + prodImages +
-                ", isOnSale=" + isOnSale +
-                ", subcategoryId=" + subcategoryId +
-                '}';
+    public String getSubCategoryName() {
+        return subCategoryName;
+    }
+
+    public void setSubCategoryName(String subCategoryName) {
+        this.subCategoryName = subCategoryName;
     }
 
     public int getUserId() {
@@ -108,5 +103,22 @@ public class ProdDetailDto {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    @Override
+    public String toString() {
+        return "ProdDetailDto{" +
+                "id=" + id +
+                ", productName='" + productName + '\'' +
+                ", productDescription='" + productDescription + '\'' +
+                ", userId=" + userId +
+                ", subcategoryId=" + subcategoryId +
+                ", productQuantity=" + productQuantity +
+                ", productImg='" + productImg + '\'' +
+                ", productPrice=" + productPrice +
+                ", prodImages=" + prodImages +
+                ", isOnSale=" + isOnSale +
+                ", subCategoryName='" + subCategoryName + '\'' +
+                '}';
     }
 }

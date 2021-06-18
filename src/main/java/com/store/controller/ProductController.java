@@ -1,7 +1,9 @@
 package com.store.controller;
 
+import com.store.dtos.GenericResponse;
 import com.store.dtos.product.ProdDetailDto;
 import com.store.dtos.product.ProductImagesDto;
+import com.store.dtos.product.SellerProdDetailDto;
 import com.store.dtos.review.ReviewDto;
 import com.store.model.Product;
 import com.store.service.ProductService;
@@ -30,6 +32,19 @@ public class ProductController {
             return ResponseEntity.ok(prodDetailDto);
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping(value = "/{productId}", params = {"meta"})
+    public ResponseEntity<GenericResponse> getSellerProductById(@PathVariable("productId") Integer productId) {
+        try {
+            SellerProdDetailDto sellerProdDetailDto = productService.getSellerProductDetailById(productId);
+
+            GenericResponse<SellerProdDetailDto> response =
+                   new GenericResponse(sellerProdDetailDto, HttpStatus.OK, "REQUEST_SUCCESS");
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.ok(new GenericResponse<>(null, HttpStatus.BAD_REQUEST, e.getMessage()));
         }
     }
 

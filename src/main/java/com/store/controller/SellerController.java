@@ -97,8 +97,7 @@ public class SellerController {
     @GetMapping(value = "/{sellerId}/products")
     public GenericResponse<List<SellerProductDto>>
     getSellerProducts(@PathVariable("sellerId") int sellerId) {
-
-
+        
         List<SellerProductDto> dtos = productService.getProductsByUserId(sellerId);
         System.out.println(dtos);
         GenericResponse<List<SellerProductDto>> response =

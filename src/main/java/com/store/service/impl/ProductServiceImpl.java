@@ -2,6 +2,7 @@ package com.store.service.impl;
 
 import com.store.dtos.product.ProdDetailDto;
 import com.store.dtos.product.ProductImagesDto;
+import com.store.dtos.product.SellerProdDetailDto;
 import com.store.dtos.review.ReviewDto;
 import com.store.dtos.seller.SellerProductDto;
 import com.store.model.ProdImages;
@@ -111,6 +112,37 @@ public class ProductServiceImpl implements ProductService {
         prodDetailDto.setProdImages(imagesUrls);
 
         return prodDetailDto;
+    }
+
+    @Override
+    public SellerProdDetailDto getSellerProductDetailById(Integer productId) {
+
+        Product product = productRepo.findById(productId).orElseThrow(() -> new RuntimeException("Not found"));
+
+        ProdDetailDto prodDetailDto = productMapperAPI.toDto(product);
+
+        List<ProdImages> prodImages = productImagesRepo.findProdImagesByProduct(product);
+
+        List<String> imagesUrls = prodImages
+                .stream()
+                .map(images -> images.getImageUrl()).collect(Collectors.toList());
+
+        prodDetailDto.setProdImages(imagesUrls);
+
+
+        SellerProdDetailDto sellerProdDetailDto = new SellerProdDetailDto();
+        sellerProdDetailDto.setProdDetailDto(prodDetailDto);
+
+        Double averageRating = reviewRepo.findProductAverageRatingById(productId);
+        System.out.println("averageRating is" + averageRating);
+
+        Integer productInWishlists = productRepo.countProductInWishListsById(productId);
+        System.out.println("productInWishlists is " + productInWishlists);
+
+        sellerProdDetailDto.setAverageRating(averageRating);
+        sellerProdDetailDto.setWishListCounter(productInWishlists);
+
+        return sellerProdDetailDto;
     }
 
     @Override
