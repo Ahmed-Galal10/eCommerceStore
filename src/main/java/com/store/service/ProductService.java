@@ -4,6 +4,7 @@ import com.store.dtos.product.ProdDetailDto;
 import com.store.dtos.product.ProductImagesDto;
 import com.store.dtos.review.ReviewDto;
 import com.store.dtos.seller.SellerProductDto;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -22,7 +23,7 @@ public interface ProductService {
 
     List<ReviewDto> getProductReviews(Integer id, Integer pageNumber);
 
-    List<SellerProductDto> getProductsByUserId(int sellerId);
+    List<SellerProductDto> getProductsByUserId(int sellerId, Pageable pageable);
 
     void deleteProduct(Integer id);
 
