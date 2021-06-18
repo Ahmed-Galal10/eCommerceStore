@@ -68,13 +68,17 @@ public class CustomerController {
     }
 
     @GetMapping("/{customerId}")
-    public ResponseEntity<CustomerDto> getCustomerById(@PathVariable("customerId") int customerId) {
+    public ResponseEntity<GenericResponse<CustomerDto>> getCustomerById(@PathVariable("customerId") int customerId) {
+        GenericResponse<CustomerDto> customerGenericResponse = null;
         try {
             CustomerDto customerDto = customerService.getCustomerById(customerId);
-            return new ResponseEntity<>(customerDto, HttpStatus.OK);
+             customerGenericResponse =
+                    new GenericResponse<>(customerDto,HttpStatus.OK,"User Retrieved Successfully");
+            return new ResponseEntity<GenericResponse<CustomerDto>>(customerGenericResponse, HttpStatus.OK);
         } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            customerGenericResponse =
+                    new GenericResponse<>(null,HttpStatus.NOT_FOUND,"Can't Found The User");
+            return new ResponseEntity<GenericResponse<CustomerDto>>(customerGenericResponse, HttpStatus.OK);
         }
     }
 
