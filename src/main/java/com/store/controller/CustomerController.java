@@ -105,10 +105,10 @@ public class CustomerController {
     }
     @PatchMapping("/{customerId}")
     public ResponseEntity<GenericResponse<CustomerDto>> updateCustomerImage(@PathVariable("customerId") int customerId,
-                                                                            @RequestBody String imageUrl){
+                                                                            @RequestBody CustomerImageDto customerImageDto){
         try {
             CustomerDto customerDto = customerService.getCustomerById(customerId);
-            customerDto.setImage(imageUrl);
+            customerDto.setImage(customerImageDto.getImage());
             customerService.updateCustomer(customerDto);
             GenericResponse<CustomerDto> response =
                     new GenericResponse<>(customerDto, HttpStatus.NO_CONTENT, "CUSTOMER IMAGE UPDATED");
