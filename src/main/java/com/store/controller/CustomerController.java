@@ -94,11 +94,27 @@ public class CustomerController {
             customerService.updateCustomer(customerDto);
 
             GenericResponse<CustomerDto> response =
-                    new GenericResponse<>(customerDto, HttpStatus.NO_CONTENT, "CUSTOMER CREATED");
+                    new GenericResponse<>(customerDto, HttpStatus.NO_CONTENT, "CUSTOMER UPDATED");
 
             return ResponseEntity.status(HttpStatus.OK).body(response);
 
         } catch (Exception e) {
+            return ResponseEntity.ok(new GenericResponse<>(null, HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()));
+        }
+
+    }
+    @PatchMapping("/{customerId}")
+    public ResponseEntity<GenericResponse<CustomerDto>> updateCustomerImage(@PathVariable("customerId") int customerId,
+                                                                            @RequestBody String imageUrl){
+        try {
+            CustomerDto customerDto = customerService.getCustomerById(customerId);
+            customerDto.setImage(imageUrl);
+            customerService.updateCustomer(customerDto);
+            GenericResponse<CustomerDto> response =
+                    new GenericResponse<>(customerDto, HttpStatus.NO_CONTENT, "CUSTOMER IMAGE UPDATED");
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+
+        }catch (Exception e){
             return ResponseEntity.ok(new GenericResponse<>(null, HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()));
         }
 
