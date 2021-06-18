@@ -60,6 +60,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST,"/customers/**").hasAnyAuthority("ROLE_CUSTOMER")
                 .antMatchers(HttpMethod.PUT,"/customers/**").hasAnyAuthority("ROLE_CUSTOMER", "ROLE_ADMIN")
                 .antMatchers(HttpMethod.DELETE,"/customers/**").hasAuthority( "ROLE_ADMIN")
+                .antMatchers("/upload/**").hasAnyAuthority( "ROLE_SELLER","ROLE_CUSTOMER","ROLE_ADMIN")
                 .anyRequest().authenticated()
                 .and().exceptionHandling().accessDeniedHandler(accessDeniedHandler)
                 .and().addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)

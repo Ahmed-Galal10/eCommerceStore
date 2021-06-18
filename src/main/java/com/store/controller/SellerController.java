@@ -1,11 +1,15 @@
 package com.store.controller;
 
+import com.store.dtos.GenericResponse;
+import com.store.dtos.customer.CustomerRequestDto;
 import com.store.dtos.seller.SellerDto;
 import com.store.dtos.seller.SellerProductDto;
 import com.store.dtos.seller.SellerRequest;
+import com.store.dtos.seller.SellerRequestDto;
 import com.store.service.ProductService;
 import com.store.service.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +20,6 @@ import java.util.List;
 @CrossOrigin
 public class SellerController {
 
-
     private final SellerService sellerService;
     private final ProductService productService;
 
@@ -25,9 +28,7 @@ public class SellerController {
     public SellerController(SellerService sellerService, ProductService productService) {
 
         this.sellerService = sellerService;
-
         this.productService = productService;
-
     }
 
     @GetMapping
@@ -38,15 +39,16 @@ public class SellerController {
         return ResponseEntity.ok(sellerDtos);
     }
 
+    @PostMapping()
+    public ResponseEntity<GenericResponse> addSeller(@RequestBody SellerRequestDto sellerDto) {
 
-    @PostMapping
-    public ResponseEntity<SellerDto> addSeller(@RequestBody SellerRequest sellerRequest) {
+        SellerRequestDto sellerRequestDto = sellerService.addSeller(sellerDto);
+        GenericResponse<SellerRequestDto> response =
+                new GenericResponse<>(sellerRequestDto, HttpStatus.CREATED, "SELLER CREATED");
 
-        SellerDto dto = sellerService.addSeller(sellerRequest);
-
-        return ResponseEntity.ok(dto);
-
+        return  ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
+
 
     @GetMapping("/{sellerId}")
     public ResponseEntity<SellerDto> getSeller(@PathVariable("sellerId") int sellerId) {

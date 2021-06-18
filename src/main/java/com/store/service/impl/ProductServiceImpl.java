@@ -3,15 +3,9 @@ package com.store.service.impl;
 import com.store.dtos.product.ProdDetailDto;
 import com.store.dtos.product.ProductImagesDto;
 import com.store.dtos.review.ReviewDto;
-import com.store.model.ProdImages;
+import com.store.model.*;
 import com.store.dtos.seller.SellerProductDto;
-import com.store.model.Product;
-import com.store.model.Review;
-import com.store.model.Subcategory;
-import com.store.repository.ProductRepo;
-import com.store.repository.ProductImagesRepo;
-import com.store.repository.ReviewRepo;
-import com.store.repository.SubCategoryRepo;
+import com.store.repository.*;
 import com.store.service.ProductService;
 import com.store.util.mappers.EntityDtoMapper;
 import com.store.util.mappers.ReviewMapper;
@@ -23,7 +17,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.SessionScope;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,6 +30,7 @@ public class ProductServiceImpl implements ProductService {
     private SubCategoryRepo subCategoryRepo;
     private ReviewRepo reviewRepo;
     private ProductImagesRepo productImagesRepo;
+    private  SellerRepo  sellerRepo;
 
     private EntityDtoMapper<Product, ProdDetailDto> productMapperAPI;
     private EntityDtoMapper<ProdImages, ProductImagesDto> productImagesMapper;
@@ -46,7 +43,8 @@ public class ProductServiceImpl implements ProductService {
                               EntityDtoMapper<Product, ProdDetailDto> productMapperAPI,
                               EntityDtoMapper<ProdImages, ProductImagesDto> productImagesMapper,
                               ProductImagesRepo productImagesRepo,
-                              EntityDtoMapper<Product, SellerProductDto> sellerProductMapper) {
+                              EntityDtoMapper<Product, SellerProductDto> sellerProductMapper,
+                              SellerRepo  sellerRepo) {
         this.productRepo = productRepo;
         this.subCategoryRepo = subCategoryRepo;
         this.reviewRepo = reviewRepo;
@@ -54,7 +52,7 @@ public class ProductServiceImpl implements ProductService {
         this.productImagesMapper = productImagesMapper;
         this.productImagesRepo = productImagesRepo;
         this.mapper = sellerProductMapper;
-
+        this.sellerRepo = sellerRepo;
     }
 
     @Override
@@ -115,10 +113,39 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProdDetailDto addOrUpdateProduct(ProdDetailDto prodDetailDto) {
-        Product product = productMapperAPI.toEntity(prodDetailDto);
-        product = productRepo.save(product);
 
-        return productMapperAPI.toDto(product);
+        Integer subCategoryId = prodDetailDto.getSubcategoryId();
+        Integer sellerId = prodDetailDto.getSellerId();
+        Product product = new Product();
+
+        Set<ProdImages> prodImagesSet = new HashSet<>();
+
+        System.out.println( sellerRepo.findAll().size());
+        System.out.println( sellerId);
+        System.out.println( subCategoryId);
+
+        Seller seller = sellerRepo.getOne(sellerId);
+        Subcategory subcategory = subCategoryRepo.getOne(subCategoryId);
+        product.setName( prodDetailDto.getProductName() );
+        product.setDescription( prodDetailDto.getProductDescription() );
+        product.setImg(  prodDetailDto.getProductImg() );
+        product.setPrice( prodDetailDto.getProductPrice() );
+        product.setQuantity( prodDetailDto.getProductQuantity() );
+
+        product.setSubcategory( subcategory );
+        product.setUser( seller );
+
+        prodDetailDto.getProdImages().forEach(imgUrl -> {
+            ProdImages prodImage = new ProdImages();
+            prodImage.setProduct( product );
+            prodImage.setImageUrl(imgUrl);
+            prodImagesSet.add( prodImage);
+        });
+        product.setProdImageses( prodImagesSet );
+
+        Product persistedProduct = productRepo.save( product );
+        ProdDetailDto dto = productMapperAPI.toDto(persistedProduct);
+        return  dto;
     }
 
     @Override

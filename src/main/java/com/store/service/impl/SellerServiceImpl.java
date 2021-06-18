@@ -1,13 +1,18 @@
 package com.store.service.impl;
 
+import com.store.dtos.customer.CustomerDto;
+import com.store.dtos.customer.CustomerRequestDto;
 import com.store.dtos.seller.SellerDto;
 import com.store.dtos.seller.SellerRequest;
+import com.store.dtos.seller.SellerRequestDto;
+import com.store.model.Customer;
 import com.store.model.Seller;
 import com.store.repository.OrderRepo;
 import com.store.repository.ProductRepo;
 import com.store.repository.SellerRepo;
 import com.store.repository.SoldItemRepo;
 import com.store.service.SellerService;
+import com.store.util.mappers.EntityDtoMapper;
 import com.store.util.mappers.SellerMapper;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +31,9 @@ public class SellerServiceImpl implements SellerService {
     private final ProductRepo productRepo;
     private final OrderRepo orderRepo;
     private final SoldItemRepo soldItemRepo;
+
+    @Autowired
+    private EntityDtoMapper<Seller, SellerRequestDto> sellerRequestMapper;
 
     @Autowired
     public SellerServiceImpl(SellerRepo sellerRepo, ProductRepo productRepo,
@@ -48,34 +56,12 @@ public class SellerServiceImpl implements SellerService {
     }
 
     @Override
-    public SellerDto addSeller(SellerRequest sellerRequest) {
+    public SellerRequestDto addSeller(SellerRequestDto sellerDto) {
 
-        Boolean verified = (sellerRequest.getIsEmailVerified() != null) ? sellerRequest.getIsEmailVerified() : false;
-        Boolean deleted = (sellerRequest.getIsDeleted() != null) ? sellerRequest.getIsDeleted() : false;
+        Seller seller = sellerRequestMapper.toEntity(sellerDto);
+        Seller savedSeller = sellerRepo.save(seller);
 
-        Seller seller = new Seller();
-
-        seller.setBalance(sellerRequest.getBalance());
-        seller.setAddress(sellerRequest.getAddress());
-        seller.setName(sellerRequest.getName());
-        seller.setEmail(sellerRequest.getEmail());
-        seller.setImage(sellerRequest.getImage());
-        seller.setPhone(sellerRequest.getPhone());
-        seller.setPassword(sellerRequest.getPassword());
-        seller.setIsEmailVerified(verified);
-        seller.setIsDeleted(deleted);
-        seller.setRegDate(new Date());
-        Seller result = sellerRepo.save(seller);
-
-        if (result == null) {
-
-            //todo throw custom exception
-        }
-
-        SellerDto sellerDto = mapper.toDto(result);
-
-        return sellerDto;
-
+        return sellerRequestMapper.toDto(savedSeller);
     }
 
     @Override

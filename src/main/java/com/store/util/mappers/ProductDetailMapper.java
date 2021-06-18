@@ -10,9 +10,9 @@ public class ProductDetailMapper extends EntityDtoMapper<Product, ProdDetailDto>
     public ProdDetailDto toDto(Product product) {
         ProdDetailDto prodDetailDto = new ProdDetailDto();
 
-        prodDetailDto.setUserId(product.getId());
+        prodDetailDto.setId(product.getId());
         prodDetailDto.setProductName(product.getName());
-        prodDetailDto.setUserId(product.getUser().getId());
+        prodDetailDto.setSellerId(product.getUser().getId());
         prodDetailDto.setProductPrice(product.getPrice());
         prodDetailDto.setProductImg(product.getImg());
         prodDetailDto.setProductQuantity(product.getQuantity());
@@ -30,7 +30,7 @@ public class ProductDetailMapper extends EntityDtoMapper<Product, ProdDetailDto>
         product.setId(prodDetailDto.getId());
         product.setName(prodDetailDto.getProductName());
         User user = new User();
-        user.setId(prodDetailDto.getUserId());
+        user.setId(prodDetailDto.getSellerId());
         product.setUser(user);
         product.setQuantity(prodDetailDto.getProductQuantity());
         product.setImg(prodDetailDto.getProductImg());

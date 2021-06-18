@@ -169,7 +169,7 @@ public class Product  implements java.io.Serializable {
         this.cartItems = cartItems;
     }
 
-@OneToMany(fetch=FetchType.LAZY, mappedBy="product")
+@OneToMany(fetch=FetchType.LAZY, mappedBy="product", cascade = CascadeType.ALL)
     public Set<ProdImages> getProdImageses() {
         return this.prodImageses;
     }

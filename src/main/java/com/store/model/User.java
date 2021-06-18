@@ -1,6 +1,8 @@
 package com.store.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -13,112 +15,105 @@ import static javax.persistence.GenerationType.IDENTITY;
  */
 @Entity
 @Table(name="user"
-    ,catalog="ecommerce"
-    , uniqueConstraints = {@UniqueConstraint(columnNames="email"), @UniqueConstraint(columnNames="name")} 
+        ,catalog="ecommerce"
+        , uniqueConstraints = {@UniqueConstraint(columnNames="email"), @UniqueConstraint(columnNames="name")}
 )
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "role", discriminatorType = DiscriminatorType.STRING)
 public class User  implements java.io.Serializable {
 
-     private Integer id;
-     private String name;
-     private String email;
-     private String password;
-     private String address;
-     private Date regDate;
-     private String image;
-     private String phone;
-     private String role;
-     private Boolean isEmailVerified;
-     private Boolean isDeleted;
-
-
+    private Integer id;
+    private String name;
+    private String email;
+    private String password;
+    private String address;
+    private Date regDate;
+    private String image;
+    private String phone;
+    private String role;
+    private Boolean isEmailVerified;
+    private Boolean isDeleted;
 
     public User() {
-
     }
 
+    @Id @GeneratedValue(strategy=IDENTITY)
 
-
-     @Id @GeneratedValue(strategy=IDENTITY)
-
-    
     @Column(name="id", unique=true, nullable=false)
     public Integer getId() {
         return this.id;
     }
-    
+
     public void setId(Integer id) {
         this.id = id;
     }
 
-    
+
     @Column(name="name", unique=true, nullable=false, length=25)
     public String getName() {
         return this.name;
     }
-    
+
     public void setName(String name) {
         this.name = name;
     }
 
-    
+
     @Column(name="email", unique=true, nullable=false, length=100)
     public String getEmail() {
         return this.email;
     }
-    
+
     public void setEmail(String email) {
         this.email = email;
     }
 
-    
+
     @Column(name="password", nullable=false, length=270)
     public String getPassword() {
         return this.password;
     }
-    
+
     public void setPassword(String password) {
         this.password = password;
     }
 
-    
+
     @Column(name="address", nullable=false, length=100)
     public String getAddress() {
         return this.address;
     }
-    
+
     public void setAddress(String address) {
         this.address = address;
     }
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name="reg_date", nullable=false, length=19)
+    @Column(name="reg_date", length=19)
     public Date getRegDate() {
         return this.regDate;
     }
-    
+
     public void setRegDate(Date regDate) {
         this.regDate = regDate;
     }
 
 
-
-    @Column(name="image", nullable=false, length=250)
+    @Column(name="image", length=250)
     public String getImage() {
         return this.image;
     }
-    
+
     public void setImage(String image) {
         this.image = image;
     }
 
-    
+
     @Column(name="phone", nullable=false, length=45)
     public String getPhone() {
         return this.phone;
     }
-    
+
     public void setPhone(String phone) {
         this.phone = phone;
     }
@@ -138,7 +133,7 @@ public class User  implements java.io.Serializable {
     public Boolean getIsEmailVerified() {
         return this.isEmailVerified;
     }
-    
+
     public void setIsEmailVerified(Boolean isEmailVerified) {
         this.isEmailVerified = isEmailVerified;
     }
@@ -148,7 +143,7 @@ public class User  implements java.io.Serializable {
     public Boolean getIsDeleted() {
         return this.isDeleted;
     }
-    
+
     public void setIsDeleted(Boolean isDeleted) {
         this.isDeleted = isDeleted;
     }

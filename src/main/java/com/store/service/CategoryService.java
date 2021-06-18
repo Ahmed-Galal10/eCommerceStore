@@ -14,4 +14,5 @@ public interface CategoryService {
 
     List<SubCategoryDto> getSubCategoriesByCategoryId(Integer categoryId);
 
+    CategoryDto createCategory(CategoryDto categoryDto);
 }

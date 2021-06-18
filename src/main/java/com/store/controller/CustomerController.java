@@ -11,12 +11,12 @@ import com.store.dtos.order.OrderRequest;
 import com.store.service.CartService;
 import com.store.service.CustomerService;
 import com.store.service.OrderService;
+import net.bytebuddy.description.type.TypeList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -50,21 +50,14 @@ public class CustomerController {
 
     }
 
-    @GetMapping("/hi")
-    public String test(){
-        return "eshta ".repeat(5);
-    }
-
     @PostMapping()
-    public ResponseEntity<String> addCustomer(@RequestBody CustomerDto customerDto) {
-        try {
-            customerService.addCustomer(customerDto);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.badRequest()
-                    .body("Couldn't add customer");
-        }
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    public ResponseEntity<GenericResponse> addCustomer(@RequestBody CustomerRequestDto customerDto) {
+
+        CustomerRequestDto customerRequestDto = customerService.addCustomer(customerDto);
+        GenericResponse<CustomerRequestDto> response =
+                new GenericResponse<>(customerRequestDto, HttpStatus.CREATED, "CUSTOMER CREATED");
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping("/{customerId}")
@@ -93,16 +86,20 @@ public class CustomerController {
         }
     }
 
-    @PutMapping()
-    public ResponseEntity<String> updateCustomer(@RequestBody CustomerDto customerDto) {
+    @PutMapping("/{customerId}")
+    public ResponseEntity<GenericResponse> updateCustomer(@PathVariable("customerId") int customerId,
+                                                          @RequestBody CustomerDto customerDto) {
         try {
-
+            customerDto.setId(customerId);
             customerService.updateCustomer(customerDto);
 
-            return new ResponseEntity<>(HttpStatus.OK);
+            GenericResponse<CustomerDto> response =
+                    new GenericResponse<>(customerDto, HttpStatus.NO_CONTENT, "CUSTOMER CREATED");
+
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+
         } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return ResponseEntity.ok(new GenericResponse<>(null, HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()));
         }
 
     }
@@ -160,34 +157,46 @@ public class CustomerController {
 
     //TODO ====> Ask About UserId
     @GetMapping(path = "/{cusomterId}/carts")
-    public  ResponseEntity<CartDto> getCart(@PathVariable("cusomterId") Integer userId){
-
+    public  ResponseEntity<GenericResponse> getCart(@PathVariable("cusomterId") Integer userId){
         CartDto cartDto =  cartService.getCartByUserId(userId);
-        return ResponseEntity.ok(cartDto);
+
+        GenericResponse<CartDto> response =
+                new GenericResponse(cartDto, HttpStatus.OK, "REQUEST_SUCCESS");
+
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping(path = "/{cusomterId}/carts")
-    public ResponseEntity<CartItemDto> addCartItem(@PathVariable("cusomterId") Integer userId,
+    public ResponseEntity<GenericResponse> addCartItem(@PathVariable("cusomterId") Integer userId,
                                                    @RequestBody CartItemRequest cartItemRequest) {
         cartItemRequest.setCustomerId(userId);
         CartItemDto cartItemDto =  cartService.addCartItem(cartItemRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(cartItemDto) ;
+
+        GenericResponse<CartItemDto> response =
+                new GenericResponse(cartItemDto, HttpStatus.OK, "REQUEST_SUCCESS");
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response) ;
     }
 
     @PutMapping(path = "/{cusomterId}/carts")
-    public ResponseEntity<CartItemDto> updateCartItem(@PathVariable("cusomterId") Integer userId,
+    public ResponseEntity<GenericResponse> updateCartItem(@PathVariable("cusomterId") Integer userId,
                                                       @RequestBody CartItemRequest cartItemRequest) {
         cartItemRequest.setCustomerId(userId);
         CartItemDto cartItemDto =  cartService.updateCartItem(cartItemRequest);
-        return ResponseEntity.ok(cartItemDto);
+
+        GenericResponse<CartItemDto> response =
+                new GenericResponse(cartItemDto, HttpStatus.OK, "REQUEST_SUCCESS");
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @DeleteMapping(path = "/{cusomterId}/carts")
-    public ResponseEntity<Boolean> deleteCartItem(@PathVariable("cusomterId") Integer userId,
+    public ResponseEntity<GenericResponse> deleteCartItem(@PathVariable("cusomterId") Integer userId,
                                                   @RequestBody CartItemRequest cartItemRequest) {
         cartItemRequest.setCustomerId(userId);
         boolean isDeleted =  cartService.deleteCartItem(cartItemRequest);
-        return ResponseEntity.ok(true);
+        GenericResponse<Boolean> response =
+                new GenericResponse(isDeleted, HttpStatus.OK, "REQUEST_SUCCESS");
+        return ResponseEntity.ok(response);
     }
 
 }
