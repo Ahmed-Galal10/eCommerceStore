@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/products")
 public class ProductController {
 
@@ -35,18 +36,19 @@ public class ProductController {
         }
     }
 
-    @GetMapping(value = "/{productId}", params = {"meta"})
-    public ResponseEntity<GenericResponse> getSellerProductById(@PathVariable("productId") Integer productId) {
-        try {
-            SellerProdDetailDto sellerProdDetailDto = productService.getSellerProductDetailById(productId);
-
-            GenericResponse<SellerProdDetailDto> response =
-                   new GenericResponse(sellerProdDetailDto, HttpStatus.OK, "REQUEST_SUCCESS");
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            return ResponseEntity.ok(new GenericResponse<>(null, HttpStatus.BAD_REQUEST, e.getMessage()));
-        }
-    }
+////    @GetMapping(value = "/{productId}", params = {"meta"})
+//    @GetMapping(value = "/{productId}")
+//    public ResponseEntity<GenericResponse> getSellerProductById(@PathVariable("productId") Integer productId) {
+//        try {
+//            SellerProdDetailDto sellerProdDetailDto = productService.getSellerProductDetailById(productId);
+//
+//            GenericResponse<SellerProdDetailDto> response =
+//                   new GenericResponse(sellerProdDetailDto, HttpStatus.OK, "REQUEST_SUCCESS");
+//            return ResponseEntity.ok(response);
+//        } catch (Exception e) {
+//            return ResponseEntity.ok(new GenericResponse<>(null, HttpStatus.BAD_REQUEST, e.getMessage()));
+//        }
+//    }
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<ProdDetailDto> createProduct(@RequestBody ProdDetailDto prodDetailDto) {

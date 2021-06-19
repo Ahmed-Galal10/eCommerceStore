@@ -23,4 +23,5 @@ public interface ProductRepo extends JpaRepository<Product, Integer> {
                     "WHERE p2.product_id = ?1", nativeQuery = true)
     Integer countProductInWishListsById(Integer productId);
 
+
 }

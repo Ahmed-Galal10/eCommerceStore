@@ -9,10 +9,7 @@ import com.store.model.ProdImages;
 import com.store.model.Product;
 import com.store.model.Review;
 import com.store.model.Subcategory;
-import com.store.repository.ProductImagesRepo;
-import com.store.repository.ProductRepo;
-import com.store.repository.ReviewRepo;
-import com.store.repository.SubCategoryRepo;
+import com.store.repository.*;
 import com.store.service.ProductService;
 import com.store.util.mappers.EntityDtoMapper;
 import com.store.util.mappers.ReviewMapper;
@@ -35,6 +32,7 @@ public class ProductServiceImpl implements ProductService {
     private final SubCategoryRepo subCategoryRepo;
     private final ReviewRepo reviewRepo;
     private final ProductImagesRepo productImagesRepo;
+    private final OrderItemRepo orderItemRepo;
 
     private final EntityDtoMapper<Product, ProdDetailDto> productMapperAPI;
     private final EntityDtoMapper<ProdImages, ProductImagesDto> productImagesMapper;
@@ -44,13 +42,14 @@ public class ProductServiceImpl implements ProductService {
     public ProductServiceImpl(ProductRepo productRepo,
                               SubCategoryRepo subCategoryRepo,
                               ReviewRepo reviewRepo,
-                              EntityDtoMapper<Product, ProdDetailDto> productMapperAPI,
+                              OrderItemRepo orderItemRepo, EntityDtoMapper<Product, ProdDetailDto> productMapperAPI,
                               EntityDtoMapper<ProdImages, ProductImagesDto> productImagesMapper,
                               ProductImagesRepo productImagesRepo,
                               EntityDtoMapper<Product, SellerProductDto> sellerProductMapper) {
         this.productRepo = productRepo;
         this.subCategoryRepo = subCategoryRepo;
         this.reviewRepo = reviewRepo;
+        this.orderItemRepo = orderItemRepo;
         this.productMapperAPI = productMapperAPI;
         this.productImagesMapper = productImagesMapper;
         this.productImagesRepo = productImagesRepo;
@@ -119,7 +118,12 @@ public class ProductServiceImpl implements ProductService {
 
         Product product = productRepo.findById(productId).orElseThrow(() -> new RuntimeException("Not found"));
 
+        System.out.println("product id before : " + product.getId());
+
         ProdDetailDto prodDetailDto = productMapperAPI.toDto(product);
+
+        System.out.println("product id after : " + prodDetailDto.getId());
+
 
         List<ProdImages> prodImages = productImagesRepo.findProdImagesByProduct(product);
 
@@ -139,9 +143,15 @@ public class ProductServiceImpl implements ProductService {
         Integer productInWishlists = productRepo.countProductInWishListsById(productId);
         System.out.println("productInWishlists is " + productInWishlists);
 
+        Integer soldItemCounter = orderItemRepo.countOrderItemByProduct(product);
+        System.out.println("soldItemCounter is " + soldItemCounter);
+
         sellerProdDetailDto.setAverageRating(averageRating);
         sellerProdDetailDto.setWishListCounter(productInWishlists);
+        sellerProdDetailDto.setSoldCounter(soldItemCounter);
 
+        System.out.println("id is " + sellerProdDetailDto.getProdDetailDto().getId());
+        System.out.println(" sold :"+ sellerProdDetailDto.getSoldCounter());
         return sellerProdDetailDto;
     }
 
