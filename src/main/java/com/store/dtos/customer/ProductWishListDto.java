@@ -5,20 +5,29 @@ public class ProductWishListDto {
 
     private int id;
     private String name;
-    private String description;
     private double price;
     private boolean isOnSale;
     private String img;
+    private double rating;
 
     public ProductWishListDto() {
     }
 
-    public ProductWishListDto(String name, String description, double price, boolean isOnSale, String img) {
+    public ProductWishListDto(int id, String name, double price, boolean isOnSale, String img, double rating) {
+        this.id = id;
         this.name = name;
-        this.description = description;
         this.price = price;
         this.isOnSale = isOnSale;
         this.img = img;
+        this.rating = rating;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
     }
 
     public int getId() {
@@ -35,14 +44,6 @@ public class ProductWishListDto {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public double getPrice() {

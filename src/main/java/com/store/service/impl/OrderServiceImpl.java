@@ -43,14 +43,10 @@ public class OrderServiceImpl implements OrderService {
 
         }
 
-
         EntityDtoMapper<Order, OrderDto> mapper = new OrderMapper();
 
         OrderDto orderDto = mapper.toDto( order );
-
-
         return  orderDto;
-
     }
 
     @Override
@@ -78,10 +74,6 @@ public class OrderServiceImpl implements OrderService {
             orderItems.add( orderItem );
 
         });
-
-
-
-
 //        order = orderRepo.saveAndFlush( order );
 //        System.out.println(order.getId());
 //

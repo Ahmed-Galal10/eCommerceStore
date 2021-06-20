@@ -21,8 +21,6 @@ public class CartItemController {
     @Autowired
     public void setup(CartService cartService) {
         this.cartService = cartService;
-
     }
-
 
 }

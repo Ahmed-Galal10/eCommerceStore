@@ -17,7 +17,7 @@ public class Wishlist {
     @JoinColumn(name = "customer_id")
     private  Customer customer;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(name="product_wishlist",
             joinColumns =  @JoinColumn(name = "wishlist_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id")  )

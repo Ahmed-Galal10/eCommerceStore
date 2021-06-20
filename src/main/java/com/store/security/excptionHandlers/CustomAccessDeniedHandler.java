@@ -24,4 +24,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
         GenericResponse genericResponse = new GenericResponse(null, HttpStatus.UNAUTHORIZED, "Unauthorized request");
         response.getWriter().println(gson.toJson(genericResponse));
     }
+
+
+
 }

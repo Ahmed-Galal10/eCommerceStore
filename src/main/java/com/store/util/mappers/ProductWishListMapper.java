@@ -12,7 +12,7 @@ public class ProductWishListMapper extends EntityDtoMapper<Product, ProductWishL
 
         productReviewDto.setId(entity.getId());
         productReviewDto.setName(entity.getName());
-        productReviewDto.setDescription(entity.getDescription());
+
         productReviewDto.setPrice(entity.getPrice());
         productReviewDto.setOnSale(entity.isIsOnSale());
         productReviewDto.setImg(entity.getImg());

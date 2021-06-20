@@ -8,9 +8,11 @@ import com.store.dtos.cart.CartItemRequest;
 import com.store.dtos.customer.*;
 import com.store.dtos.order.OrderDto;
 import com.store.dtos.order.OrderRequest;
+import com.store.dtos.wishlist.WishlistProdRequest;
 import com.store.service.CartService;
 import com.store.service.CustomerService;
 import com.store.service.OrderService;
+import com.store.service.WishListService;
 import net.bytebuddy.description.type.TypeList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,13 +29,16 @@ public class CustomerController {
     private CustomerService customerService;
     private CartService cartService;
     private OrderService orderService;
+    private WishListService wishListService;
     @Autowired
     public  CustomerController(CustomerService customerService,
                                CartService cartService,
-                               OrderService orderService){
+                               OrderService orderService,
+                               WishListService wishListService){
         this.cartService = cartService;
         this.customerService = customerService;
         this.orderService = orderService;
+        this.wishListService = wishListService;
     }
 
     @GetMapping("")
@@ -117,7 +122,6 @@ public class CustomerController {
         }catch (Exception e){
             return ResponseEntity.ok(new GenericResponse<>(null, HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()));
         }
-
     }
 
     @GetMapping("/{customerId}/orders")
@@ -158,17 +162,57 @@ public class CustomerController {
     }
 
     @GetMapping("/{customerId}/wishlist")
-    public ResponseEntity<CustomerWishListDto> getCustomerWishList(@PathVariable("customerId") int customerId) {
+    public ResponseEntity<GenericResponse> getCustomerWishList(@PathVariable("customerId") int customerId) {
+
         try {
             CustomerWishListDto customerWishListDto = customerService.getCustomerWishList(customerId);
-
-            return new ResponseEntity<>(customerWishListDto, HttpStatus.OK);
+            GenericResponse<CustomerWishListDto> response =
+                    new GenericResponse<>(customerWishListDto, HttpStatus.OK, "REQUEST SUCCESSFUL");
+            return  ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            GenericResponse<ProductWishListDto> response =
+                    new GenericResponse<>(null, HttpStatus.INTERNAL_SERVER_ERROR, "COULDN'T ADD PRODUCT");
+            return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
 
+    @PostMapping("/{customerId}/wishlist")
+    public ResponseEntity<GenericResponse> addWishListProduct(@PathVariable("customerId") int customerId,
+                                                                   @RequestBody WishlistProdRequest prodRequest) {
+
+        try {
+            prodRequest.setCustomerId( customerId );
+            ProductWishListDto product = wishListService.addProduct(prodRequest);
+            GenericResponse<ProductWishListDto> response =
+                    new GenericResponse<>(product, HttpStatus.CREATED, "PRODUCT ADDED");
+
+            return  ResponseEntity.status(HttpStatus.CREATED).body(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            GenericResponse<ProductWishListDto> response =
+                    new GenericResponse<>(null, HttpStatus.INTERNAL_SERVER_ERROR, "COULDN'T ADD PRODUCT");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    @DeleteMapping("/{customerId}/wishlist")
+    public ResponseEntity<GenericResponse> deleteWishListProduct(@PathVariable("customerId") int customerId,
+                                                                     @RequestBody WishlistProdRequest prodRequest) {
+        try {
+            prodRequest.setCustomerId( customerId );
+            Boolean isDeleted = wishListService.deleteProduct(prodRequest);
+            GenericResponse<ProductWishListDto> response =
+                    new GenericResponse(isDeleted, HttpStatus.OK, "PRODUCT REMOVED");
+
+            return  ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            GenericResponse<ProductWishListDto> response =
+                    new GenericResponse<>(null, HttpStatus.INTERNAL_SERVER_ERROR, "COULDN'T DELETE PRODUCT");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
     //=================================== Cart Api ==================================
 
     //TODO ====> Ask About UserId
