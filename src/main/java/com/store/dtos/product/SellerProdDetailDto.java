@@ -3,20 +3,21 @@ package com.store.dtos.product;
 
 public class SellerProdDetailDto {
 
-    ProdDetailDto prodDetailDto = new ProdDetailDto();
+    ProdDetailDto sellerProduct = new ProdDetailDto();
     Integer soldCounter;
     Integer wishListCounter;
     Double averageRating;
+    Integer categoryId;
 
     public SellerProdDetailDto() {
     }
 
-    public ProdDetailDto getProdDetailDto() {
-        return prodDetailDto;
+    public ProdDetailDto getSellerProduct() {
+        return sellerProduct;
     }
 
-    public void setProdDetailDto(ProdDetailDto prodDetailDto) {
-        this.prodDetailDto = prodDetailDto;
+    public void setSellerProduct(ProdDetailDto sellerProduct) {
+        this.sellerProduct = sellerProduct;
     }
 
     public Integer getSoldCounter() {
@@ -43,12 +44,22 @@ public class SellerProdDetailDto {
         this.averageRating = averageRating;
     }
 
+    public Integer getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
+    }
+
     @Override
     public String toString() {
         return "SellerProdDetailDto{" +
-                "soldCounter=" + soldCounter +
+                "sellerProduct=" + sellerProduct +
+                ", soldCounter=" + soldCounter +
                 ", wishListCounter=" + wishListCounter +
                 ", averageRating=" + averageRating +
+                ", categoryId=" + categoryId +
                 '}';
     }
 }

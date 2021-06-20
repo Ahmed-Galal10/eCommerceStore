@@ -135,7 +135,7 @@ public class ProductServiceImpl implements ProductService {
 
 
         SellerProdDetailDto sellerProdDetailDto = new SellerProdDetailDto();
-        sellerProdDetailDto.setProdDetailDto(prodDetailDto);
+        sellerProdDetailDto.setSellerProduct(prodDetailDto);
 
         Double averageRating = reviewRepo.findProductAverageRatingById(productId);
         System.out.println("averageRating is" + averageRating);
@@ -150,7 +150,7 @@ public class ProductServiceImpl implements ProductService {
         sellerProdDetailDto.setWishListCounter(productInWishlists);
         sellerProdDetailDto.setSoldCounter(soldItemCounter);
 
-        System.out.println("id is " + sellerProdDetailDto.getProdDetailDto().getId());
+        System.out.println("id is " + sellerProdDetailDto.getSellerProduct().getId());
         System.out.println(" sold :"+ sellerProdDetailDto.getSoldCounter());
         return sellerProdDetailDto;
     }

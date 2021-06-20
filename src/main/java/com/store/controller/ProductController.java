@@ -1,11 +1,8 @@
 package com.store.controller;
 
-import com.store.dtos.GenericResponse;
 import com.store.dtos.product.ProdDetailDto;
 import com.store.dtos.product.ProductImagesDto;
-import com.store.dtos.product.SellerProdDetailDto;
 import com.store.dtos.review.ReviewDto;
-import com.store.model.Product;
 import com.store.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,20 +32,6 @@ public class ProductController {
             return ResponseEntity.notFound().build();
         }
     }
-
-////    @GetMapping(value = "/{productId}", params = {"meta"})
-//    @GetMapping(value = "/{productId}")
-//    public ResponseEntity<GenericResponse> getSellerProductById(@PathVariable("productId") Integer productId) {
-//        try {
-//            SellerProdDetailDto sellerProdDetailDto = productService.getSellerProductDetailById(productId);
-//
-//            GenericResponse<SellerProdDetailDto> response =
-//                   new GenericResponse(sellerProdDetailDto, HttpStatus.OK, "REQUEST_SUCCESS");
-//            return ResponseEntity.ok(response);
-//        } catch (Exception e) {
-//            return ResponseEntity.ok(new GenericResponse<>(null, HttpStatus.BAD_REQUEST, e.getMessage()));
-//        }
-//    }
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<ProdDetailDto> createProduct(@RequestBody ProdDetailDto prodDetailDto) {
