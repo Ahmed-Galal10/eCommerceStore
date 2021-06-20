@@ -1,7 +1,10 @@
 package com.store.controller;
 
+import com.store.dtos.GenericResponse;
+import com.store.dtos.product.PagingResponse;
 import com.store.dtos.product.ProdDetailDto;
 import com.store.dtos.product.ProductImagesDto;
+import com.store.dtos.product.ProductWrapperDto;
 import com.store.dtos.review.ReviewDto;
 import com.store.model.Product;
 import com.store.service.ProductService;
@@ -10,8 +13,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/products")
 public class ProductController {
@@ -24,12 +29,15 @@ public class ProductController {
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/{id}")
-    public ResponseEntity<ProdDetailDto> findProductById(@PathVariable Integer id) {
+    public ResponseEntity<GenericResponse<ProdDetailDto>> findProductById(@PathVariable Integer id) {
         try {
             ProdDetailDto prodDetailDto = productService.getProductById(id);
-            return ResponseEntity.ok(prodDetailDto);
+
+            GenericResponse<ProdDetailDto> response = new GenericResponse(prodDetailDto, HttpStatus.OK, "Found");
+
+            return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (Exception e) {
-            return ResponseEntity.notFound().build();
+            return null;
         }
     }
 
@@ -70,18 +78,38 @@ public class ProductController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<ProdDetailDto>> findAllProducts(
+    public ResponseEntity<PagingResponse> findAllProducts(
             @RequestParam(value = "page", required = false, defaultValue = "0") Integer pageNumber,
+            @RequestParam(value = "pageSize", required = false, defaultValue = "9") Integer pageSize,
             @RequestParam(value = "priceMin", required = false, defaultValue = "0.0") Double priceMin,
             @RequestParam(value = "priceMax", required = false, defaultValue = "1000000.0") Double priceMax,
             @RequestParam(value = "cat", required = false) List<Integer> subCategoriesIds,
             @RequestParam(value = "name", required = false, defaultValue = "%") String name
     ) {
 
-        List<ProdDetailDto> products =
-                productService.getAllProductsByFilters(pageNumber, priceMin, priceMax, subCategoriesIds, name);
+        ProductWrapperDto productWrapperDto =
+                productService.getAllProductsByFilters(pageNumber, pageSize, priceMin, priceMax, subCategoriesIds, name);
 
-        return ResponseEntity.ok(products);
+        // get data
+        if (productWrapperDto != null) {
+            List<ProdDetailDto> products = productWrapperDto.getProducts();
+            Integer totalPages = productWrapperDto.getTotalPages();
+            Long totalElements = productWrapperDto.getTotalElements();
+
+            PagingResponse<ProdDetailDto> response = new PagingResponse(products, HttpStatus.OK, "Found");
+            response.setTotalPages(totalPages);
+            response.setTotalElements(totalElements);
+
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } else {
+            List<ProdDetailDto> products = new ArrayList<>();
+
+            PagingResponse<ProdDetailDto> response = new PagingResponse(products, HttpStatus.OK, "Not_Found");
+            response.setTotalPages(0);
+            response.setTotalElements(0L);
+
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        }
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/{id}/reviews")

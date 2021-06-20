@@ -7,13 +7,15 @@ public class ProdDetailDto {
     private Integer id;
     private String productName;
     private String productDescription;
-    private int userId;
+    private int sellerId;
     private int subcategoryId;
     private Integer productQuantity;
     private String productImg;
     private double productPrice;
     private List<String> prodImages;
     private boolean isOnSale;
+    private String sellerName;
+    private String subCategoryName;
 
     public Integer getId() {
         return id;
@@ -102,11 +104,27 @@ public class ProdDetailDto {
                 '}';
     }
 
-    public int getUserId() {
-        return userId;
+    public int getSellerId() {
+        return sellerId;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setSellerId(int sellerId) {
+        this.sellerId = sellerId;
+    }
+
+    public String getSellerName() {
+        return sellerName;
+    }
+
+    public void setSellerName(String sellerName) {
+        this.sellerName = sellerName;
+    }
+
+    public String getSubCategoryName() {
+        return subCategoryName;
+    }
+
+    public void setSubCategoryName(String subCategoryName) {
+        this.subCategoryName = subCategoryName;
     }
 }

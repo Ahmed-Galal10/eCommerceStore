@@ -2,7 +2,6 @@ package com.store.util.mappers;
 
 import com.store.dtos.product.ProdDetailDto;
 import com.store.model.*;
-import com.store.util.mappers.EntityDtoMapper;
 
 public class ProductDetailMapper extends EntityDtoMapper<Product, ProdDetailDto> {
 
@@ -10,14 +9,16 @@ public class ProductDetailMapper extends EntityDtoMapper<Product, ProdDetailDto>
     public ProdDetailDto toDto(Product product) {
         ProdDetailDto prodDetailDto = new ProdDetailDto();
 
-        prodDetailDto.setUserId(product.getId());
+        prodDetailDto.setId(product.getId());
         prodDetailDto.setProductName(product.getName());
-        prodDetailDto.setUserId(product.getUser().getId());
+        prodDetailDto.setSellerId(product.getUser().getId());
+        prodDetailDto.setSellerName(product.getUser().getName());
         prodDetailDto.setProductPrice(product.getPrice());
         prodDetailDto.setProductImg(product.getImg());
         prodDetailDto.setProductQuantity(product.getQuantity());
         prodDetailDto.setOnSale(product.isIsOnSale());
         prodDetailDto.setSubcategoryId(product.getSubcategory().getId());
+        prodDetailDto.setSubCategoryName(product.getSubcategory().getName());
         prodDetailDto.setProductDescription(product.getDescription());
 
         return prodDetailDto;
@@ -30,7 +31,7 @@ public class ProductDetailMapper extends EntityDtoMapper<Product, ProdDetailDto>
         product.setId(prodDetailDto.getId());
         product.setName(prodDetailDto.getProductName());
         User user = new User();
-        user.setId(prodDetailDto.getUserId());
+        user.setId(prodDetailDto.getSellerId());
         product.setUser(user);
         product.setQuantity(prodDetailDto.getProductQuantity());
         product.setImg(prodDetailDto.getProductImg());
