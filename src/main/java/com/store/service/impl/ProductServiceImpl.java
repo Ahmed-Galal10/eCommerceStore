@@ -2,6 +2,7 @@ package com.store.service.impl;
 
 import com.store.dtos.product.ProdDetailDto;
 import com.store.dtos.product.ProductImagesDto;
+import com.store.dtos.product.ProductWrapperDto;
 import com.store.dtos.review.ReviewDto;
 import com.store.model.*;
 import com.store.dtos.seller.SellerProductDto;
@@ -62,13 +63,15 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProdDetailDto> getAllProductsByFilters(Integer pageNumber,
-                                                       Double priceMin,
-                                                       Double priceMax,
-                                                       List<Integer> subCategoriesIds,
-                                                       String nameSearch) {
+    public ProductWrapperDto getAllProductsByFilters(Integer pageNumber,
+                                                     Integer pageSize, Double priceMin,
+                                                     Double priceMax,
+                                                     List<Integer> subCategoriesIds,
+                                                     String nameSearch) {
 
-        Pageable pageable = PageRequest.of(pageNumber, 3, Sort.by("name"));
+        ProductWrapperDto productWrapperDto = new ProductWrapperDto();
+
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by("name"));
 
         // default value for subcategory
         if (subCategoriesIds == null) {
@@ -80,19 +83,25 @@ public class ProductServiceImpl implements ProductService {
             nameSearch = "%".concat(nameSearch.concat("%"));
         }
 
-        System.out.println(nameSearch);
-
         Page<Product> page = productRepo.findBySubcategoryInAndPriceBetweenAndNameLikeIgnoreCase(
                 subcategories, priceMin, priceMax, nameSearch, pageable);
 
         if (page.hasContent()) {
             List<Product> products = page.getContent();
 
-            return productMapperAPI.entityListToDtoList(products);
+            List<ProdDetailDto> prodDetailDtos = productMapperAPI.entityListToDtoList(products);
+
+            productWrapperDto.setProducts(prodDetailDtos);
+            productWrapperDto.setTotalPages(page.getTotalPages());
+            productWrapperDto.setTotalElements(page.getTotalElements());
+
+            return productWrapperDto;
         } else {
             return null;
         }
     }
+
+
 
     @Override
     public ProdDetailDto getProductById(Integer id) {

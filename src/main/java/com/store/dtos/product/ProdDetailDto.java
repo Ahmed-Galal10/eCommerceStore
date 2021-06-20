@@ -14,6 +14,8 @@ public class ProdDetailDto {
     private double productPrice;
     private List<String> prodImages;
     private boolean isOnSale;
+    private String sellerName;
+    private String subCategoryName;
 
     public int getSellerId() {
         return sellerId;
@@ -95,6 +97,24 @@ public class ProdDetailDto {
         this.subcategoryId = subcategoryId;
     }
 
+
+    public String getSellerName() {
+        return sellerName;
+    }
+
+    public void setSellerName(String sellerName) {
+        this.sellerName = sellerName;
+    }
+
+    public String getSubCategoryName() {
+        return subCategoryName;
+    }
+
+    public void setSubCategoryName(String subCategoryName) {
+        this.subCategoryName = subCategoryName;
+    }
+
+
     @Override
     public String toString() {
         return "ProdDetailDto{" +
@@ -110,4 +130,7 @@ public class ProdDetailDto {
                 ", isOnSale=" + isOnSale +
                 '}';
     }
+
+
+
 }
