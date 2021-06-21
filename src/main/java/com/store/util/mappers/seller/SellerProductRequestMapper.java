@@ -1,36 +1,37 @@
-package com.store.util.mappers;
+package com.store.util.mappers.seller;
 
-import com.store.dtos.seller.SellerDto;
-import com.store.model.Seller;
-import org.springframework.stereotype.Service;
+import com.store.dtos.product.SellerProductRequestDto;
+import com.store.model.Product;
+import com.store.util.mappers.EntityDtoMapper;
+import org.springframework.stereotype.Component;
 
-@Service
-public class SellerMapper extends EntityDtoMapper<Seller, SellerDto> {
+
+@Component
+public class SellerProductRequestMapper extends EntityDtoMapper<Product, SellerProductRequestDto> {
+
     @Override
-    public SellerDto toDto(Seller entity) {
-        SellerDto sellerDto = new SellerDto();
-        //todo implement this method
+    public SellerProductRequestDto toDto(Product entity) {
+        SellerProductRequestDto sellerProductDto = new SellerProductRequestDto();
 
-        sellerDto.setBalance(entity.getBalance());
-        sellerDto.setAddress(entity.getAddress());
-        sellerDto.setName(entity.getName());
-        sellerDto.setEmail(entity.getEmail());
-        sellerDto.setImage(entity.getImage());
-        sellerDto.setPhone(entity.getPhone());
-        sellerDto.setRegDate(entity.getRegDate());
-        sellerDto.setEmailVerified(entity.getIsEmailVerified());
-        sellerDto.setDeleted(entity.getIsDeleted());
-        sellerDto.setId(entity.getId());
-        sellerDto.setEmailVerified(entity.getIsEmailVerified());
+        sellerProductDto.setId(entity.getId());
+        sellerProductDto.setProductName(entity.getName());
+        sellerProductDto.setProductPrice(entity.getPrice());
+        sellerProductDto.setProductQuantity(entity.getQuantity());
+        sellerProductDto.setProductDescription(entity.getDescription());
 
-        return sellerDto;
+        return sellerProductDto;
     }
 
     @Override
-    public Seller toEntity(SellerDto dto) {
-        Seller seller = new Seller();
-        //todo implement this method
+    public Product toEntity(SellerProductRequestDto dto) {
+        Product product = new Product();
 
-        return seller;
+        product.setId(dto.getId());
+        product.setName(dto.getProductName());
+        product.setPrice(dto.getProductPrice());
+        product.setQuantity(dto.getProductQuantity());
+        product.setDescription(dto.getProductDescription());
+
+        return product;
     }
 }

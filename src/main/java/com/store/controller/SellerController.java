@@ -1,7 +1,9 @@
 package com.store.controller;
 
 import com.store.dtos.GenericResponse;
+import com.store.dtos.product.ProdDetailDto;
 import com.store.dtos.product.SellerProdDetailDto;
+import com.store.dtos.product.SellerProductRequestDto;
 import com.store.dtos.seller.SellerDto;
 import com.store.dtos.seller.SellerProductDto;
 import com.store.dtos.seller.SellerRequest;
@@ -119,6 +121,23 @@ public class SellerController {
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             return ResponseEntity.ok(new GenericResponse<>(null, HttpStatus.BAD_REQUEST, e.getMessage()));
+        }
+    }
+
+    @PutMapping("/products/{productId}")
+    public ResponseEntity<GenericResponse> updateSellerProduct(@PathVariable("productId") Integer productId,
+                                                               @RequestBody SellerProductRequestDto sellerProductDto)
+    {
+        try {
+            sellerProductDto.setId(productId);
+            sellerService.updateSellerProduct(sellerProductDto);
+            GenericResponse<SellerProductRequestDto> response =
+                    new GenericResponse<>(sellerProductDto, HttpStatus.NO_CONTENT, "Product UPDATED");
+
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.ok(new GenericResponse<>(null, HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()));
         }
     }
 

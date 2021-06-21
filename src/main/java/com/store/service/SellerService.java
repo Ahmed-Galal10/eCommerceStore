@@ -1,5 +1,6 @@
 package com.store.service;
 
+import com.store.dtos.product.SellerProductRequestDto;
 import com.store.dtos.seller.SellerDto;
 import com.store.dtos.seller.SellerRequest;
 
@@ -16,4 +17,6 @@ public interface SellerService {
     SellerDto updateSeller(int sellerId, SellerRequest sellerRequest);
 
     SellerDto deleteById(int sellerId);
+
+    SellerProductRequestDto updateSellerProduct(SellerProductRequestDto productDto);
 }
