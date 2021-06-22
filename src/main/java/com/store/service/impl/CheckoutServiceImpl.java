@@ -12,6 +12,7 @@ import com.store.service.paymentValidator.impl.CreditCardPaymentValidator;
 import com.store.service.paymentValidator.impl.CustomerBalancePaymentValidator;
 import com.store.service.paymentValidator.impl.PaypalPaymentValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,6 +23,12 @@ import java.util.stream.Collectors;
 public class CheckoutServiceImpl implements CheckoutService {
     @Autowired
     private ProductService productService;
+    @Autowired
+    private PaymentValidator creditCardPaymentValidator;
+    @Autowired
+    private PaymentValidator paypalPaymentValidator;
+    @Autowired
+    private PaymentValidator customerBalancePaymentValidator;
 
     @Override
     public CheckoutStateDto validateCartItemsQuantity(CartDto cartDto) {
@@ -44,16 +51,12 @@ public class CheckoutServiceImpl implements CheckoutService {
 
     @Override
     public Boolean validatePayment(PaymentInfoDto paymentInfoDto, CartDto cartDto) throws BankException {
-        PaymentValidator paymentValidator = null;
         if (paymentInfoDto.getPaymentMethod().equals(PaypalPaymentValidator.getPaymentMethod())) {
-            paymentValidator = new PaypalPaymentValidator();
-            return paymentValidator.validate(paymentInfoDto, cartDto);
+            return paypalPaymentValidator.validate(paymentInfoDto, cartDto);
         } else if (paymentInfoDto.getPaymentMethod().equals(CreditCardPaymentValidator.getPaymentMethod())) {
-            paymentValidator = new CreditCardPaymentValidator();
-            return paymentValidator.validate(paymentInfoDto, cartDto);
+            return creditCardPaymentValidator.validate(paymentInfoDto, cartDto);
         } else if (paymentInfoDto.getPaymentMethod().equals(CustomerBalancePaymentValidator.getPaymentMethod())) {
-            paymentValidator = new CustomerBalancePaymentValidator();
-            return paymentValidator.validate(paymentInfoDto, cartDto);
+            return customerBalancePaymentValidator.validate(paymentInfoDto, cartDto);
         }
         return Boolean.FALSE;
     }

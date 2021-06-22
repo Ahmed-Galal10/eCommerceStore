@@ -6,9 +6,11 @@ import com.store.dtos.customer.CustomerDto;
 import com.store.service.CustomerService;
 import com.store.service.paymentValidator.PaymentValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
+@Qualifier("customerBalancePaymentValidator")
 public class CustomerBalancePaymentValidator implements PaymentValidator {
     private static final String PAYMENT_METHOD = "CUSTOMER_BALANCE";
     @Autowired
