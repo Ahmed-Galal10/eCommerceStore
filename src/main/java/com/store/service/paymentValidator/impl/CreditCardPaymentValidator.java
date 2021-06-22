@@ -24,7 +24,10 @@ public class CreditCardPaymentValidator implements PaymentValidator {
 
     @Override
     public Boolean validate(PaymentInfoDto paymentInfoDto, CartDto cartDto) throws BankException {
-        Double totalPrice = cartDto.getItems().stream().map(cartItemDto -> cartItemDto.getPrice()).reduce(Double::sum).get();
+        Double totalPrice = cartDto.getItems().stream()
+                .map(cartItemDto -> cartItemDto.getPrice() * cartItemDto.getQuantity())
+                .reduce(Double::sum)
+                .get();
         //todo: refactor to authenticate from an external API
         CreditCardDto creditCardDto = bankService.validateCreditCard(paymentInfoDto.getCreditCardAuthDto());
         if (creditCardDto.getBalance() >= totalPrice) {

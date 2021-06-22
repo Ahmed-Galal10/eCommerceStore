@@ -9,4 +9,7 @@ public interface BankService {
     CreditCardDto validateCreditCard(CreditCardAuthDto creditCardAuthDto) throws BankException;
     Boolean doBankTransaction(BankTransactionDto bankTransactionDto) throws BankException;
 
+    String STORE_ACCOUNT_NUMBER = "STORE_CARD_NUMBER";
+    String STORE_ACCOUNT_CVV = "STORE_CVV";
+
 }

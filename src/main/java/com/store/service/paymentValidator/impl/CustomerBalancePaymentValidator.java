@@ -18,7 +18,10 @@ public class CustomerBalancePaymentValidator implements PaymentValidator {
     @Override
     public Boolean validate(PaymentInfoDto paymentInfoDto, CartDto cartDto) {
         CustomerDto customerDto = customerService.getCustomerById(cartDto.getCustomerId());
-        Double totalPrice = cartDto.getItems().stream().map(cartItemDto -> cartItemDto.getPrice()).reduce(Double::sum).get();
+        Double totalPrice = cartDto.getItems().stream()
+                .map(cartItemDto -> cartItemDto.getPrice() * cartItemDto.getQuantity())
+                .reduce(Double::sum)
+                .get();
         if(customerDto.getBalance()>=totalPrice){
             return Boolean.TRUE;
         }

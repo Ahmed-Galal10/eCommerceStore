@@ -20,4 +20,12 @@ public class OrderItemRequest {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
+
+    @Override
+    public String toString() {
+        return "OrderItemRequest{" +
+                "productId=" + productId +
+                ", quantity=" + quantity +
+                '}';
+    }
 }

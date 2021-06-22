@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -267,8 +268,8 @@ public class CustomerController {
     public ResponseEntity<GenericResponse<CheckoutStateDto>> validateCheckout(@PathVariable("customerId") Integer customerId) {
         try {
             CartDto cartDto = cartService.getCartByUserId(customerId);
-            if(cartDto.getItems().isEmpty()){
-                throw  new Exception("CART IS EMPTY");
+            if (cartDto.getItems().isEmpty()) {
+                throw new Exception("CART IS EMPTY");
             }
             CheckoutStateDto response = checkoutService.validateCartItemsQuantity(cartDto);
             return ResponseEntity.status(HttpStatus.OK).body(new GenericResponse<>(response,
@@ -278,23 +279,25 @@ public class CustomerController {
                     HttpStatus.BAD_REQUEST, e.getMessage()));
         }
     }
+
     @PreAuthorize("CUSTOMER_ROLE")
     @PostMapping(path = "/{customerId}/payment")
+    @Transactional
     public ResponseEntity<GenericResponse<?>> applyCheckout(@PathVariable("customerId") Integer customerId,
-                                                            @RequestBody PaymentInfoDto paymentInfo){
+                                                            @RequestBody PaymentInfoDto paymentInfo) {
         try {
             CartDto cartDto = cartService.getCartByUserId(customerId);
-
-            if(checkoutService.validatePayment(paymentInfo,cartDto)){
-                return ResponseEntity.status(HttpStatus.OK).body(new GenericResponse<>(Boolean.TRUE,
-                        HttpStatus.OK,"Checkout Done Successfully"));
+            if (checkoutService.validatePayment(paymentInfo, cartDto)) {
+                OrderDto orderDto = checkoutService.doCheckout(paymentInfo, cartDto);
+                System.out.println(orderDto);
+                return ResponseEntity.status(HttpStatus.OK).body(new GenericResponse<>(orderDto,
+                        HttpStatus.OK, "Checkout Done Successfully"));
             }
             throw new Exception("Payment Failed");
-
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.OK).body(new GenericResponse<>(Boolean.FALSE,
-                    HttpStatus.BAD_REQUEST,e.getMessage()));
+            return ResponseEntity.status(HttpStatus.OK).body(new GenericResponse<>(null,
+                    HttpStatus.BAD_REQUEST, e.getMessage()));
         }
     }
 }

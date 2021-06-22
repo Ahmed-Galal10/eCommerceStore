@@ -29,7 +29,12 @@ public class SellerMapper extends EntityDtoMapper<Seller, SellerDto> {
     public Seller toEntity(SellerDto dto) {
         Seller seller = new Seller();
         //todo implement this method
-
+        seller.setId(dto.getId());
+        seller.setBalance(dto.getBalance());
+        seller.setEmail(dto.getEmail());
+        seller.setAddress(dto.getAddress());
+        seller.setName(dto.getName());
+        seller.setImage(dto.getImage());
         return seller;
     }
 }
