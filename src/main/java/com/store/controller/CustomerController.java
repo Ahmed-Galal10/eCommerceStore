@@ -6,6 +6,7 @@ import com.store.dtos.cart.CartDto;
 import com.store.dtos.cart.CartItemDto;
 import com.store.dtos.cart.CartItemRequest;
 import com.store.dtos.checkout.CheckoutStateDto;
+import com.store.dtos.checkout.PaymentInfoDto;
 import com.store.dtos.customer.*;
 import com.store.dtos.order.OrderDto;
 import com.store.dtos.order.OrderRequest;
@@ -275,6 +276,25 @@ public class CustomerController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.OK).body(new GenericResponse<>(null,
                     HttpStatus.BAD_REQUEST, e.getMessage()));
+        }
+    }
+    @PreAuthorize("CUSTOMER_ROLE")
+    @PostMapping(path = "/{customerId}/payment")
+    public ResponseEntity<GenericResponse<?>> applyCheckout(@PathVariable("customerId") Integer customerId,
+                                                            @RequestBody PaymentInfoDto paymentInfo){
+        try {
+            CartDto cartDto = cartService.getCartByUserId(customerId);
+
+            if(checkoutService.validatePayment(paymentInfo,cartDto)){
+                return ResponseEntity.status(HttpStatus.OK).body(new GenericResponse<>(Boolean.TRUE,
+                        HttpStatus.OK,"Checkout Done Successfully"));
+            }
+            throw new Exception("Payment Failed");
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.OK).body(new GenericResponse<>(Boolean.FALSE,
+                    HttpStatus.BAD_REQUEST,e.getMessage()));
         }
     }
 }

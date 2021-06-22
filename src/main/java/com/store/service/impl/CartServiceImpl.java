@@ -44,6 +44,7 @@ public class CartServiceImpl implements CartService {
 
         CartDto cartDto = new CartDto();
         cartDto.setItems(cartItemDtos);
+        cartDto.setCustomerId(userId);
 
         return  cartDto;
     }
