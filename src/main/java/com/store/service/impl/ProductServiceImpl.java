@@ -6,6 +6,13 @@ import com.store.dtos.product.ProductWrapperDto;
 import com.store.dtos.review.ReviewDto;
 import com.store.model.*;
 import com.store.dtos.seller.SellerProductDto;
+import com.store.dtos.product.SellerProdDetailDto;
+import com.store.dtos.review.ReviewDto;
+import com.store.dtos.seller.SellerProductDto;
+import com.store.model.ProdImages;
+import com.store.model.Product;
+import com.store.model.Review;
+import com.store.model.Subcategory;
 import com.store.repository.*;
 import com.store.service.ProductService;
 import com.store.util.mappers.EntityDtoMapper;
@@ -27,21 +34,24 @@ import java.util.stream.Collectors;
 @SessionScope
 public class ProductServiceImpl implements ProductService {
 
+
     private ProductRepo productRepo;
     private SubCategoryRepo subCategoryRepo;
     private ReviewRepo reviewRepo;
     private ProductImagesRepo productImagesRepo;
     private  SellerRepo  sellerRepo;
+    private final OrderItemRepo orderItemRepo;
 
-    private EntityDtoMapper<Product, ProdDetailDto> productMapperAPI;
-    private EntityDtoMapper<ProdImages, ProductImagesDto> productImagesMapper;
-    private EntityDtoMapper<Product, SellerProductDto> mapper;
+
+    private final EntityDtoMapper<Product, ProdDetailDto> productMapperAPI;
+    private final EntityDtoMapper<ProdImages, ProductImagesDto> productImagesMapper;
+    private final EntityDtoMapper<Product, SellerProductDto> mapper;
 
     @Autowired
     public ProductServiceImpl(ProductRepo productRepo,
                               SubCategoryRepo subCategoryRepo,
                               ReviewRepo reviewRepo,
-                              EntityDtoMapper<Product, ProdDetailDto> productMapperAPI,
+                              OrderItemRepo orderItemRepo, EntityDtoMapper<Product, ProdDetailDto> productMapperAPI,
                               EntityDtoMapper<ProdImages, ProductImagesDto> productImagesMapper,
                               ProductImagesRepo productImagesRepo,
                               EntityDtoMapper<Product, SellerProductDto> sellerProductMapper,
@@ -49,6 +59,7 @@ public class ProductServiceImpl implements ProductService {
         this.productRepo = productRepo;
         this.subCategoryRepo = subCategoryRepo;
         this.reviewRepo = reviewRepo;
+        this.orderItemRepo = orderItemRepo;
         this.productMapperAPI = productMapperAPI;
         this.productImagesMapper = productImagesMapper;
         this.productImagesRepo = productImagesRepo;
@@ -121,6 +132,48 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public SellerProdDetailDto getSellerProductDetailById(Integer productId) {
+
+        Product product = productRepo.findById(productId).orElseThrow(() -> new RuntimeException("Not found"));
+
+        System.out.println("product id before : " + product.getId());
+
+        ProdDetailDto prodDetailDto = productMapperAPI.toDto(product);
+
+        System.out.println("product id after : " + prodDetailDto.getId());
+
+
+        List<ProdImages> prodImages = productImagesRepo.findProdImagesByProduct(product);
+
+        List<String> imagesUrls = prodImages
+                .stream()
+                .map(images -> images.getImageUrl()).collect(Collectors.toList());
+
+        prodDetailDto.setProdImages(imagesUrls);
+
+
+        SellerProdDetailDto sellerProdDetailDto = new SellerProdDetailDto();
+        sellerProdDetailDto.setSellerProduct(prodDetailDto);
+
+        Double averageRating = reviewRepo.findProductAverageRatingById(productId);
+        System.out.println("averageRating is" + averageRating);
+
+        Integer productInWishlists = productRepo.countProductInWishListsById(productId);
+        System.out.println("productInWishlists is " + productInWishlists);
+
+        Integer soldItemCounter = orderItemRepo.countOrderItemByProduct(product);
+        System.out.println("soldItemCounter is " + soldItemCounter);
+
+        sellerProdDetailDto.setAverageRating(averageRating);
+        sellerProdDetailDto.setWishListCounter(productInWishlists);
+        sellerProdDetailDto.setSoldCounter(soldItemCounter);
+
+        System.out.println("id is " + sellerProdDetailDto.getSellerProduct().getId());
+        System.out.println(" sold :"+ sellerProdDetailDto.getSoldCounter());
+        return sellerProdDetailDto;
+    }
+
+    @Override
     public ProdDetailDto addOrUpdateProduct(ProdDetailDto prodDetailDto) {
 
         Integer subCategoryId = prodDetailDto.getSubcategoryId();
@@ -187,7 +240,9 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<SellerProductDto> getProductsByUserId(int sellerId) {
 
-        List<SellerProductDto> dtos = mapper.entityListToDtoList(productRepo.findByUser_Id(sellerId));
+        List<Product> products = productRepo.findByUser_Id(sellerId);
+
+        List<SellerProductDto> dtos = mapper.entityListToDtoList(products);
 
         return dtos;
     }

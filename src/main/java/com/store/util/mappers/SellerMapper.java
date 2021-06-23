@@ -10,6 +10,7 @@ public class SellerMapper extends EntityDtoMapper<Seller, SellerDto> {
     public SellerDto toDto(Seller entity) {
         SellerDto sellerDto = new SellerDto();
         //todo implement this method
+
         sellerDto.setBalance(entity.getBalance());
         sellerDto.setAddress(entity.getAddress());
         sellerDto.setName(entity.getName());

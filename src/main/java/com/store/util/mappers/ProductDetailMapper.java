@@ -21,6 +21,8 @@ public class ProductDetailMapper extends EntityDtoMapper<Product, ProdDetailDto>
         prodDetailDto.setSubcategoryId(product.getSubcategory().getId());
         prodDetailDto.setSubCategoryName(product.getSubcategory().getName());
         prodDetailDto.setProductDescription(product.getDescription());
+        prodDetailDto.setSubCategoryName(product.getSubcategory().getName());
+        prodDetailDto.setId(product.getId());
 
         return prodDetailDto;
     }

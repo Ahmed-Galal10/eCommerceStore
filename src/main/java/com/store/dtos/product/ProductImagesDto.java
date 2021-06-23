@@ -1,6 +1,5 @@
 package com.store.dtos.product;
 
-import java.util.List;
 
 public class ProductImagesDto {
     private Integer imageId;

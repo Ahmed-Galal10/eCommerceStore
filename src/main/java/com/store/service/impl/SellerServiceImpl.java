@@ -6,6 +6,10 @@ import com.store.dtos.seller.SellerDto;
 import com.store.dtos.seller.SellerRequest;
 import com.store.dtos.seller.SellerRequestDto;
 import com.store.model.Customer;
+import com.store.dtos.product.SellerProductRequestDto;
+import com.store.dtos.seller.SellerDto;
+import com.store.dtos.seller.SellerRequest;
+import com.store.model.Product;
 import com.store.model.Seller;
 import com.store.repository.OrderRepo;
 import com.store.repository.ProductRepo;
@@ -14,6 +18,7 @@ import com.store.repository.SoldItemRepo;
 import com.store.service.SellerService;
 import com.store.util.mappers.EntityDtoMapper;
 import com.store.util.mappers.SellerMapper;
+import com.store.util.mappers.seller.SellerProductRequestMapper;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +36,7 @@ public class SellerServiceImpl implements SellerService {
     private final ProductRepo productRepo;
     private final OrderRepo orderRepo;
     private final SoldItemRepo soldItemRepo;
+    private final SellerProductRequestMapper sellerProductMapper;
 
     @Autowired
     private EntityDtoMapper<Seller, SellerRequestDto> sellerRequestMapper;
@@ -38,12 +44,13 @@ public class SellerServiceImpl implements SellerService {
     @Autowired
     public SellerServiceImpl(SellerRepo sellerRepo, ProductRepo productRepo,
                              OrderRepo orderRepo, SoldItemRepo soldItemRepo,
-                             SellerMapper mapper) {
+                             SellerMapper mapper, SellerProductRequestMapper sellerProductMapper) {
         this.sellerRepo = sellerRepo;
         this.productRepo = productRepo;
         this.orderRepo = orderRepo;
         this.soldItemRepo = soldItemRepo;
         this.mapper = mapper;
+        this.sellerProductMapper = sellerProductMapper;
     }
 
 
@@ -140,6 +147,22 @@ public class SellerServiceImpl implements SellerService {
         SellerDto dto = mapper.toDto(seller);
 
         return dto;
+    }
+
+    @Override
+    public SellerProductRequestDto updateSellerProduct(SellerProductRequestDto sellerProductDto) {
+
+        Product product = productRepo.findById(sellerProductDto.getId())
+                .orElseThrow(() -> new RuntimeException("Product" + sellerProductDto.getId() + " Not found"));
+
+        product.setName(sellerProductDto.getProductName());
+        product.setPrice(sellerProductDto.getProductPrice());
+        product.setQuantity(sellerProductDto.getProductQuantity());
+        product.setDescription(sellerProductDto.getProductDescription());
+
+        productRepo.save(product);
+
+        return sellerProductMapper.toDto(product);
     }
 
 }

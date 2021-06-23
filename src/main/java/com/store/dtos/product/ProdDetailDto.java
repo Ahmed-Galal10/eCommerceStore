@@ -25,6 +25,8 @@ public class ProdDetailDto {
         this.sellerId = sellerId;
     }
 
+
+
     public Integer getId() {
         return id;
     }
@@ -106,6 +108,7 @@ public class ProdDetailDto {
         this.sellerName = sellerName;
     }
 
+
     public String getSubCategoryName() {
         return subCategoryName;
     }
@@ -128,9 +131,8 @@ public class ProdDetailDto {
                 ", productPrice=" + productPrice +
                 ", prodImages=" + prodImages +
                 ", isOnSale=" + isOnSale +
+                ", sellerName='" + sellerName + '\'' +
+                ", subCategoryName='" + subCategoryName + '\'' +
                 '}';
     }
-
-
-
 }

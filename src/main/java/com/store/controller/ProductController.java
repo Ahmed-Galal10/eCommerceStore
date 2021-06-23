@@ -7,7 +7,6 @@ import com.store.dtos.product.ProdDetailDto;
 import com.store.dtos.product.ProductImagesDto;
 import com.store.dtos.product.ProductWrapperDto;
 import com.store.dtos.review.ReviewDto;
-import com.store.model.Product;
 import com.store.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
