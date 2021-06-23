@@ -275,7 +275,7 @@ public class CustomerController {
             return ResponseEntity.status(HttpStatus.OK).body(new GenericResponse<>(response,
                     HttpStatus.OK, "Response received Successfully"));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.OK).body(new GenericResponse<>(null,
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new GenericResponse<>(null,
                     HttpStatus.BAD_REQUEST, e.getMessage()));
         }
     }
@@ -296,7 +296,7 @@ public class CustomerController {
             throw new Exception("Payment Failed");
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.OK).body(new GenericResponse<>(null,
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new GenericResponse<>(null,
                     HttpStatus.BAD_REQUEST, e.getMessage()));
         }
     }
