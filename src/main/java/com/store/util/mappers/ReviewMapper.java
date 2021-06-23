@@ -12,6 +12,7 @@ public class ReviewMapper extends EntityDtoMapper<Review, ReviewDto>{
 
         reviewDto.setId(review.getId());
         reviewDto.setUserId(review.getUser().getId());
+        reviewDto.setUserName(review.getUser().getName());
         reviewDto.setRating(review.getRating());
         reviewDto.setProductId(review.getProduct().getId());
         reviewDto.setCreatedDate(review.getCreatedAt());

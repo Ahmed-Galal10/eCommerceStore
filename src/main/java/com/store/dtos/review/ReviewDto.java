@@ -5,6 +5,7 @@ import java.util.Date;
 public class ReviewDto {
     private int id;
     private Integer userId;
+    private String userName;
     private Integer productId;
     private Date createdDate;
     private int rating;
@@ -68,5 +69,13 @@ public class ReviewDto {
                 ", rating=" + rating +
                 ", reviewText='" + reviewText + '\'' +
                 '}';
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

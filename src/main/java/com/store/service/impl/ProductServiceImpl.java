@@ -31,7 +31,7 @@ public class ProductServiceImpl implements ProductService {
     private SubCategoryRepo subCategoryRepo;
     private ReviewRepo reviewRepo;
     private ProductImagesRepo productImagesRepo;
-    private  SellerRepo  sellerRepo;
+    private SellerRepo sellerRepo;
 
     private EntityDtoMapper<Product, ProdDetailDto> productMapperAPI;
     private EntityDtoMapper<ProdImages, ProductImagesDto> productImagesMapper;
@@ -45,7 +45,7 @@ public class ProductServiceImpl implements ProductService {
                               EntityDtoMapper<ProdImages, ProductImagesDto> productImagesMapper,
                               ProductImagesRepo productImagesRepo,
                               EntityDtoMapper<Product, SellerProductDto> sellerProductMapper,
-                              SellerRepo  sellerRepo) {
+                              SellerRepo sellerRepo) {
         this.productRepo = productRepo;
         this.subCategoryRepo = subCategoryRepo;
         this.reviewRepo = reviewRepo;
@@ -102,7 +102,6 @@ public class ProductServiceImpl implements ProductService {
     }
 
 
-
     @Override
     public ProdDetailDto getProductById(Integer id) {
         Product product = productRepo.findById(id).orElseThrow(() -> new RuntimeException("Not found"));
@@ -129,32 +128,32 @@ public class ProductServiceImpl implements ProductService {
 
         Set<ProdImages> prodImagesSet = new HashSet<>();
 
-        System.out.println( sellerRepo.findAll().size());
-        System.out.println( sellerId);
-        System.out.println( subCategoryId);
+        System.out.println(sellerRepo.findAll().size());
+        System.out.println(sellerId);
+        System.out.println(subCategoryId);
 
         Seller seller = sellerRepo.getOne(sellerId);
         Subcategory subcategory = subCategoryRepo.getOne(subCategoryId);
-        product.setName( prodDetailDto.getProductName() );
-        product.setDescription( prodDetailDto.getProductDescription() );
-        product.setImg(  prodDetailDto.getProductImg() );
-        product.setPrice( prodDetailDto.getProductPrice() );
-        product.setQuantity( prodDetailDto.getProductQuantity() );
+        product.setName(prodDetailDto.getProductName());
+        product.setDescription(prodDetailDto.getProductDescription());
+        product.setImg(prodDetailDto.getProductImg());
+        product.setPrice(prodDetailDto.getProductPrice());
+        product.setQuantity(prodDetailDto.getProductQuantity());
 
-        product.setSubcategory( subcategory );
-        product.setUser( seller );
+        product.setSubcategory(subcategory);
+        product.setUser(seller);
 
         prodDetailDto.getProdImages().forEach(imgUrl -> {
             ProdImages prodImage = new ProdImages();
-            prodImage.setProduct( product );
+            prodImage.setProduct(product);
             prodImage.setImageUrl(imgUrl);
-            prodImagesSet.add( prodImage);
+            prodImagesSet.add(prodImage);
         });
-        product.setProdImageses( prodImagesSet );
+        product.setProdImageses(prodImagesSet);
 
-        Product persistedProduct = productRepo.save( product );
+        Product persistedProduct = productRepo.save(product);
         ProdDetailDto dto = productMapperAPI.toDto(persistedProduct);
-        return  dto;
+        return dto;
     }
 
     @Override
@@ -164,24 +163,16 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ReviewDto> getProductReviews(Integer productId, Integer pageNumber) {
+    public List<ReviewDto> getProductReviews(Integer productId) {
         Product product = productRepo.getOne(productId);
 
         ReviewMapper reviewMapper = new ReviewMapper();
 
-        Pageable pageable = PageRequest.of(pageNumber, 3, Sort.by("createdAt"));
+        List<Review> reviews = reviewRepo.findReviewsByProduct(product);
 
-        Page<Review> page = reviewRepo.findReviewsByProduct(product, pageable);
+        System.out.println(reviews);
 
-        if (page.hasContent()) {
-            List<Review> reviews = page.getContent();
-
-            System.out.println(reviews);
-
-            return reviewMapper.entityListToDtoList(reviews);
-        } else {
-            return null;
-        }
+        return reviewMapper.entityListToDtoList(reviews);
     }
 
     @Override
