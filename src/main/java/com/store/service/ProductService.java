@@ -23,7 +23,7 @@ public interface ProductService {
 
     ProdDetailDto addOrUpdateProduct(ProdDetailDto prodDetailDto);
 
-    List<ReviewDto> getProductReviews(Integer id, Integer pageNumber);
+    List<ReviewDto> getProductReviews(Integer id);
 
     List<SellerProductDto> getProductsByUserId(int sellerId);
 

@@ -118,14 +118,17 @@ public class ProductController {
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/{id}/reviews")
-    public ResponseEntity<List<ReviewDto>> getProductReviews(
+    public ResponseEntity<PagingResponse<List<ReviewDto>>> getProductReviews(
             @PathVariable("id") Integer id,
             @RequestParam(value = "page", required = false, defaultValue = "0") Integer pageNumber) {
 
         try {
-            List<ReviewDto> productReviews = productService.getProductReviews(id, pageNumber);
+            List<ReviewDto> productReviews = productService.getProductReviews(id);
 
-            return ResponseEntity.ok(productReviews);
+            PagingResponse<List<ReviewDto>> response = new PagingResponse<>(productReviews, HttpStatus.OK, "Found");
+            response.setTotalElements((long) productReviews.size());
+
+            return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
