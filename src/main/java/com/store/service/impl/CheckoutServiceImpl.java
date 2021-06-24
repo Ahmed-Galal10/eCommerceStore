@@ -9,7 +9,9 @@ import com.store.dtos.order.OrderItemRequest;
 import com.store.dtos.order.OrderRequest;
 import com.store.dtos.payment.BankTransactionDto;
 import com.store.exceptions.BankException;
+import com.store.model.SoldItem;
 import com.store.repository.SellerRepo;
+import com.store.repository.SoldItemRepo;
 import com.store.service.*;
 import com.store.service.paymentValidator.PaymentValidator;
 import com.store.service.paymentValidator.impl.CreditCardPaymentValidator;
@@ -81,7 +83,7 @@ public class CheckoutServiceImpl implements CheckoutService {
         } else if (paymentInfo.getPaymentMethod().equals("CREDIT_CARD")) {
             Double totalPrice = cartDto.getItems().stream().map(cartItemDto -> cartItemDto.getPrice() * cartItemDto.getQuantity()).reduce(Double::sum).get();
             BankTransactionDto bankTransactionDto = new BankTransactionDto(paymentInfo.getCreditCardAuthDto(),
-                    BankService.STORE_ACCOUNT_NUMBER,totalPrice);
+                    BankService.STORE_ACCOUNT_NUMBER, totalPrice);
             bankService.doBankTransaction(bankTransactionDto);
             return getOrderDto(cartDto);
         } else if (paymentInfo.getPaymentMethod().equals("CUSTOMER_BALANCE")) {
@@ -102,7 +104,6 @@ public class CheckoutServiceImpl implements CheckoutService {
             product.setProductQuantity(updatedQuantity);
             //persist the product
             productService.addOrUpdateProduct(product);
-
             var seller = sellerRepo.findById(product.getSellerId());
             Double updatedBalance = seller.get().getBalance() + cartItemDto.getQuantity() * cartItemDto.getPrice();
             seller.get().setBalance(updatedBalance);

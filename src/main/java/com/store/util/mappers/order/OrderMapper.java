@@ -5,13 +5,14 @@ import com.store.dtos.order.OrderItemDto;
 import com.store.model.Order;
 import com.store.model.OrderItem;
 import com.store.util.mappers.EntityDtoMapper;
+import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
+@Component
 public class OrderMapper extends EntityDtoMapper<Order, OrderDto> {
     @Override
     public OrderDto toDto(Order entity) {

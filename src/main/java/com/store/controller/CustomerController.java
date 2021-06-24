@@ -300,4 +300,16 @@ public class CustomerController {
                     HttpStatus.BAD_REQUEST, e.getMessage()));
         }
     }
+//    @PreAuthorize("ROLE_ADMIN")
+    @GetMapping(path = "/{customerId}/details")
+    public ResponseEntity<GenericResponse<CustomerDetailsDto>> getCustomerDetails(@PathVariable("customerId") Integer customerId){
+        try {
+            CustomerDetailsDto customerDetailsDto = customerService.getCustomerDetailsById(customerId);
+            return ResponseEntity.status(HttpStatus.OK).body(new GenericResponse<>(customerDetailsDto,
+                    HttpStatus.OK,"REQUEST SUCCEEDED"));
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.OK).body(new GenericResponse<>(null,
+                    HttpStatus.BAD_REQUEST,e.getMessage()));
+        }
+    }
 }
