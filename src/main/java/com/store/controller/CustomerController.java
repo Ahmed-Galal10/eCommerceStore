@@ -10,6 +10,7 @@ import com.store.dtos.checkout.PaymentInfoDto;
 import com.store.dtos.customer.*;
 import com.store.dtos.order.OrderDto;
 import com.store.dtos.order.OrderRequest;
+import com.store.dtos.payment.CreditCardDto;
 import com.store.dtos.wishlist.WishlistProdRequest;
 import com.store.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,17 +46,16 @@ public class CustomerController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<CustomerDto>> getAllCustomers() {
-
+    public ResponseEntity<GenericResponse<List<CustomerDto>>> getAllCustomers() {
         try {
-            System.out.println("plaaaaaa");
-            return new ResponseEntity<>(customerService.getAllCustomers(), HttpStatus.OK);
+            List<CustomerDto> customerDto = customerService.getAllCustomers();
+            GenericResponse<List<CustomerDto>> response =
+                    new GenericResponse<>(customerDto, HttpStatus.OK, "REQUEST SUCCESSFUL");
+            return  ResponseEntity.ok(response);
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("not plaaaaaa");
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return ResponseEntity.ok(new GenericResponse<>(null, HttpStatus.BAD_REQUEST, e.getMessage()));
         }
-
     }
 
     @PostMapping()
