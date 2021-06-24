@@ -25,7 +25,7 @@ public interface ProductService {
 
     List<ReviewDto> getProductReviews(Integer id);
 
-    List<SellerProductDto> getProductsByUserId(int sellerId);
+    List<SellerProductDto> getProductsByUserId(int sellerId, Pageable pageable);
 
     void deleteProduct(Integer id);
 
