@@ -22,7 +22,8 @@ public class SellerMapper extends EntityDtoMapper<Seller, SellerDto> {
         sellerDto.setDeleted(entity.getIsDeleted());
         sellerDto.setId(entity.getId());
         sellerDto.setEmailVerified(entity.getIsEmailVerified());
-
+        sellerDto.setProductsCount(entity.getProducts().size());
+        sellerDto.setSoldItemsCount(entity.getSoldItems().size());
         return sellerDto;
     }
 

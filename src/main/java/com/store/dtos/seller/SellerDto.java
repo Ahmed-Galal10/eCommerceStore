@@ -14,6 +14,8 @@ public class SellerDto {
     private String phone;
     private Boolean isEmailVerified;
     private Boolean isDeleted;
+    private Integer soldItemsCount;
+    private Integer productsCount;
 
     public SellerDto() {
     }
@@ -112,5 +114,21 @@ public class SellerDto {
 
     public void setDeleted(Boolean deleted) {
         this.isDeleted = deleted;
+    }
+
+    public Integer getSoldItemsCount() {
+        return soldItemsCount;
+    }
+
+    public void setSoldItemsCount(Integer soldItemsCount) {
+        this.soldItemsCount = soldItemsCount;
+    }
+
+    public Integer getProductsCount() {
+        return productsCount;
+    }
+
+    public void setProductsCount(Integer productsCount) {
+        this.productsCount = productsCount;
     }
 }
