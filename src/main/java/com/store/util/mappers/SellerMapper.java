@@ -23,7 +23,11 @@ public class SellerMapper extends EntityDtoMapper<Seller, SellerDto> {
         sellerDto.setId(entity.getId());
         sellerDto.setEmailVerified(entity.getIsEmailVerified());
         sellerDto.setProductsCount(entity.getProducts().size());
-        sellerDto.setSoldItemsCount(entity.getSoldItems().size());
+        Integer soldItems = entity.getSoldItems().stream()
+                .map(soldItem -> soldItem.getOrderItem().getQuantity())
+                .reduce(Integer::sum)
+                .get();
+        sellerDto.setSoldItemsCount(soldItems);
         return sellerDto;
     }
 
