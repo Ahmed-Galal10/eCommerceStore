@@ -1,6 +1,7 @@
 package com.store.config;
 
 import com.store.dtos.customer.*;
+import com.store.dtos.review.ReviewDto;
 import com.store.dtos.seller.SellerRequestDto;
 import com.store.model.*;
 import com.store.dtos.customer.CustomerDto;
@@ -19,53 +20,54 @@ import org.springframework.context.annotation.Configuration;
 public class MappingConfigs {
 
     @Bean
-    public ModelMapper modelMapper(){
-        return  new ModelMapper();
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
     }
 
     // ============================= Custom Mappers ================================
     @Bean
-    public CartItemMapper getCartItemMapper(){
+    public CartItemMapper getCartItemMapper() {
         return new CartItemMapper();
     }
 
     @Bean
-    public CategoryMapper getCategoryMapper(){
+    public CategoryMapper getCategoryMapper() {
         return new CategoryMapper();
     }
 
     @Bean
-    public SubCategoryMapper getSubCategoryMapper(){
+    public SubCategoryMapper getSubCategoryMapper() {
         return new SubCategoryMapper();
     }
 
     @Bean
-    public EntityDtoMapper<Customer, CustomerDto> getCustomerMapper(){
+    public EntityDtoMapper<Customer, CustomerDto> getCustomerMapper() {
         return new CustomerMapper();
     }
 
     @Bean
-    public EntityDtoMapper<Customer, CustomerRequestDto> getCustomerRequestMapper(){
+    public EntityDtoMapper<Customer, CustomerRequestDto> getCustomerRequestMapper() {
         return new CustomerRequestMapper();
     }
 
     @Bean
-    public EntityDtoMapper<Order, CustomerOrderDto> getCustomerOrderMapper(){
+    public EntityDtoMapper<Order, CustomerOrderDto> getCustomerOrderMapper() {
         return new CustomerOrderMapper();
     }
 
     @Bean
-    public EntityDtoMapper<Review, CustomerReviewDto> getCustomerReviewMapper(){
+    public EntityDtoMapper<Review, CustomerReviewDto> getCustomerReviewMapper() {
         return new CustomerReviewMapper();
     }
 
     @Bean
 
-    public EntityDtoMapper<Wishlist, CustomerWishListDto> getCustomerWishlistMapper(){
+    public EntityDtoMapper<Wishlist, CustomerWishListDto> getCustomerWishlistMapper() {
         return new CustomerWishListMapper();
     }
+
     @Bean
-    public EntityDtoMapper<Product, ProductWishListDto> getProductWishlistMapper(){
+    public EntityDtoMapper<Product, ProductWishListDto> getProductWishlistMapper() {
         return new ProductWishListMapper();
     }
 
@@ -80,7 +82,12 @@ public class MappingConfigs {
     }
 
     @Bean
-    public  EntityDtoMapper<Seller, SellerRequestDto> getSellerRequestMapper(){
+    public EntityDtoMapper<Seller, SellerRequestDto> getSellerRequestMapper() {
         return new SellerRequestMapper();
+    }
+
+    @Bean
+    public EntityDtoMapper<Review, ReviewDto> getReviewMapper() {
+        return new ReviewMapper();
     }
 }

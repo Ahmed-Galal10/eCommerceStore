@@ -33,5 +33,5 @@ public interface ProductService {
 
     SellerProdDetailDto getSellerProductDetailById(Integer productId);
 
-
+    ReviewDto addReview(Integer id, ReviewDto reviewDto);
 }

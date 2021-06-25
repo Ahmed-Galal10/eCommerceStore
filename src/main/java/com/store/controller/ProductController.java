@@ -5,6 +5,7 @@ import com.store.dtos.GenericResponse;
 import com.store.dtos.product.*;
 import com.store.dtos.review.ReviewDto;
 import com.store.service.OrderService;
+
 import com.store.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -71,16 +72,16 @@ public class ProductController {
     }
 
     @GetMapping("/{id}/prodsSoldData")
-    public  ResponseEntity<GenericResponse<?>> prodQtySoldVsTime(@PathVariable("id")Integer prodId){
-        try{
+    public ResponseEntity<GenericResponse<?>> prodQtySoldVsTime(@PathVariable("id") Integer prodId) {
+        try {
 
-            List<ProdSoldData> data =  orderService.getProdSoldData(prodId);
-            GenericResponse< List<ProdSoldData>> response =
-                    new GenericResponse<>(data,HttpStatus.OK, "REQUEST SUCCESSFUL");
+            List<ProdSoldData> data = orderService.getProdSoldData(prodId);
+            GenericResponse<List<ProdSoldData>> response =
+                    new GenericResponse<>(data, HttpStatus.OK, "REQUEST SUCCESSFUL");
             return ResponseEntity.ok(response);
-        }catch (Exception e) {
-            GenericResponse< List<ProdSoldData>> response =
-                    new GenericResponse<>(null,HttpStatus.OK, "REQUEST SUCCESSFUL");
+        } catch (Exception e) {
+            GenericResponse<List<ProdSoldData>> response =
+                    new GenericResponse<>(null, HttpStatus.OK, "REQUEST SUCCESSFUL");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
@@ -163,5 +164,16 @@ public class ProductController {
             return ResponseEntity.notFound().build();
         }
 
+    }
+
+    @RequestMapping(method = RequestMethod.POST, path = "/{id}/reviews")
+    public ResponseEntity<GenericResponse<ReviewDto>> addProductReview(@PathVariable("id") Integer id, @RequestBody ReviewDto reviewDto) {
+        System.err.println(reviewDto);
+        ReviewDto review = productService.addReview(id, reviewDto);
+        System.err.println(review);
+
+        GenericResponse<ReviewDto> response = new GenericResponse(review, HttpStatus.OK, "Successful");
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 }
