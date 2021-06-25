@@ -1,8 +1,6 @@
 package com.store.controller;
 
 import com.store.dtos.GenericResponse;
-import com.store.dtos.customer.CustomerRequestDto;
-import com.store.dtos.product.ProdDetailDto;
 import com.store.dtos.product.SellerProdDetailDto;
 import com.store.dtos.product.SellerProductRequestDto;
 import com.store.dtos.seller.SellerDto;
@@ -14,7 +12,6 @@ import com.store.service.OrderService;
 import com.store.service.ProductService;
 import com.store.service.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -99,11 +96,17 @@ public class SellerController {
         return response;
     }
 
-    @GetMapping(value = "/{sellerId}/products")
+
+    @GetMapping(value = "/{sellerId}/products", params = {"page", "size"})
     public GenericResponse<List<SellerProductDto>>
-    getSellerProducts(@PathVariable("sellerId") int sellerId) {
-        
-        List<SellerProductDto> dtos = productService.getProductsByUserId(sellerId);
+    getSellerProducts(@PathVariable("sellerId") int sellerId,
+                      @RequestParam(value = "page", defaultValue = "0") int page,
+                      @RequestParam(value = "size", defaultValue = "1") int size) {
+
+
+        Pageable pageable = PageRequest.of(page, size);
+        System.out.println(page + size);
+        List<SellerProductDto> dtos = productService.getProductsByUserId(sellerId, pageable);
         System.out.println(dtos);
         GenericResponse<List<SellerProductDto>> response =
                 new GenericResponse<>(dtos, HttpStatus.OK, "REQUEST SUCCESSFUL");

@@ -3,14 +3,15 @@ package com.store.service.impl;
 import com.store.dtos.product.ProdDetailDto;
 import com.store.dtos.product.ProductImagesDto;
 import com.store.dtos.product.ProductWrapperDto;
-import com.store.dtos.review.ReviewDto;
-import com.store.model.*;
-import com.store.dtos.seller.SellerProductDto;
 import com.store.dtos.product.SellerProdDetailDto;
 import com.store.model.ProdImages;
 import com.store.model.Product;
 import com.store.model.Review;
 import com.store.model.Subcategory;
+
+import com.store.dtos.review.ReviewDto;
+import com.store.dtos.seller.SellerProductDto;
+import com.store.model.*;
 import com.store.repository.*;
 import com.store.service.ProductService;
 import com.store.util.mappers.EntityDtoMapper;
@@ -34,14 +35,13 @@ import java.util.stream.Collectors;
 public class ProductServiceImpl implements ProductService {
 
 
+
     private ProductRepo productRepo;
     private SubCategoryRepo subCategoryRepo;
     private ReviewRepo reviewRepo;
     private ProductImagesRepo productImagesRepo;
+    private final SellerRepo sellerRepo;
     private final OrderItemRepo orderItemRepo;
-
-
-    private SellerRepo sellerRepo;
     private CustomerRepo customerRepo;
 
     private EntityDtoMapper<Product, ProdDetailDto> productMapperAPI;
@@ -238,9 +238,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<SellerProductDto> getProductsByUserId(int sellerId) {
+    public List<SellerProductDto> getProductsByUserId(int sellerId, Pageable pageable) {
 
-        List<Product> products = productRepo.findByUser_Id(sellerId);
+        List<Product> products = productRepo.findByUser_Id(sellerId, pageable);
 
         List<SellerProductDto> dtos = mapper.entityListToDtoList(products);
 
