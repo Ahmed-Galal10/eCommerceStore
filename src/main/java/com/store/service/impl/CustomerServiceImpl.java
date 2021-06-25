@@ -79,7 +79,7 @@ public class CustomerServiceImpl implements CustomerService {
     public CustomerDetailsDto getCustomerDetailsById(Integer customerId) {
         Customer customer = customerRepo.findById(customerId).get();
         CustomerDto customerDto = customerMapper.toDto(customer);
-        List<Order> orderList = orderRepo.findAll();
+        List<Order> orderList = orderRepo.findOrderByUser(customer);
         List<OrderDto>  orderDtoList = orderMapper.entityListToDtoList(orderList);
         CustomerDetailsDto customerDetailsDto = new CustomerDetailsDto(customerDto,orderDtoList);
         return customerDetailsDto;
