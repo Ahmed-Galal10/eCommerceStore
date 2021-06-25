@@ -16,6 +16,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.context.annotation.SessionScope;
 
 import java.util.HashSet;
@@ -32,10 +33,12 @@ public class ProductServiceImpl implements ProductService {
     private ReviewRepo reviewRepo;
     private ProductImagesRepo productImagesRepo;
     private SellerRepo sellerRepo;
+    private CustomerRepo customerRepo;
 
     private EntityDtoMapper<Product, ProdDetailDto> productMapperAPI;
     private EntityDtoMapper<ProdImages, ProductImagesDto> productImagesMapper;
     private EntityDtoMapper<Product, SellerProductDto> mapper;
+    private EntityDtoMapper<Review, ReviewDto> reviewMapper;
 
     @Autowired
     public ProductServiceImpl(ProductRepo productRepo,
@@ -45,7 +48,9 @@ public class ProductServiceImpl implements ProductService {
                               EntityDtoMapper<ProdImages, ProductImagesDto> productImagesMapper,
                               ProductImagesRepo productImagesRepo,
                               EntityDtoMapper<Product, SellerProductDto> sellerProductMapper,
-                              SellerRepo sellerRepo) {
+                              EntityDtoMapper<Review, ReviewDto> reviewMapper,
+                              SellerRepo sellerRepo,
+                              CustomerRepo customerRepo) {
         this.productRepo = productRepo;
         this.subCategoryRepo = subCategoryRepo;
         this.reviewRepo = reviewRepo;
@@ -54,6 +59,8 @@ public class ProductServiceImpl implements ProductService {
         this.productImagesRepo = productImagesRepo;
         this.mapper = sellerProductMapper;
         this.sellerRepo = sellerRepo;
+        this.reviewMapper = reviewMapper;
+        this.customerRepo = customerRepo;
     }
 
     @Override
@@ -193,5 +200,19 @@ public class ProductServiceImpl implements ProductService {
         prodImages = productImagesRepo.save(prodImages);
 
         return productImagesMapper.toDto(prodImages);
+    }
+
+    @Override
+    public ReviewDto addReview(Integer id, ReviewDto reviewDto) {
+        Review review = reviewMapper.toEntity(reviewDto);
+        Product product = productRepo.getOne(id);
+        review.setProduct(product);
+        Customer customer = customerRepo.getOne(reviewDto.getUserId());
+        review.setUser(customer);
+        Review save = reviewRepo.save(review);
+
+        ReviewDto reviewDto1 = reviewMapper.toDto(save);
+
+        return reviewDto1;
     }
 }

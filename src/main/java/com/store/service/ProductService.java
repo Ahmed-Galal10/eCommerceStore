@@ -28,4 +28,6 @@ public interface ProductService {
     void deleteProduct(Integer id);
 
     ProductImagesDto addImageToProduct(ProductImagesDto productImagesDto, Integer productId);
+
+    ReviewDto addReview(Integer id, ReviewDto reviewDto);
 }
