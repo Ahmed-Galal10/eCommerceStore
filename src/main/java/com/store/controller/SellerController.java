@@ -9,6 +9,8 @@ import com.store.dtos.seller.SellerDto;
 import com.store.dtos.seller.SellerProductDto;
 import com.store.dtos.seller.SellerRequest;
 import com.store.dtos.seller.SellerRequestDto;
+import com.store.dtos.solditem.SoldItemDto;
+import com.store.service.OrderService;
 import com.store.service.ProductService;
 import com.store.service.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,12 +30,15 @@ public class SellerController {
 
     private final SellerService sellerService;
     private final ProductService productService;
+    private OrderService orderService;
 
     @Autowired
-    public SellerController(SellerService sellerService, ProductService productService) {
+    public SellerController(SellerService sellerService, ProductService productService,
+                            OrderService orderService) {
 
         this.sellerService = sellerService;
         this.productService = productService;
+        this.orderService = orderService;
     }
 
     @GetMapping
@@ -106,9 +111,18 @@ public class SellerController {
         return response;
     }
 
-    @GetMapping("/{sellerId}/sold-items")
-    public void getSellerSoldItems(@PathVariable("sellerId") int sellerId){
 
+    @GetMapping("/{sellerId}/sold-items")
+    public ResponseEntity<GenericResponse<?>> getSellerSoldItems(@PathVariable("sellerId") int sellerId){
+
+        try {
+            List<SoldItemDto> soldItems =  orderService.getSoldItemsBySeller(sellerId);
+            GenericResponse<SellerProdDetailDto> response =
+                    new GenericResponse(soldItems, HttpStatus.OK, "REQUEST_SUCCESS");
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new GenericResponse<>(null, HttpStatus.BAD_REQUEST, e.getMessage()));
+        }
     }
 
 
@@ -121,7 +135,7 @@ public class SellerController {
                    new GenericResponse(sellerProdDetailDto, HttpStatus.OK, "REQUEST_SUCCESS");
             return ResponseEntity.ok(response);
         } catch (Exception e) {
-            return ResponseEntity.ok(new GenericResponse<>(null, HttpStatus.BAD_REQUEST, e.getMessage()));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new GenericResponse<>(null, HttpStatus.BAD_REQUEST, e.getMessage()));
         }
     }
 
@@ -138,8 +152,29 @@ public class SellerController {
             return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.ok(new GenericResponse<>(null, HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new GenericResponse<>(null, HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()));
         }
     }
+
+    @PutMapping(value = "/products/{productId}",params = "sale")
+    public ResponseEntity<GenericResponse> updateSellerProductSaleState(@PathVariable("productId") Integer productId,
+                                                               @RequestBody SellerProductRequestDto sellerProductDto)
+    {
+        try {
+            sellerProductDto.setId(productId);
+            sellerService.updateSellerProductSale(sellerProductDto);
+            GenericResponse<SellerProductRequestDto> response =
+                    new GenericResponse<>(sellerProductDto, HttpStatus.NO_CONTENT, "Product UPDATED");
+
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new GenericResponse<>(null, HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()));
+        }
+    }
+
+
+
+
 
 }

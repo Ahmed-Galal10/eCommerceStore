@@ -1,14 +1,9 @@
 package com.store.service.impl;
 
-import com.store.dtos.customer.CustomerDto;
-import com.store.dtos.customer.CustomerRequestDto;
 import com.store.dtos.seller.SellerDto;
 import com.store.dtos.seller.SellerRequest;
 import com.store.dtos.seller.SellerRequestDto;
-import com.store.model.Customer;
 import com.store.dtos.product.SellerProductRequestDto;
-import com.store.dtos.seller.SellerDto;
-import com.store.dtos.seller.SellerRequest;
 import com.store.model.Product;
 import com.store.model.Seller;
 import com.store.repository.OrderRepo;
@@ -22,8 +17,8 @@ import com.store.util.mappers.seller.SellerProductRequestMapper;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -163,6 +158,19 @@ public class SellerServiceImpl implements SellerService {
         productRepo.save(product);
 
         return sellerProductMapper.toDto(product);
+    }
+
+    @Transactional
+    @Override
+    public SellerProductRequestDto updateSellerProductSale(SellerProductRequestDto productDto) {
+        boolean saleState = productDto.isOnSale();
+        Product product = productRepo.findById(productDto.getId())
+                .orElseThrow(() -> new RuntimeException("Product" + productDto.getId() + " Not found"));
+
+        product.setIsOnSale(saleState);
+
+
+        return  sellerProductMapper.toDto( product );
     }
 
 }

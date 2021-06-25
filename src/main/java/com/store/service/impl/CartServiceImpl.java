@@ -1,6 +1,7 @@
 package com.store.service.impl;
 
 
+import com.store.exceptions.CartException;
 import com.store.model.CartItem;
 import com.store.model.CartItemId;
 import com.store.model.Product;
@@ -56,8 +57,15 @@ public class CartServiceImpl implements CartService {
         int productId = cartItemRequest.getProductId();
         int quantity = cartItemRequest.getQuantity();
 
-        CartItem cartItem = new CartItem();
+
+        //First Check if this cart Item Exists
         CartItemId cartItemId = new CartItemId(customerId, productId);
+        boolean isExist =cartItemRepo.existsById(cartItemId);
+        if(isExist){
+            throw new CartException("Product Already in Cart");
+        }
+
+        CartItem cartItem = new CartItem();
 
         Optional<Product> p = productRepo.findById(productId);
         Optional<User> u = userRepo.findById(customerId);
@@ -90,11 +98,20 @@ public class CartServiceImpl implements CartService {
         int productId = cartItemRequest.getProductId();
         int quantity = cartItemRequest.getQuantity();
 
+
         CartItemId cartItemId = new CartItemId(customerId, productId);
 
+        Product product = productRepo.getOne(productId);
+        int productStock = product.getQuantity();
+
+        //If quantity wanted > stock there's an Error.
+        if( quantity > productStock){
+            throw new CartException("Product has only ( "+ productStock +" ) available in Stock." );
+        } else if(quantity <= 0){
+            throw new CartException("Invalid Quantity" );
+        }
+
         Optional<CartItem> ci = cartItemRepo.findById(cartItemId);
-
-
 
         //TODO Change in fut.
         CartItem cartItem = ci.orElse(null);
@@ -125,7 +142,7 @@ public class CartServiceImpl implements CartService {
         CartItem cartItem = ci.orElse(null);
         System.out.println( cartItem);
         if(cartItem == null){
-            //TODO Throw Custom Exception
+            throw new CartException("Couldn't delete , Try again later");
         }
 
         cartItemRepo.delete(cartItem);

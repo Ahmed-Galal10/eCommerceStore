@@ -32,4 +32,6 @@ public interface ProductService {
     ProductImagesDto addImageToProduct(ProductImagesDto productImagesDto, Integer productId);
 
     SellerProdDetailDto getSellerProductDetailById(Integer productId);
+
+
 }

@@ -237,7 +237,7 @@ public class CustomerController {
         CartItemDto cartItemDto = cartService.addCartItem(cartItemRequest);
 
         GenericResponse<CartItemDto> response =
-                new GenericResponse(cartItemDto, HttpStatus.OK, "REQUEST_SUCCESS");
+                new GenericResponse(cartItemDto, HttpStatus.OK, "Product Added To Cart");
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -249,7 +249,7 @@ public class CustomerController {
         CartItemDto cartItemDto = cartService.updateCartItem(cartItemRequest);
 
         GenericResponse<CartItemDto> response =
-                new GenericResponse(cartItemDto, HttpStatus.OK, "REQUEST_SUCCESS");
+                new GenericResponse(cartItemDto, HttpStatus.OK, "Cart Item Updated");
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
@@ -259,7 +259,7 @@ public class CustomerController {
         cartItemRequest.setCustomerId(userId);
         boolean isDeleted = cartService.deleteCartItem(cartItemRequest);
         GenericResponse<Boolean> response =
-                new GenericResponse(isDeleted, HttpStatus.OK, "REQUEST_SUCCESS");
+                new GenericResponse(isDeleted, HttpStatus.OK, "Product Deleted Successfully");
         return ResponseEntity.ok(response);
     }
 

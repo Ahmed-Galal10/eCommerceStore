@@ -64,7 +64,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .antMatchers(HttpMethod.DELETE,"/customers/**").hasAnyAuthority( "ROLE_ADMIN", "ROLE_CUSTOMER")
 //                .antMatchers("/upload/**").hasAnyAuthority( "ROLE_SELLER","ROLE_CUSTOMER","ROLE_ADMIN")
 //                .antMatchers("/upload/**").permitAll()
-                .anyRequest().authenticated()
+//                .anyRequest().authenticated()
                 .and().exceptionHandling().accessDeniedHandler(accessDeniedHandler)
                 .and().addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement()

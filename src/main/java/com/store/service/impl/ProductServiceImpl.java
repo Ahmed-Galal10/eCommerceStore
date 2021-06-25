@@ -7,8 +7,6 @@ import com.store.dtos.review.ReviewDto;
 import com.store.model.*;
 import com.store.dtos.seller.SellerProductDto;
 import com.store.dtos.product.SellerProdDetailDto;
-import com.store.dtos.review.ReviewDto;
-import com.store.dtos.seller.SellerProductDto;
 import com.store.model.ProdImages;
 import com.store.model.Product;
 import com.store.model.Review;
@@ -47,6 +45,7 @@ public class ProductServiceImpl implements ProductService {
     private final EntityDtoMapper<ProdImages, ProductImagesDto> productImagesMapper;
     private final EntityDtoMapper<Product, SellerProductDto> mapper;
 
+
     @Autowired
     public ProductServiceImpl(ProductRepo productRepo,
                               SubCategoryRepo subCategoryRepo,
@@ -79,6 +78,7 @@ public class ProductServiceImpl implements ProductService {
                                                      Double priceMax,
                                                      List<Integer> subCategoriesIds,
                                                      String nameSearch) {
+
 
         ProductWrapperDto productWrapperDto = new ProductWrapperDto();
 
@@ -160,7 +160,9 @@ public class ProductServiceImpl implements ProductService {
         Integer productInWishlists = productRepo.countProductInWishListsById(productId);
         System.out.println("productInWishlists is " + productInWishlists);
 
-        Integer soldItemCounter = orderItemRepo.countOrderItemByProduct(product);
+
+//        System.out.println("================>>>>>>>" + orderItemRepo.countTimesSold( productId ));
+        Integer soldItemCounter = orderItemRepo.countTimesSold(productId) ;
         System.out.println("soldItemCounter is " + soldItemCounter);
 
         sellerProdDetailDto.setAverageRating(averageRating);

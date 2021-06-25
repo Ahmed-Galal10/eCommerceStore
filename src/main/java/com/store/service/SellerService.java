@@ -20,4 +20,6 @@ public interface SellerService {
     SellerDto deleteById(int sellerId);
 
     SellerProductRequestDto updateSellerProduct(SellerProductRequestDto productDto);
+
+    SellerProductRequestDto updateSellerProductSale(SellerProductRequestDto productDto);
 }

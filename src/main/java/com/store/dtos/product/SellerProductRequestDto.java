@@ -7,6 +7,15 @@ public class SellerProductRequestDto {
     private double productPrice;
     private Integer productQuantity;
     private String productDescription;
+    private boolean onSale;
+
+    public boolean isOnSale() {
+        return onSale;
+    }
+
+    public void setOnSale(boolean onSale) {
+        this.onSale = onSale;
+    }
 
     public Integer getId() {
         return id;
