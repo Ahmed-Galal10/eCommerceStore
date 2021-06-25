@@ -21,6 +21,7 @@ import javax.swing.text.html.parser.Entity;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -38,46 +39,48 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private CartItemRepo cartItemRepo;
 
-    public OrderDto getOrderDetail(int orderId){
+    @Autowired
+    private SoldItemRepo soldItemRepo;
 
-        Optional<Order> o = orderRepo.findById( orderId );
+    public OrderDto getOrderDetail(int orderId) {
+
+        Optional<Order> o = orderRepo.findById(orderId);
 
         //TODO REFACTOR=> HANDLE ERR
         Order order = o.orElse(null);
-        if(order == null){
+        if (order == null) {
 
         }
 
         EntityDtoMapper<Order, OrderDto> mapper = new OrderMapper();
 
-        OrderDto orderDto = mapper.toDto( order );
-        return  orderDto;
+        OrderDto orderDto = mapper.toDto(order);
+        return orderDto;
     }
 
     @Override
     public OrderDto createOrder(OrderRequest orderRequest) {
 
         //TODO REFACTOR => CartItems <---> Order
-        List<CartItem> cartItems =  cartItemRepo.getAllCartItemsByUserId(orderRequest.getCustomerId());
-        Customer customer = customerRepo.getOne( orderRequest.getCustomerId() );
+        List<CartItem> cartItems = cartItemRepo.getAllCartItemsByUserId(orderRequest.getCustomerId());
+        Customer customer = customerRepo.getOne(orderRequest.getCustomerId());
         Order order = new Order();
         Set<OrderItem> orderItems = new HashSet<>();
 
-        order.setUser( customer );
-        order.setDate( new Date() );
+        order.setUser(customer);
+        order.setDate(new Date());
 
-        cartItems.stream().forEach(cartItem ->  {
+        cartItems.stream().forEach(cartItem -> {
 
             OrderItem orderItem = new OrderItem();
             Product prod = cartItem.getProduct();
 
-            orderItem.setProduct( prod );
+            orderItem.setProduct(prod);
             System.out.println();
-            orderItem.setUnitPrice( prod.getPrice() );
-            orderItem.setQuantity( cartItem.getQuantity() );
+            orderItem.setUnitPrice(prod.getPrice());
+            orderItem.setQuantity(cartItem.getQuantity());
             orderItem.setOrder(order);
-            orderItems.add( orderItem );
-
+            orderItems.add(orderItem);
         });
 //        order = orderRepo.saveAndFlush( order );
 //        System.out.println(order.getId());
@@ -95,10 +98,17 @@ public class OrderServiceImpl implements OrderService {
 //            orderItems.add( orderItem );
 //        }
 
-        order.setOrderItems( orderItems );
+        order.setOrderItems(orderItems);
 
         orderRepo.save(order);
-
+        var soldItemSet = orderItems.stream().map(orderItem -> {
+            SoldItem soldItem = new SoldItem();
+            soldItem.setOrderItem(orderItem);
+            soldItem.setOrder(order);
+            soldItem.setUser(orderItem.getProduct().getUser());
+            return soldItem;
+        }).collect(Collectors.toSet());
+        soldItemRepo.saveAll(soldItemSet);
         cartItemRepo.deleteAllByUserId(customer.getId());
 
         EntityDtoMapper<Order, OrderDto> mapper = new OrderMapper();

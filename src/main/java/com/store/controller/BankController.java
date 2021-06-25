@@ -67,4 +67,40 @@ public class BankController {
                     HttpStatus.BAD_REQUEST, e.getMessage()));
         }
     }
+
+    @PatchMapping(path = "buyBalance")
+    @PreAuthorize("ROLE_CUSTOMER")
+    public ResponseEntity<GenericResponse<Boolean>> buyBalance(@RequestBody BankTransactionDto bankTransactionDto) {
+        try {
+            bankTransactionDto.setDistCreditCardNumber(BankService.STORE_ACCOUNT_NUMBER);
+            Boolean status = bankService.doBankTransaction(bankTransactionDto);
+            if (status) {
+                return ResponseEntity.status(HttpStatus.OK).body(new GenericResponse<>(Boolean.TRUE,
+                        HttpStatus.OK, "Transaction done successfully"));
+            } else {
+                throw new BankException("Transaction Failed", 1405);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new GenericResponse<>(Boolean.FALSE,
+                    HttpStatus.BAD_REQUEST, e.getMessage()));
+        }
+    }
+    @PatchMapping(path = "sellBalance")
+    @PreAuthorize("ROLE_SELLER")
+    public ResponseEntity<GenericResponse<Boolean>> sellBalance(@RequestBody BankTransactionDto bankTransactionDto) {
+        try {
+            bankTransactionDto.getSrcCardAuthDto().setCreditCardNumber(BankService.STORE_ACCOUNT_NUMBER);
+            bankTransactionDto.getSrcCardAuthDto().setCvv(BankService.STORE_ACCOUNT_CVV);
+            Boolean status = bankService.doBankTransaction(bankTransactionDto);
+            if (status) {
+                return ResponseEntity.status(HttpStatus.OK).body(new GenericResponse<>(Boolean.TRUE,
+                        HttpStatus.OK, "Transaction done successfully"));
+            } else {
+                throw new BankException("Transaction Failed", 1405);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new GenericResponse<>(Boolean.FALSE,
+                    HttpStatus.BAD_REQUEST, e.getMessage()));
+        }
+    }
 }

@@ -2,9 +2,10 @@ package com.store.util.mappers;
 
 import com.store.dtos.seller.SellerDto;
 import com.store.model.Seller;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-@Service
+@Component
 public class SellerMapper extends EntityDtoMapper<Seller, SellerDto> {
     @Override
     public SellerDto toDto(Seller entity) {
@@ -22,6 +23,12 @@ public class SellerMapper extends EntityDtoMapper<Seller, SellerDto> {
         sellerDto.setDeleted(entity.getIsDeleted());
         sellerDto.setId(entity.getId());
         sellerDto.setEmailVerified(entity.getIsEmailVerified());
+        sellerDto.setProductsCount(entity.getProducts().size());
+        Integer soldItems = entity.getSoldItems().stream()
+                .map(soldItem -> soldItem.getOrderItem().getQuantity())
+                .reduce(Integer::sum)
+                .orElse(0);
+        sellerDto.setSoldItemsCount(soldItems);
 
         return sellerDto;
     }

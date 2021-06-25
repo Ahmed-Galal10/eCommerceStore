@@ -15,6 +15,8 @@ public interface CustomerService {
 
     CustomerDto getCustomerById(Integer customerId);
 
+    CustomerDetailsDto getCustomerDetailsById(Integer customerId);
+
     CustomerRequestDto addCustomer(CustomerRequestDto customerDto);
 
     void deleteCustomer(Integer customerId);
