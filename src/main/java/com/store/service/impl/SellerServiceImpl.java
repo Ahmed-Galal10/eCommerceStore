@@ -52,7 +52,14 @@ public class SellerServiceImpl implements SellerService {
     @Override
     public List<SellerDto> getAll() {
 
-        List<Seller> sellers = sellerRepo.findAll().stream().filter(seller -> !seller.getIsDeleted()).collect(Collectors.toList());
+        System.out.println( sellerRepo.findAll().size() );
+
+
+        List<Seller> sellers = sellerRepo
+                .findAll()
+                .stream()
+                .filter(seller -> !seller.getIsDeleted())
+                .collect(Collectors.toList());
         List<SellerDto> sellersDto = mapper.entityListToDtoList(sellers);
         return sellersDto;
     }
