@@ -19,12 +19,14 @@ import com.store.service.paymentValidator.impl.CustomerBalancePaymentValidator;
 import com.store.service.paymentValidator.impl.PaypalPaymentValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class CheckoutServiceImpl implements CheckoutService {
     @Autowired
     private ProductService productService;

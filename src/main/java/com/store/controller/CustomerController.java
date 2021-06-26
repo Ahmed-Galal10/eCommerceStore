@@ -181,6 +181,7 @@ public class CustomerController {
         }
     }
 
+
     @PostMapping("/{customerId}/wishlist")
     public ResponseEntity<GenericResponse> addWishListProduct(@PathVariable("customerId") int customerId,
                                                               @RequestBody WishlistProdRequest prodRequest) {
@@ -282,7 +283,6 @@ public class CustomerController {
 
     @PreAuthorize("CUSTOMER_ROLE")
     @PostMapping(path = "/{customerId}/payment")
-    @Transactional
     public ResponseEntity<GenericResponse<?>> applyCheckout(@PathVariable("customerId") Integer customerId,
                                                             @RequestBody PaymentInfoDto paymentInfo) {
         try {
@@ -291,13 +291,13 @@ public class CustomerController {
                 OrderDto orderDto = checkoutService.doCheckout(paymentInfo, cartDto);
                 System.out.println(orderDto);
                 return ResponseEntity.status(HttpStatus.OK).body(new GenericResponse<>(orderDto,
-                        HttpStatus.OK, "Checkout Done Successfully"));
+                        HttpStatus.OK, "Checkout Done Successfully .."));
             }
-            throw new Exception("Payment Failed");
+            throw new Exception("Not Enough Cash in this Credit Card");
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new GenericResponse<>(null,
-                    HttpStatus.BAD_REQUEST, e.getMessage()));
+                    HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage()));
         }
     }
 //    @PreAuthorize("ROLE_ADMIN")

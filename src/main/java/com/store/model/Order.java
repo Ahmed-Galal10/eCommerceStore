@@ -91,7 +91,7 @@ public class Order  implements java.io.Serializable {
         this.orderItems = orderItems;
     }
 
-@OneToMany(fetch=FetchType.LAZY, mappedBy="order")
+@OneToMany(fetch=FetchType.LAZY, mappedBy="order" , cascade = CascadeType.ALL)
     public Set<SoldItem> getSoldItems() {
         return this.soldItems;
     }

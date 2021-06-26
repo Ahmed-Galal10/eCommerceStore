@@ -76,31 +76,11 @@ public class OrderServiceImpl implements OrderService {
             Product prod = cartItem.getProduct();
 
             orderItem.setProduct(prod);
-            System.out.println();
             orderItem.setUnitPrice(prod.getPrice());
             orderItem.setQuantity(cartItem.getQuantity());
             orderItem.setOrder(order);
             orderItems.add(orderItem);
         });
-//        order = orderRepo.saveAndFlush( order );
-//        System.out.println(order.getId());
-//
-//        for (OrderItemRequest itemRequest : orderRequest.getOrderItems()){
-//
-//            OrderItem orderItem = new OrderItem();
-//            Product prod = productRepo.getOne( itemRequest.getProductId() );
-//
-//            orderItem.setProduct( prod );
-//            System.out.println();
-//            orderItem.setUnitPrice( prod.getPrice() );
-//            orderItem.setQuantity( itemRequest.getQuantity() );
-//            orderItem.setOrder(order);
-//            orderItems.add( orderItem );
-//        }
-
-        order.setOrderItems(orderItems);
-
-        orderRepo.save(order);
         var soldItemSet = orderItems.stream().map(orderItem -> {
             SoldItem soldItem = new SoldItem();
             soldItem.setOrderItem(orderItem);
@@ -108,7 +88,10 @@ public class OrderServiceImpl implements OrderService {
             soldItem.setUser(orderItem.getProduct().getUser());
             return soldItem;
         }).collect(Collectors.toSet());
-        soldItemRepo.saveAll(soldItemSet);
+        order.setOrderItems(orderItems);
+//        order.setSoldItems(soldItemSet);
+        orderRepo.save(order);
+//        soldItemRepo.saveAll(soldItemSet);
         cartItemRepo.deleteAllByUserId(customer.getId());
 
         EntityDtoMapper<Order, OrderDto> mapper = new OrderMapper();

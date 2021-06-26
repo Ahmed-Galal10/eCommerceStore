@@ -28,11 +28,11 @@ public class BankServiceImpl implements BankService {
                 return cardMapper.toDto(bankAccount);
             } else {
                 System.out.println("Bad CVV");
-                throw new BankException("Bad CVV", 1403);
+                throw new BankException("Incorrect CVV", 1403);
             }
         } else {
             System.out.println("CARD NOT FOUND");
-            throw new BankException("CARD NOT FOUND", 1404);
+            throw new BankException("No Such Credit Card", 1404);
         }
     }
 
