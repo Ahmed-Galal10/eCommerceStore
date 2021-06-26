@@ -10,6 +10,24 @@ public class SoldItemDto {
     private Integer soldQuantity;
     private Integer orderId;
     private double price;
+    private int sellerId;
+    private String sellerName;
+
+    public int getSellerId() {
+        return sellerId;
+    }
+
+    public void setSellerId(int sellerId) {
+        this.sellerId = sellerId;
+    }
+
+    public String getSellerName() {
+        return sellerName;
+    }
+
+    public void setSellerName(String sellerName) {
+        this.sellerName = sellerName;
+    }
 
     public Integer getProductId() {
         return productId;

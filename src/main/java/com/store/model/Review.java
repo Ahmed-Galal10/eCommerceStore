@@ -26,8 +26,8 @@ public class Review  implements java.io.Serializable {
      private User user;
      private Product product;
      private Date createdAt;
-     private int rating;
-     private String reviewText;
+     private int rating = 0;
+     private String reviewText = "";
 
     public Review() {
     }

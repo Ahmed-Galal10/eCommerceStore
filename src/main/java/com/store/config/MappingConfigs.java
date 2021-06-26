@@ -66,10 +66,6 @@ public class MappingConfigs {
         return new CustomerWishListMapper();
     }
 
-    @Bean
-    public EntityDtoMapper<Product, ProductWishListDto> getProductWishlistMapper() {
-        return new ProductWishListMapper();
-    }
 
     @Bean
     public EntityDtoMapper<Product, ProdDetailDto> getProductMapper() {

@@ -139,4 +139,16 @@ public class OrderServiceImpl implements OrderService {
         List<SoldItemDto> soldItemDtoList = mapper.entityListToDtoList( soldItems ) ;
         return soldItemDtoList;
     }
+
+    @Override
+    public List<SoldItemDto> getAllSoldItems() {
+
+        List<OrderItem> soldItems = orderItemRepo.findAll();
+
+        EntityDtoMapper<OrderItem, SoldItemDto> mapper = new SoldItemMapper();
+
+        List<SoldItemDto> soldItemDtoList = mapper.entityListToDtoList( soldItems ) ;
+
+        return soldItemDtoList;
+    }
 }

@@ -190,7 +190,7 @@ public class CustomerController {
             prodRequest.setCustomerId(customerId);
             ProductWishListDto product = wishListService.addProduct(prodRequest);
             GenericResponse<ProductWishListDto> response =
-                    new GenericResponse<>(product, HttpStatus.CREATED, "PRODUCT ADDED");
+                    new GenericResponse<>(product, HttpStatus.CREATED, "Product Added To Wishlist");
 
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (Exception e) {
@@ -208,7 +208,7 @@ public class CustomerController {
             prodRequest.setCustomerId(customerId);
             Boolean isDeleted = wishListService.deleteProduct(prodRequest);
             GenericResponse<ProductWishListDto> response =
-                    new GenericResponse(isDeleted, HttpStatus.OK, "PRODUCT REMOVED");
+                    new GenericResponse(isDeleted, HttpStatus.OK, "Product Deleted From Wishlist");
 
             return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (Exception e) {

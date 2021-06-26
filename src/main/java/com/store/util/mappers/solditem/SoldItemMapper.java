@@ -20,6 +20,8 @@ public class SoldItemMapper extends EntityDtoMapper<OrderItem, SoldItemDto> {
         soldItemDto.setName( entity.getProduct().getName() );
         soldItemDto.setOrderId( entity.getOrder().getId() );
         soldItemDto.setPrice( entity.getUnitPrice() );
+        soldItemDto.setSellerId( entity.getProduct().getUser().getId() );
+        soldItemDto.setSellerName( entity.getProduct().getUser().getName() );
 
         try {
             Date soldDate = entity.getOrder().getDate();

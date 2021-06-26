@@ -4,6 +4,8 @@ import com.store.dtos.GenericResponse;
 
 import com.store.dtos.product.*;
 import com.store.dtos.review.ReviewDto;
+import com.store.dtos.solditem.SoldItemDto;
+import com.store.repository.OrderItemRepo;
 import com.store.service.OrderService;
 
 import com.store.service.ProductService;
@@ -22,6 +24,7 @@ public class ProductController {
 
     ProductService productService;
     OrderService orderService;
+
 
     @Autowired
     public ProductController(ProductService productService,
@@ -83,6 +86,19 @@ public class ProductController {
             GenericResponse<List<ProdSoldData>> response =
                     new GenericResponse<>(null, HttpStatus.OK, "REQUEST SUCCESSFUL");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    @GetMapping("/sold-items")
+    public ResponseEntity<GenericResponse<?>> getAllSoldItems(){
+
+        try {
+            List<SoldItemDto> soldItems =  orderService.getAllSoldItems();
+            GenericResponse<SellerProdDetailDto> response =
+                    new GenericResponse(soldItems, HttpStatus.OK, "REQUEST_SUCCESS");
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new GenericResponse<>(null, HttpStatus.BAD_REQUEST, e.getMessage()));
         }
     }
 

@@ -7,6 +7,7 @@ import com.store.model.Product;
 import com.store.model.Wishlist;
 import com.store.repository.CustomerRepo;
 import com.store.repository.ProductRepo;
+import com.store.repository.ReviewRepo;
 import com.store.repository.WishlistRepo;
 import com.store.service.WishListService;
 import com.store.util.mappers.EntityDtoMapper;
@@ -19,17 +20,24 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class WishlistSericeImpl implements WishListService {
 
-    WishlistRepo wishlistRepo;
-    CustomerRepo customerRepo;
-    ProductRepo productRepo;
+   private WishlistRepo wishlistRepo;
+   private CustomerRepo customerRepo;
+   private ProductRepo productRepo;
+   private ReviewRepo reviewRepo;
 
-    @Autowired
+   @Autowired
+   EntityDtoMapper< Product,ProductWishListDto> mapper ;
+
+
+   @Autowired
     public  WishlistSericeImpl(WishlistRepo wishlistRepo,
                                CustomerRepo customerRepo,
-                               ProductRepo productRepo){
+                               ProductRepo productRepo,
+                               ReviewRepo reviewRepo){
         this.wishlistRepo = wishlistRepo;
         this.customerRepo = customerRepo;
         this.productRepo = productRepo;
+        this.reviewRepo = reviewRepo;
     }
 
     private Wishlist createWishlist(Integer customerId){
@@ -65,9 +73,10 @@ public class WishlistSericeImpl implements WishListService {
         wishlist.getProducts().add( prod );
 
         //TODO REFACTOR
-        EntityDtoMapper< Product,ProductWishListDto> mapper = new ProductWishListMapper();
-
         ProductWishListDto productWishListDto =  mapper.toDto( prod );
+        Double avgRating = reviewRepo.findProductAverageRatingById(productId);
+        if(avgRating == null) avgRating = 0.0;
+        productWishListDto.setRating( avgRating);
         return  productWishListDto;
     }
 

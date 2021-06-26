@@ -162,6 +162,7 @@ public class ProductServiceImpl implements ProductService {
         sellerProdDetailDto.setSellerProduct(prodDetailDto);
 
         Double averageRating = reviewRepo.findProductAverageRatingById(productId);
+        if(averageRating == null) averageRating = 0.0;
         System.out.println("averageRating is" + averageRating);
 
         Integer productInWishlists = productRepo.countProductInWishListsById(productId);

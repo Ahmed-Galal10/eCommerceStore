@@ -20,6 +20,6 @@ public interface OrderService {
 
     List<SoldItemDto> getSoldItemsBySeller(Integer sellerId);
 
-//     CustomerOrderDto createOrder(OrderRequest orderRequest);
+    List<SoldItemDto> getAllSoldItems();
 
 }
