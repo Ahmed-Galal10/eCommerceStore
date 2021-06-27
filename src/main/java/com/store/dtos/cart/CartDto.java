@@ -4,8 +4,8 @@ import java.util.List;
 
 public class CartDto {
 
-
-    List<CartItemDto> items;
+    private Integer customerId;
+    private List<CartItemDto> items;
 
 
     public List<CartItemDto> getItems() {
@@ -14,5 +14,13 @@ public class CartDto {
 
     public void setItems(List<CartItemDto> items) {
         this.items = items;
+    }
+
+    public Integer getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(Integer customerId) {
+        this.customerId = customerId;
     }
 }

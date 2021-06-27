@@ -27,12 +27,12 @@ public class User  implements java.io.Serializable {
     private String email;
     private String password;
     private String address;
-    private Date regDate;
-    private String image;
+    private Date regDate = new Date();
+    private String image = "https://ecommerece-iti.s3.eu-central-1.amazonaws.com/3a6ec5bb-2f87-4654-b163-4f63a583e1de";
     private String phone;
     private String role;
-    private Boolean isEmailVerified;
-    private Boolean isDeleted;
+    private Boolean isEmailVerified = false;
+    private Boolean isDeleted = false;
 
     public User() {
     }

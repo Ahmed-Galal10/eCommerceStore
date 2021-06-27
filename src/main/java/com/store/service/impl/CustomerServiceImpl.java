@@ -2,10 +2,13 @@ package com.store.service.impl;
 
 
 import com.store.dtos.customer.*;
+import com.store.dtos.order.OrderDto;
 import com.store.model.*;
 import com.store.repository.CustomerRepo;
+import com.store.repository.OrderRepo;
 import com.store.service.CustomerService;
 import com.store.util.mappers.EntityDtoMapper;
+import com.store.util.mappers.order.OrderMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +40,11 @@ public class CustomerServiceImpl implements CustomerService {
     @Autowired
     private EntityDtoMapper<Product, ProductWishListDto> productWishListMapper;
 
+    @Autowired
+    private OrderRepo orderRepo;
+
+    @Autowired
+    private OrderMapper orderMapper;
     public CustomerServiceImpl() {
     }
 
@@ -65,6 +73,16 @@ public class CustomerServiceImpl implements CustomerService {
         System.out.println(customerDto);
 
         return customerDto;
+    }
+
+    @Override
+    public CustomerDetailsDto getCustomerDetailsById(Integer customerId) {
+        Customer customer = customerRepo.findById(customerId).get();
+        CustomerDto customerDto = customerMapper.toDto(customer);
+        List<Order> orderList = orderRepo.findOrderByUser(customer);
+        List<OrderDto>  orderDtoList = orderMapper.entityListToDtoList(orderList);
+        CustomerDetailsDto customerDetailsDto = new CustomerDetailsDto(customerDto,orderDtoList);
+        return customerDetailsDto;
     }
 
     @Override

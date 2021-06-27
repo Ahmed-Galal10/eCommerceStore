@@ -2,11 +2,10 @@ package com.store.controller;
 
 import com.store.dtos.GenericResponse;
 
-import com.store.dtos.product.PagingResponse;
-import com.store.dtos.product.ProdDetailDto;
-import com.store.dtos.product.ProductImagesDto;
-import com.store.dtos.product.ProductWrapperDto;
+import com.store.dtos.product.*;
 import com.store.dtos.review.ReviewDto;
+import com.store.service.OrderService;
+
 import com.store.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,10 +21,13 @@ import java.util.List;
 public class ProductController {
 
     ProductService productService;
+    OrderService orderService;
 
     @Autowired
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService,
+                             OrderService orderService) {
         this.productService = productService;
+        this.orderService = orderService;
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/{id}")
@@ -69,6 +71,21 @@ public class ProductController {
         }
     }
 
+    @GetMapping("/{id}/prodsSoldData")
+    public ResponseEntity<GenericResponse<?>> prodQtySoldVsTime(@PathVariable("id") Integer prodId) {
+        try {
+
+            List<ProdSoldData> data = orderService.getProdSoldData(prodId);
+            GenericResponse<List<ProdSoldData>> response =
+                    new GenericResponse<>(data, HttpStatus.OK, "REQUEST SUCCESSFUL");
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            GenericResponse<List<ProdSoldData>> response =
+                    new GenericResponse<>(null, HttpStatus.OK, "REQUEST SUCCESSFUL");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
     @RequestMapping(method = RequestMethod.DELETE, path = "/{id}")
     public ResponseEntity deleteProduct(@PathVariable("id") Integer id) {
         try {
@@ -100,10 +117,12 @@ public class ProductController {
             List<ProdDetailDto> products = productWrapperDto.getProducts();
             Integer totalPages = productWrapperDto.getTotalPages();
             Long totalElements = productWrapperDto.getTotalElements();
+            Double maxPrice = productWrapperDto.getMaxPrice();
 
             PagingResponse<ProdDetailDto> response = new PagingResponse(products, HttpStatus.OK, "Found");
             response.setTotalPages(totalPages);
             response.setTotalElements(totalElements);
+            response.setMaxPrice(maxPrice);
 
             return ResponseEntity.status(HttpStatus.OK).body(response);
         } else {
@@ -151,11 +170,9 @@ public class ProductController {
 
     @RequestMapping(method = RequestMethod.POST, path = "/{id}/reviews")
     public ResponseEntity<GenericResponse<ReviewDto>> addProductReview(@PathVariable("id") Integer id, @RequestBody ReviewDto reviewDto) {
-        System.err.println(reviewDto);
         ReviewDto review = productService.addReview(id, reviewDto);
-        System.err.println(review);
 
-        GenericResponse<ReviewDto> response = new GenericResponse(review, HttpStatus.OK, "Successful");
+        GenericResponse<ReviewDto> response = new GenericResponse(review, HttpStatus.OK, "Review successfully added");
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

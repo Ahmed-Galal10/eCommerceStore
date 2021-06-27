@@ -3,9 +3,17 @@ package com.store.service.impl;
 import com.store.dtos.product.ProdDetailDto;
 import com.store.dtos.product.ProductImagesDto;
 import com.store.dtos.product.ProductWrapperDto;
+import com.store.dtos.product.SellerProdDetailDto;
+import com.store.exceptions.ReviewException;
+import com.store.exceptions.ShopException;
+import com.store.model.ProdImages;
+import com.store.model.Product;
+import com.store.model.Review;
+import com.store.model.Subcategory;
+
 import com.store.dtos.review.ReviewDto;
-import com.store.model.*;
 import com.store.dtos.seller.SellerProductDto;
+import com.store.model.*;
 import com.store.repository.*;
 import com.store.service.ProductService;
 import com.store.util.mappers.EntityDtoMapper;
@@ -28,12 +36,15 @@ import java.util.stream.Collectors;
 @SessionScope
 public class ProductServiceImpl implements ProductService {
 
+
     private ProductRepo productRepo;
     private SubCategoryRepo subCategoryRepo;
     private ReviewRepo reviewRepo;
     private ProductImagesRepo productImagesRepo;
-    private SellerRepo sellerRepo;
+    private final SellerRepo sellerRepo;
+    private final OrderItemRepo orderItemRepo;
     private CustomerRepo customerRepo;
+    private OrderRepo orderRepo;
 
     private EntityDtoMapper<Product, ProdDetailDto> productMapperAPI;
     private EntityDtoMapper<ProdImages, ProductImagesDto> productImagesMapper;
@@ -44,16 +55,18 @@ public class ProductServiceImpl implements ProductService {
     public ProductServiceImpl(ProductRepo productRepo,
                               SubCategoryRepo subCategoryRepo,
                               ReviewRepo reviewRepo,
-                              EntityDtoMapper<Product, ProdDetailDto> productMapperAPI,
+                              OrderItemRepo orderItemRepo, EntityDtoMapper<Product, ProdDetailDto> productMapperAPI,
                               EntityDtoMapper<ProdImages, ProductImagesDto> productImagesMapper,
                               ProductImagesRepo productImagesRepo,
                               EntityDtoMapper<Product, SellerProductDto> sellerProductMapper,
                               EntityDtoMapper<Review, ReviewDto> reviewMapper,
                               SellerRepo sellerRepo,
-                              CustomerRepo customerRepo) {
+                              CustomerRepo customerRepo,
+                              OrderRepo orderRepo) {
         this.productRepo = productRepo;
         this.subCategoryRepo = subCategoryRepo;
         this.reviewRepo = reviewRepo;
+        this.orderItemRepo = orderItemRepo;
         this.productMapperAPI = productMapperAPI;
         this.productImagesMapper = productImagesMapper;
         this.productImagesRepo = productImagesRepo;
@@ -61,6 +74,7 @@ public class ProductServiceImpl implements ProductService {
         this.sellerRepo = sellerRepo;
         this.reviewMapper = reviewMapper;
         this.customerRepo = customerRepo;
+        this.orderRepo = orderRepo;
     }
 
     @Override
@@ -75,6 +89,7 @@ public class ProductServiceImpl implements ProductService {
                                                      Double priceMax,
                                                      List<Integer> subCategoriesIds,
                                                      String nameSearch) {
+
 
         ProductWrapperDto productWrapperDto = new ProductWrapperDto();
 
@@ -97,14 +112,16 @@ public class ProductServiceImpl implements ProductService {
             List<Product> products = page.getContent();
 
             List<ProdDetailDto> prodDetailDtos = productMapperAPI.entityListToDtoList(products);
+            Double maxPrice = productRepo.findMaxPrice();
 
             productWrapperDto.setProducts(prodDetailDtos);
             productWrapperDto.setTotalPages(page.getTotalPages());
             productWrapperDto.setTotalElements(page.getTotalElements());
+            productWrapperDto.setMaxPrice(maxPrice);
 
             return productWrapperDto;
         } else {
-            return null;
+            throw new ShopException("No products found");
         }
     }
 
@@ -124,6 +141,50 @@ public class ProductServiceImpl implements ProductService {
         prodDetailDto.setProdImages(imagesUrls);
 
         return prodDetailDto;
+    }
+
+    @Override
+    public SellerProdDetailDto getSellerProductDetailById(Integer productId) {
+
+        Product product = productRepo.findById(productId).orElseThrow(() -> new RuntimeException("Not found"));
+
+        System.out.println("product id before : " + product.getId());
+
+        ProdDetailDto prodDetailDto = productMapperAPI.toDto(product);
+
+        System.out.println("product id after : " + prodDetailDto.getId());
+
+
+        List<ProdImages> prodImages = productImagesRepo.findProdImagesByProduct(product);
+
+        List<String> imagesUrls = prodImages
+                .stream()
+                .map(images -> images.getImageUrl()).collect(Collectors.toList());
+
+        prodDetailDto.setProdImages(imagesUrls);
+
+
+        SellerProdDetailDto sellerProdDetailDto = new SellerProdDetailDto();
+        sellerProdDetailDto.setSellerProduct(prodDetailDto);
+
+        Double averageRating = reviewRepo.findProductAverageRatingById(productId);
+        System.out.println("averageRating is" + averageRating);
+
+        Integer productInWishlists = productRepo.countProductInWishListsById(productId);
+        System.out.println("productInWishlists is " + productInWishlists);
+
+
+//        System.out.println("================>>>>>>>" + orderItemRepo.countTimesSold( productId ));
+        Integer soldItemCounter = orderItemRepo.countTimesSold(productId);
+        System.out.println("soldItemCounter is " + soldItemCounter);
+
+        sellerProdDetailDto.setAverageRating(averageRating);
+        sellerProdDetailDto.setWishListCounter(productInWishlists);
+        sellerProdDetailDto.setSoldCounter(soldItemCounter);
+
+        System.out.println("id is " + sellerProdDetailDto.getSellerProduct().getId());
+        System.out.println(" sold :" + sellerProdDetailDto.getSoldCounter());
+        return sellerProdDetailDto;
     }
 
     @Override
@@ -183,9 +244,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<SellerProductDto> getProductsByUserId(int sellerId) {
+    public List<SellerProductDto> getProductsByUserId(int sellerId, Pageable pageable) {
 
-        List<SellerProductDto> dtos = mapper.entityListToDtoList(productRepo.findByUser_Id(sellerId));
+        List<Product> products = productRepo.findByUser_Id(sellerId, pageable);
+
+        List<SellerProductDto> dtos = mapper.entityListToDtoList(products);
 
         return dtos;
     }
@@ -208,6 +271,11 @@ public class ProductServiceImpl implements ProductService {
         Product product = productRepo.getOne(id);
         review.setProduct(product);
         Customer customer = customerRepo.getOne(reviewDto.getUserId());
+        List<Order> ordersByUser = orderRepo.findOrderByUser(customer);
+        List<OrderItem> orderItems = orderItemRepo.findOrderItemsByProductAndOrderIn(product, ordersByUser);
+        if (orderItems.isEmpty()) {
+            throw new ReviewException("You must buy this product to be able to add review");
+        }
         review.setUser(customer);
         Review save = reviewRepo.save(review);
 

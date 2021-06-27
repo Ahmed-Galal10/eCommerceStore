@@ -25,7 +25,6 @@ public class CustomerRequestMapper extends EntityDtoMapper<Customer, CustomerReq
 
         Customer customer = new Customer();
 
-        customer.setId(dto.getId());
         customer.setName(dto.getName());
         customer.setAddress(dto.getAddress());
         customer.setEmail(dto.getEmail());
