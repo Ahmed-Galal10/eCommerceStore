@@ -2,16 +2,16 @@ package com.store.dtos.product;
 
 import java.util.List;
 
-public class ProductWrapperDto {
-    List<ProdDetailDto> products;
+public class ProductWrapperDto<T> {
+    List<T> products;
     Integer totalPages;
     Long totalElements;
 
-    public List<ProdDetailDto> getProducts() {
+    public List<T> getProducts() {
         return products;
     }
 
-    public void setProducts(List<ProdDetailDto> products) {
+    public void setProducts(List<T> products) {
         this.products = products;
     }
 
