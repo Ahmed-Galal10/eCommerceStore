@@ -3,9 +3,12 @@ package com.store.service.impl;
 
 import com.store.dtos.customer.*;
 import com.store.dtos.order.OrderDto;
+import com.store.exceptions.CartException;
+import com.store.exceptions.RegisterException;
 import com.store.model.*;
 import com.store.repository.CustomerRepo;
 import com.store.repository.OrderRepo;
+import com.store.repository.UserRepo;
 import com.store.service.CustomerService;
 import com.store.util.mappers.EntityDtoMapper;
 import com.store.util.mappers.order.OrderMapper;
@@ -21,6 +24,9 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Autowired
     private CustomerRepo customerRepo;
+
+    @Autowired
+    private UserRepo userRepo;
 
     @Autowired
     private EntityDtoMapper<Customer, CustomerDto> customerMapper;
@@ -87,6 +93,11 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerRequestDto addCustomer(CustomerRequestDto customerDto) {
+
+        boolean isCustomerExist = userRepo.existsByEmail(customerDto.getEmail());
+        if(isCustomerExist){
+            throw new RegisterException("This Email Already Exists");
+        }
 
         Customer customer = customerRequestMapper.toEntity(customerDto);
         Customer savedCustomer = customerRepo.save(customer);

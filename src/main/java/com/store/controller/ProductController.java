@@ -118,6 +118,18 @@ public class ProductController {
         }
     }
 
+    @GetMapping("/count")
+    public  ResponseEntity<GenericResponse> getProductsCount(){
+
+        Long count = productService.getProductsCount();
+
+        GenericResponse<Long> response =
+                new GenericResponse(count, HttpStatus.OK, "REQUEST SUCCESS");
+
+        return ResponseEntity.ok(response);
+    }
+
+
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<PagingResponse> findAllProducts(
             @RequestParam(value = "page", required = false, defaultValue = "0") Integer pageNumber,

@@ -295,4 +295,12 @@ public class ProductServiceImpl implements ProductService {
 
         return reviewDto1;
     }
+
+    @Override
+    public Long getProductsCount() {
+
+        Long count = productRepo.count();
+
+        return  count;
+    }
 }

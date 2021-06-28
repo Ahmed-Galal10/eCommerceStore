@@ -4,12 +4,10 @@ import com.store.dtos.seller.SellerDto;
 import com.store.dtos.seller.SellerRequest;
 import com.store.dtos.seller.SellerRequestDto;
 import com.store.dtos.product.SellerProductRequestDto;
+import com.store.exceptions.RegisterException;
 import com.store.model.Product;
 import com.store.model.Seller;
-import com.store.repository.OrderRepo;
-import com.store.repository.ProductRepo;
-import com.store.repository.SellerRepo;
-import com.store.repository.SoldItemRepo;
+import com.store.repository.*;
 import com.store.service.SellerService;
 import com.store.util.mappers.EntityDtoMapper;
 import com.store.util.mappers.SellerMapper;
@@ -35,6 +33,9 @@ public class SellerServiceImpl implements SellerService {
 
     @Autowired
     private EntityDtoMapper<Seller, SellerRequestDto> sellerRequestMapper;
+
+    @Autowired
+    private UserRepo userRepo;
 
     @Autowired
     public SellerServiceImpl(SellerRepo sellerRepo, ProductRepo productRepo,
@@ -66,6 +67,19 @@ public class SellerServiceImpl implements SellerService {
 
     @Override
     public SellerRequestDto addSeller(SellerRequestDto sellerDto) {
+
+        boolean isSellerExist = userRepo.existsByEmail(sellerDto.getEmail());
+
+
+        System.out.println("asasdsadas");
+        System.out.println(sellerDto.getEmail());
+        System.out.println(isSellerExist);
+
+
+
+        if(isSellerExist){
+            throw new RegisterException("This Email Already Exists");
+        }
 
         Seller seller = sellerRequestMapper.toEntity(sellerDto);
         Seller savedSeller = sellerRepo.save(seller);

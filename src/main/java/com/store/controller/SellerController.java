@@ -50,7 +50,7 @@ public class SellerController {
     }
 
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<GenericResponse> addSeller(@RequestBody SellerRequestDto sellerDto) {
 
         SellerRequestDto sellerRequestDto = sellerService.addSeller(sellerDto);
