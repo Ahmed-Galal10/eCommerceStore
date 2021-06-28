@@ -29,6 +29,7 @@ import org.springframework.web.context.annotation.SessionScope;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -128,8 +129,14 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProdDetailDto getProductById(Integer id) {
-        Product product = productRepo.findById(id).orElseThrow(() -> new RuntimeException("Not found"));
+//        Product product = productRepo.findById(id).orElseThrow(() -> new ShopException("Not found"));
+        Optional<Product> o = productRepo.findById(id);
 
+        Product product = o.orElse(null);
+
+        if (product == null) {
+            throw new ShopException("No such product");
+        }
         ProdDetailDto prodDetailDto = productMapperAPI.toDto(product);
 
         List<ProdImages> prodImages = productImagesRepo.findProdImagesByProduct(product);

@@ -32,15 +32,11 @@ public class ProductController {
 
     @RequestMapping(method = RequestMethod.GET, path = "/{id}")
     public ResponseEntity<GenericResponse<ProdDetailDto>> findProductById(@PathVariable Integer id) {
-        try {
-            ProdDetailDto prodDetailDto = productService.getProductById(id);
+        ProdDetailDto prodDetailDto = productService.getProductById(id);
 
-            GenericResponse<ProdDetailDto> response = new GenericResponse(prodDetailDto, HttpStatus.OK, "Found");
+        GenericResponse<ProdDetailDto> response = new GenericResponse(prodDetailDto, HttpStatus.OK, "Found");
 
-            return ResponseEntity.status(HttpStatus.OK).body(response);
-        } catch (Exception e) {
-            return null;
-        }
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @RequestMapping(method = RequestMethod.POST)

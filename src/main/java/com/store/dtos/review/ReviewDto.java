@@ -6,6 +6,7 @@ public class ReviewDto {
     private int id;
     private Integer userId;
     private String userName;
+    private String userImage;
     private Integer productId;
     private Date createdDate;
     private int rating;
@@ -77,5 +78,13 @@ public class ReviewDto {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public String getUserImage() {
+        return userImage;
+    }
+
+    public void setUserImage(String userImage) {
+        this.userImage = userImage;
     }
 }
