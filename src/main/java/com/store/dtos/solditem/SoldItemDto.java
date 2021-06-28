@@ -29,6 +29,7 @@ public class SoldItemDto {
         this.sellerName = sellerName;
     }
 
+
     public Integer getProductId() {
         return productId;
     }

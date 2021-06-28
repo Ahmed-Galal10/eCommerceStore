@@ -22,4 +22,5 @@ public interface OrderService {
 
     List<SoldItemDto> getAllSoldItems();
 
+
 }

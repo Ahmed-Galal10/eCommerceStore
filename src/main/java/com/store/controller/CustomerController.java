@@ -283,6 +283,7 @@ public class CustomerController {
 
     @PreAuthorize("CUSTOMER_ROLE")
     @PostMapping(path = "/{customerId}/payment")
+
     public ResponseEntity<GenericResponse<?>> applyCheckout(@PathVariable("customerId") Integer customerId,
                                                             @RequestBody PaymentInfoDto paymentInfo) {
         try {

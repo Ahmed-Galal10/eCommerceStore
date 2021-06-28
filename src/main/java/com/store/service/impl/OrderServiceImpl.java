@@ -7,6 +7,7 @@ import com.store.dtos.order.OrderRequest;
 import com.store.dtos.product.ProdSoldData;
 import com.store.dtos.solditem.SoldItemDto;
 import com.store.exceptions.OrderException;
+
 import com.store.model.*;
 import com.store.repository.*;
 import com.store.service.OrderService;
@@ -77,11 +78,13 @@ public class OrderServiceImpl implements OrderService {
             Product prod = cartItem.getProduct();
 
             orderItem.setProduct(prod);
+
             orderItem.setUnitPrice(prod.getPrice());
             orderItem.setQuantity(cartItem.getQuantity());
             orderItem.setOrder(order);
             orderItems.add(orderItem);
         });
+
         var soldItemSet = orderItems.stream().map(orderItem -> {
             SoldItem soldItem = new SoldItem();
             soldItem.setOrderItem(orderItem);
@@ -93,6 +96,7 @@ public class OrderServiceImpl implements OrderService {
 //        order.setSoldItems(soldItemSet);
         orderRepo.save(order);
 //        soldItemRepo.saveAll(soldItemSet);
+
         cartItemRepo.deleteAllByUserId(customer.getId());
 
         EntityDtoMapper<Order, OrderDto> mapper = new OrderMapper();
@@ -152,4 +156,5 @@ public class OrderServiceImpl implements OrderService {
 
         return soldItemDtoList;
     }
+
 }

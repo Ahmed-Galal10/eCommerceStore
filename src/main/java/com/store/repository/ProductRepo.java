@@ -24,4 +24,6 @@ public interface ProductRepo extends JpaRepository<Product, Integer> {
     Integer countProductInWishListsById(Integer productId);
 
 
+    @Query(value = "SELECT max(price) FROM product", nativeQuery = true)
+    Double findMaxPrice();
 }

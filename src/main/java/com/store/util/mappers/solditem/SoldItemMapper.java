@@ -23,6 +23,7 @@ public class SoldItemMapper extends EntityDtoMapper<OrderItem, SoldItemDto> {
         soldItemDto.setSellerId( entity.getProduct().getUser().getId() );
         soldItemDto.setSellerName( entity.getProduct().getUser().getName() );
 
+
         try {
             Date soldDate = entity.getOrder().getDate();
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");

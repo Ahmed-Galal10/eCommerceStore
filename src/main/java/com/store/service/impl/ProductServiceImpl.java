@@ -4,6 +4,10 @@ import com.store.dtos.product.ProdDetailDto;
 import com.store.dtos.product.ProductImagesDto;
 import com.store.dtos.product.ProductWrapperDto;
 import com.store.dtos.product.SellerProdDetailDto;
+
+import com.store.exceptions.ReviewException;
+import com.store.exceptions.ShopException;
+
 import com.store.model.ProdImages;
 import com.store.model.Product;
 import com.store.model.Review;
@@ -27,13 +31,13 @@ import org.springframework.web.context.annotation.SessionScope;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 @SessionScope
 public class ProductServiceImpl implements ProductService {
-
 
 
     private ProductRepo productRepo;
@@ -43,6 +47,7 @@ public class ProductServiceImpl implements ProductService {
     private final SellerRepo sellerRepo;
     private final OrderItemRepo orderItemRepo;
     private CustomerRepo customerRepo;
+    private OrderRepo orderRepo;
 
     private EntityDtoMapper<Product, ProdDetailDto> productMapperAPI;
     private EntityDtoMapper<ProdImages, ProductImagesDto> productImagesMapper;
@@ -59,7 +64,8 @@ public class ProductServiceImpl implements ProductService {
                               EntityDtoMapper<Product, SellerProductDto> sellerProductMapper,
                               EntityDtoMapper<Review, ReviewDto> reviewMapper,
                               SellerRepo sellerRepo,
-                              CustomerRepo customerRepo) {
+                              CustomerRepo customerRepo,
+                              OrderRepo orderRepo) {
         this.productRepo = productRepo;
         this.subCategoryRepo = subCategoryRepo;
         this.reviewRepo = reviewRepo;
@@ -71,6 +77,7 @@ public class ProductServiceImpl implements ProductService {
         this.sellerRepo = sellerRepo;
         this.reviewMapper = reviewMapper;
         this.customerRepo = customerRepo;
+        this.orderRepo = orderRepo;
     }
 
     @Override
@@ -108,22 +115,30 @@ public class ProductServiceImpl implements ProductService {
             List<Product> products = page.getContent();
 
             List<ProdDetailDto> prodDetailDtos = productMapperAPI.entityListToDtoList(products);
+            Double maxPrice = productRepo.findMaxPrice();
 
             productWrapperDto.setProducts(prodDetailDtos);
             productWrapperDto.setTotalPages(page.getTotalPages());
             productWrapperDto.setTotalElements(page.getTotalElements());
+            productWrapperDto.setMaxPrice(maxPrice);
 
             return productWrapperDto;
         } else {
-            return null;
+            throw new ShopException("No products found");
         }
     }
 
 
     @Override
     public ProdDetailDto getProductById(Integer id) {
-        Product product = productRepo.findById(id).orElseThrow(() -> new RuntimeException("Not found"));
+//        Product product = productRepo.findById(id).orElseThrow(() -> new ShopException("Not found"));
+        Optional<Product> o = productRepo.findById(id);
 
+        Product product = o.orElse(null);
+
+        if (product == null) {
+            throw new ShopException("No such product");
+        }
         ProdDetailDto prodDetailDto = productMapperAPI.toDto(product);
 
         List<ProdImages> prodImages = productImagesRepo.findProdImagesByProduct(product);
@@ -162,6 +177,7 @@ public class ProductServiceImpl implements ProductService {
         sellerProdDetailDto.setSellerProduct(prodDetailDto);
 
         Double averageRating = reviewRepo.findProductAverageRatingById(productId);
+
         if(averageRating == null) averageRating = 0.0;
         System.out.println("averageRating is" + averageRating);
 
@@ -243,6 +259,7 @@ public class ProductServiceImpl implements ProductService {
 
         List<Product> products = productRepo.findByUser_Id(sellerId, pageable);
 
+
         List<SellerProductDto> dtos = mapper.entityListToDtoList(products);
 
         return dtos;
@@ -266,6 +283,11 @@ public class ProductServiceImpl implements ProductService {
         Product product = productRepo.getOne(id);
         review.setProduct(product);
         Customer customer = customerRepo.getOne(reviewDto.getUserId());
+        List<Order> ordersByUser = orderRepo.findOrderByUser(customer);
+        List<OrderItem> orderItems = orderItemRepo.findOrderItemsByProductAndOrderIn(product, ordersByUser);
+        if (orderItems.isEmpty()) {
+            throw new ReviewException("You must buy this product to be able to add review");
+        }
         review.setUser(customer);
         Review save = reviewRepo.save(review);
 

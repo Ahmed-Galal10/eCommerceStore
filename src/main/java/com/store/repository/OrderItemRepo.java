@@ -1,10 +1,14 @@
 package com.store.repository;
 
+import com.store.model.Order;
 import com.store.model.OrderItem;
 import com.store.model.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+
+import java.util.Collection;
 
 import java.util.List;
 
@@ -21,4 +25,5 @@ public interface OrderItemRepo extends JpaRepository<OrderItem, Integer> {
     @Query("from OrderItem o where o.product.user.id=?1")
     List<OrderItem> getAllOrderItemsBySellerId(Integer sellerId);
 
+    List<OrderItem> findOrderItemsByProductAndOrderIn(Product product, Collection<Order> order);
 }
