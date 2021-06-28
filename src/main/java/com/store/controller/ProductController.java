@@ -42,7 +42,8 @@ public class ProductController {
 
             return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (Exception e) {
-            return null;
+            GenericResponse<ProdDetailDto> response = new GenericResponse(null, HttpStatus.INTERNAL_SERVER_ERROR, "Not Found");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
 

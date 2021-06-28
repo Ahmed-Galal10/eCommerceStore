@@ -6,6 +6,7 @@ import com.store.dtos.order.OrderItemRequest;
 import com.store.dtos.order.OrderRequest;
 import com.store.dtos.product.ProdSoldData;
 import com.store.dtos.solditem.SoldItemDto;
+import com.store.exceptions.OrderException;
 import com.store.model.*;
 import com.store.repository.*;
 import com.store.service.OrderService;
@@ -49,7 +50,7 @@ public class OrderServiceImpl implements OrderService {
         //TODO REFACTOR=> HANDLE ERR
         Order order = o.orElse(null);
         if (order == null) {
-
+            throw new OrderException("No Such Order");
         }
 
         EntityDtoMapper<Order, OrderDto> mapper = new OrderMapper();
