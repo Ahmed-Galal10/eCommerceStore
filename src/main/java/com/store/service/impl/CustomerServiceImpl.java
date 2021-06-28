@@ -9,6 +9,7 @@ import com.store.model.*;
 import com.store.repository.CustomerRepo;
 import com.store.repository.OrderRepo;
 import com.store.repository.UserRepo;
+import com.store.repository.WishlistRepo;
 import com.store.service.CustomerService;
 import com.store.util.mappers.EntityDtoMapper;
 import com.store.util.mappers.order.OrderMapper;
@@ -51,6 +52,9 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Autowired
     private OrderMapper orderMapper;
+    @Autowired
+    private WishlistRepo wishlistRepo;
+
     public CustomerServiceImpl() {
     }
 
@@ -146,9 +150,26 @@ public class CustomerServiceImpl implements CustomerService {
         Optional<Customer> customer = customerRepo.findById(customerId);
 
         Wishlist wishlist = customer.get().getWishlist();
+
+        if(wishlist == null){
+            wishlist =  createWishlist(customerId);
+        }
         CustomerWishListDto customerWishListDto = customerWishListMapper.toDto(wishlist);
 
         return customerWishListDto;
+    }
+
+    private Wishlist createWishlist(Integer customerId){
+
+        Customer customer = customerRepo.getOne(customerId);
+
+        //TODO Refactor for ERR Handling
+
+        Wishlist wishlist = new Wishlist();
+        wishlist.setCustomer( customer );
+
+        Wishlist persisted = wishlistRepo.save( wishlist );
+        return  persisted;
     }
 
 }
