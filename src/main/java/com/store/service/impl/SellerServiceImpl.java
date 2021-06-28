@@ -4,6 +4,7 @@ import com.store.dtos.seller.SellerDto;
 import com.store.dtos.seller.SellerRequest;
 import com.store.dtos.seller.SellerRequestDto;
 import com.store.dtos.product.SellerProductRequestDto;
+import com.store.exceptions.RegisterException;
 import com.store.model.Product;
 import com.store.model.Seller;
 import com.store.repository.OrderRepo;
@@ -66,6 +67,11 @@ public class SellerServiceImpl implements SellerService {
 
     @Override
     public SellerRequestDto addSeller(SellerRequestDto sellerDto) {
+
+        boolean isSellerExist = sellerRepo.existsByEmail(sellerDto.getEmail());
+        if(isSellerExist){
+            throw new RegisterException("Seller Already exists");
+        }
 
         Seller seller = sellerRequestMapper.toEntity(sellerDto);
         Seller savedSeller = sellerRepo.save(seller);

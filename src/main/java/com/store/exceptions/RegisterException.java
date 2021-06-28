@@ -1,8 +1,8 @@
 package com.store.exceptions;
 
-public class CartException extends  RuntimeException{
+public class RegisterException extends RuntimeException {
 
-    public CartException(String msg){
+    public RegisterException(String msg){
         super(msg);
     }
 }

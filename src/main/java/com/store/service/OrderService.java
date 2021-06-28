@@ -10,16 +10,15 @@ import java.util.List;
 
 public interface OrderService {
 
-     OrderDto getOrderDetail(int orderId);
+    OrderDto getOrderDetail(int orderId);
 
-
-     OrderDto createOrder(OrderRequest orderRequest);
+    OrderDto createOrder(OrderRequest orderRequest);
 
     List<ProdSoldData> getProdSoldData(Integer prodId);
-
 
     List<SoldItemDto> getSoldItemsBySeller(Integer sellerId);
 
     List<SoldItemDto> getAllSoldItems();
 
+    List<OrderDto> getAllOrders();
 }

@@ -2,6 +2,7 @@ package com.store.controller;
 
 
 import com.store.dtos.GenericResponse;
+import com.store.dtos.customer.CustomerDto;
 import com.store.dtos.order.OrderDto;
 import com.store.dtos.order.OrderRequest;
 import com.store.service.OrderService;
@@ -33,6 +34,19 @@ public class OrderController {
                 new GenericResponse<>(orderDto, HttpStatus.OK, "REQUEST SUCCESSFUL");
 
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping()
+    public ResponseEntity<GenericResponse<List<OrderDto>>> getAllOrders() {
+        try {
+            List<OrderDto> orderDtoList = orderService.getAllOrders();
+            GenericResponse<List<OrderDto>> response =
+                    new GenericResponse<>(orderDtoList, HttpStatus.OK, "REQUEST SUCCESSFUL");
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.ok(new GenericResponse<>(null, HttpStatus.BAD_REQUEST, e.getMessage()));
+        }
     }
 
 }

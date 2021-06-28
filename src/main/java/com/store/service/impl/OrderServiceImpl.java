@@ -1,5 +1,6 @@
 package com.store.service.impl;
 
+import com.store.dtos.customer.CustomerDto;
 import com.store.dtos.order.OrderDto;
 import com.store.dtos.order.OrderItemDto;
 import com.store.dtos.order.OrderItemRequest;
@@ -41,6 +42,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private SoldItemRepo soldItemRepo;
+
+    @Autowired
+    private OrderMapper orderMapper;
 
     public OrderDto getOrderDetail(int orderId) {
 
@@ -150,5 +154,15 @@ public class OrderServiceImpl implements OrderService {
         List<SoldItemDto> soldItemDtoList = mapper.entityListToDtoList( soldItems ) ;
 
         return soldItemDtoList;
+    }
+
+    @Override
+    public List<OrderDto> getAllOrders() {
+
+        List<Order> orderList = orderRepo.findAll();
+
+        List<OrderDto> orderDtoList = orderMapper.entityListToDtoList(orderList);
+
+        return orderDtoList;
     }
 }

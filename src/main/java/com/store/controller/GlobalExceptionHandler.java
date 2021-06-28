@@ -2,6 +2,7 @@ package com.store.controller;
 
 import com.store.dtos.GenericResponse;
 import com.store.exceptions.CartException;
+import com.store.exceptions.RegisterException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -18,7 +19,16 @@ public class GlobalExceptionHandler {
         GenericResponse response =
                 new GenericResponse(null, HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
 
-        return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+    }
+
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(RegisterException.class)
+    public ResponseEntity<GenericResponse> handleRegisterException(RegisterException e){
+        GenericResponse response =
+                new GenericResponse(null, HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }
 
 }
