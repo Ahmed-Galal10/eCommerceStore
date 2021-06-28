@@ -13,11 +13,11 @@ import java.util.List;
 public interface ProductService {
     List<ProdDetailDto> getAllProducts();
 
-    ProductWrapperDto getAllProductsByFilters(Integer pageNumber,
-                                              Integer pageSize, Double priceStart,
-                                              Double priceEnd,
-                                              List<Integer> subCategoriesIds,
-                                              String nameSearch);
+    ProductWrapperDto<ProdDetailDto> getAllProductsByFilters(Integer pageNumber,
+                                                             Integer pageSize, Double priceStart,
+                                                             Double priceEnd,
+                                                             List<Integer> subCategoriesIds,
+                                                             String nameSearch);
 
     ProdDetailDto getProductById(Integer id);
 
@@ -25,7 +25,7 @@ public interface ProductService {
 
     List<ReviewDto> getProductReviews(Integer id);
 
-    List<SellerProductDto> getProductsByUserId(int sellerId, Pageable pageable);
+    ProductWrapperDto<SellerProductDto> getProductsByUserId(int sellerId, Pageable pageable);
 
     void deleteProduct(Integer id);
 

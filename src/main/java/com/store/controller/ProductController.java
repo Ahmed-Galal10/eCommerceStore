@@ -1,14 +1,12 @@
 package com.store.controller;
 
 import com.store.dtos.GenericResponse;
-
 import com.store.dtos.product.*;
 import com.store.dtos.review.ReviewDto;
 import com.store.dtos.solditem.SoldItemDto;
 import com.store.repository.OrderItemRepo;
 
 import com.store.service.OrderService;
-
 import com.store.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -140,7 +138,7 @@ public class ProductController {
             @RequestParam(value = "name", required = false, defaultValue = "%") String name
     ) {
 
-        ProductWrapperDto productWrapperDto =
+        ProductWrapperDto<ProdDetailDto> productWrapperDto =
                 productService.getAllProductsByFilters(pageNumber, pageSize, priceMin, priceMax, subCategoriesIds, name);
 
         // get data

@@ -1,6 +1,8 @@
 package com.store.controller;
 
 import com.store.dtos.GenericResponse;
+import com.store.dtos.product.PagingResponse;
+import com.store.dtos.product.ProductWrapperDto;
 import com.store.dtos.product.SellerProdDetailDto;
 import com.store.dtos.product.SellerProductRequestDto;
 import com.store.dtos.seller.SellerDto;
@@ -18,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -27,7 +30,7 @@ public class SellerController {
 
     private final SellerService sellerService;
     private final ProductService productService;
-    private OrderService orderService;
+    private final OrderService orderService;
 
     @Autowired
     public SellerController(SellerService sellerService, ProductService productService,
@@ -98,20 +101,53 @@ public class SellerController {
 
 
     @GetMapping(value = "/{sellerId}/products", params = {"page", "size"})
-    public GenericResponse<List<SellerProductDto>>
+    public ResponseEntity<PagingResponse<List<SellerProductDto>>>
     getSellerProducts(@PathVariable("sellerId") int sellerId,
                       @RequestParam(value = "page", defaultValue = "0") int page,
                       @RequestParam(value = "size", defaultValue = "1") int size) {
 
 
         Pageable pageable = PageRequest.of(page, size);
-        System.out.println(page + size);
-        List<SellerProductDto> dtos = productService.getProductsByUserId(sellerId, pageable);
-        System.out.println(dtos);
-        GenericResponse<List<SellerProductDto>> response =
-                new GenericResponse<>(dtos, HttpStatus.OK, "REQUEST SUCCESSFUL");
+//        System.out.println(page + size);
+        ProductWrapperDto<SellerProductDto> wrapperProduct = productService.getProductsByUserId(sellerId, pageable);
+        if (wrapperProduct != null) {
+            List<SellerProductDto> dtos = wrapperProduct.getProducts();
 
-        return response;
+            Integer totalpages = wrapperProduct.getTotalPages();
+
+            Long totalElements = wrapperProduct.getTotalElements();
+
+            System.out.println(dtos);
+
+            PagingResponse<List<SellerProductDto>> response = new PagingResponse<>(dtos, HttpStatus.OK, "Found");
+
+            response.setTotalElements(totalElements);
+
+            response.setTotalPages(totalpages);
+
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+
+        } else {
+
+            List<SellerProductDto> dtos = new ArrayList<>();
+
+            Integer totalpages = 0;
+
+            Long totalElements = 0l;
+
+
+            PagingResponse<List<SellerProductDto>> response = new PagingResponse<>(dtos, HttpStatus.NOT_FOUND, "NotFound");
+
+            response.setTotalElements(totalElements);
+
+            response.setTotalPages(totalpages);
+
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+
+
+        }
+
+
     }
 
 

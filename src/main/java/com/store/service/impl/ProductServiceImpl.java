@@ -13,6 +13,7 @@ import com.store.model.Product;
 import com.store.model.Review;
 import com.store.model.Subcategory;
 
+
 import com.store.dtos.review.ReviewDto;
 import com.store.dtos.seller.SellerProductDto;
 import com.store.model.*;
@@ -26,7 +27,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.context.annotation.SessionScope;
 
 import java.util.HashSet;
@@ -40,19 +40,20 @@ import java.util.stream.Collectors;
 public class ProductServiceImpl implements ProductService {
 
 
-    private ProductRepo productRepo;
-    private SubCategoryRepo subCategoryRepo;
-    private ReviewRepo reviewRepo;
-    private ProductImagesRepo productImagesRepo;
+
+    private final ProductRepo productRepo;
+    private final SubCategoryRepo subCategoryRepo;
+    private final ReviewRepo reviewRepo;
+    private final ProductImagesRepo productImagesRepo;
     private final SellerRepo sellerRepo;
     private final OrderItemRepo orderItemRepo;
-    private CustomerRepo customerRepo;
-    private OrderRepo orderRepo;
+    private final CustomerRepo customerRepo;
+    private final OrderRepo orderRepo;
 
-    private EntityDtoMapper<Product, ProdDetailDto> productMapperAPI;
-    private EntityDtoMapper<ProdImages, ProductImagesDto> productImagesMapper;
-    private EntityDtoMapper<Product, SellerProductDto> mapper;
-    private EntityDtoMapper<Review, ReviewDto> reviewMapper;
+    private final EntityDtoMapper<Product, ProdDetailDto> productMapperAPI;
+    private final EntityDtoMapper<ProdImages, ProductImagesDto> productImagesMapper;
+    private final EntityDtoMapper<Product, SellerProductDto> mapper;
+    private final EntityDtoMapper<Review, ReviewDto> reviewMapper;
 
     @Autowired
     public ProductServiceImpl(ProductRepo productRepo,
@@ -87,14 +88,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductWrapperDto getAllProductsByFilters(Integer pageNumber,
-                                                     Integer pageSize, Double priceMin,
-                                                     Double priceMax,
-                                                     List<Integer> subCategoriesIds,
-                                                     String nameSearch) {
+    public ProductWrapperDto<ProdDetailDto> getAllProductsByFilters(Integer pageNumber,
+                                                                    Integer pageSize, Double priceMin,
+                                                                    Double priceMax,
+                                                                    List<Integer> subCategoriesIds,
+                                                                    String nameSearch) {
 
 
-        ProductWrapperDto productWrapperDto = new ProductWrapperDto();
+        ProductWrapperDto<ProdDetailDto> productWrapperDto = new ProductWrapperDto<>();
 
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by("name"));
 
@@ -255,14 +256,24 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<SellerProductDto> getProductsByUserId(int sellerId, Pageable pageable) {
+    public ProductWrapperDto<SellerProductDto> getProductsByUserId(int sellerId, Pageable pageable) {
 
-        List<Product> products = productRepo.findByUser_Id(sellerId, pageable);
+        Page<Product> productsPage = productRepo.findByUser_Id(sellerId, pageable);
+
+        List<Product> products = productsPage.getContent();
+        int totalPages = productsPage.getTotalPages();
+        long totalElements = productsPage.getTotalElements();
 
 
         List<SellerProductDto> dtos = mapper.entityListToDtoList(products);
 
-        return dtos;
+        ProductWrapperDto<SellerProductDto> wrapperDto = new ProductWrapperDto<>();
+
+        wrapperDto.setProducts(dtos);
+        wrapperDto.setTotalElements(totalElements);
+        wrapperDto.setTotalPages(totalPages);
+
+        return wrapperDto;
     }
 
     @Override
